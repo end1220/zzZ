@@ -16,6 +16,6 @@ public class SpinCube : MonoBehaviour
 
     void Update()
     {
-        m_Transform.rotation *= Quaternion.Euler(Time.deltaTime * m_SpinningVelocity);
+        //m_Transform.rotation *= Quaternion.Euler(Time.deltaTime * m_SpinningVelocity);
     }
 }

@@ -71,16 +71,18 @@ public class TransparentWindow : MonoBehaviour
 
 	void Update()
 	{
+		int layer = LayerMask.NameToLayer("Default");
 		// If our mouse is overlapping an object
+
+		Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit = new RaycastHit();
-		clickThrough = !Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition).origin,
-				mainCamera.ScreenPointToRay(Input.mousePosition).direction, out hit, 100,
-				Physics.DefaultRaycastLayers);
+		clickThrough = !Physics.Raycast(ray, out hit, 100);
 
 		if (clickThrough != prevClickThrough)
 		{
 			if (clickThrough)
 			{
+				Log.Instance.Error("through");
 #if !UNITY_EDITOR
                 SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
                 SetWindowLong (hwnd, -20, (uint)524288 | (uint)32);//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
@@ -90,6 +92,7 @@ public class TransparentWindow : MonoBehaviour
 			}
 			else
 			{
+				Log.Instance.Error("through not");
 #if !UNITY_EDITOR
                 SetWindowLong (hwnd, -20, ~(((uint)524288) | ((uint)32)));//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
                 SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)

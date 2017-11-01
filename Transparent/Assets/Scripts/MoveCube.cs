@@ -25,7 +25,7 @@ public class MoveCube : MonoBehaviour
 
     void Update()
     {
-        if (m_GoingRight)
+        /*if (m_GoingRight)
         {
             var newPosition = m_Transform.position + new Vector3(Time.deltaTime * m_Velocity, 0.0f);
             m_Transform.position = newPosition;
@@ -40,6 +40,6 @@ public class MoveCube : MonoBehaviour
 
             if (m_StartingX - newPosition.x > m_Range)
                 m_GoingRight = true;
-        }
+        }*/
     }
 }
