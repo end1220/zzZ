@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Float"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <ListBox HorizontalAlignment="Left" Height="100" Margin="229.333,121.235,0,0" VerticalAlignment="Top" Width="100"/>
-
-    </Grid>
+        Title="MainWindow" Height="480" Width="640">
+	<Grid>
+		<ListBox HorizontalAlignment="Left" Height="429" Margin="10,10,0,0" VerticalAlignment="Top" Width="407.717" Background="#FFFFA0A0"/>
+		<Image HorizontalAlignment="Left" Height="112.993" Margin="452.38,10,0,0" VerticalAlignment="Top" Width="150.348" OpacityMask="#FFFF4444"/>
+		<Label Content="Label" HorizontalAlignment="Left" Height="28.661" Margin="440.2,122.993,0,0" VerticalAlignment="Top" Width="60.092"/>
+		<Button Content="Button" HorizontalAlignment="Left" Height="22.613" Margin="440.2,416.387,0,0" VerticalAlignment="Top" Width="83.642"/>
+		<Button Content="Button" HorizontalAlignment="Left" Height="22.613" Margin="536.835,416.387,0,0" VerticalAlignment="Top" Width="77.959"/>
+	</Grid>
 </Window>
