@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="640">
 	<Grid>
-		<ListBox HorizontalAlignment="Left" Height="429" Margin="10,10,0,0" VerticalAlignment="Top" Width="407.717" Background="#FFFFA0A0"/>
-		<Image HorizontalAlignment="Left" Height="112.993" Margin="452.38,10,0,0" VerticalAlignment="Top" Width="150.348" OpacityMask="#FFFF4444"/>
-		<Label Content="Label" HorizontalAlignment="Left" Height="28.661" Margin="440.2,122.993,0,0" VerticalAlignment="Top" Width="60.092"/>
-		<Button Content="Button" HorizontalAlignment="Left" Height="22.613" Margin="440.2,416.387,0,0" VerticalAlignment="Top" Width="83.642"/>
-		<Button Content="Button" HorizontalAlignment="Left" Height="22.613" Margin="536.835,416.387,0,0" VerticalAlignment="Top" Width="77.959"/>
+		<ListBox x:Name="ModelListBox" HorizontalAlignment="Left" Height="429" Margin="10,10,0,0" VerticalAlignment="Top" Width="407.717" Background="#FFFFA0A0"/>
+		<Image x:Name="CurrentModelImage" HorizontalAlignment="Left" Height="112.993" Margin="452.38,10,0,0" VerticalAlignment="Top" Width="150.348" OpacityMask="#FFFF4444"/>
+		<Label x:Name="CurrentModelName" Content="Label" HorizontalAlignment="Left" Height="28.661" Margin="440.2,122.993,0,0" VerticalAlignment="Top" Width="60.092"/>
+		<Button x:Name="CancelButton" Content="取消" HorizontalAlignment="Left" Height="22.613" Margin="528.181,416.387,0,0" VerticalAlignment="Top" Width="83.642" Click="OnCalcelButtonClick"/>
+		<Button x:Name="OkButton" Content="确定" HorizontalAlignment="Left" Height="22.613" Margin="440.2,416.387,0,0" VerticalAlignment="Top" Width="77.959" Click="OnOKButtonClick"/>
 	</Grid>
 </Window>
