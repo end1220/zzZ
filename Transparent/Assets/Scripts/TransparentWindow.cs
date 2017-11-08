@@ -11,8 +11,8 @@ public class TransparentWindow : MonoBehaviour
 	[SerializeField]
 	private Camera mainCamera;
 
-	private bool clickThrough = true;
-	private bool prevClickThrough = true;
+	private Vector3 lastMousePosition;
+	private bool lastHoverModel = true;
 
 	private struct MARGINS
 	{
@@ -52,58 +52,69 @@ public class TransparentWindow : MonoBehaviour
 
 	void Start()
 	{
+		Application.runInBackground = true;
 		mainCamera = GetComponent<Camera>();
+		lastMousePosition = Input.mousePosition;
 
-#if !UNITY_EDITOR // You really don't want to enable this in the editor..
- 
-        fWidth = Screen.width;
-        fHeight = Screen.height;
-        margins = new MARGINS() { cxLeftWidth = -1 };
-        hwnd = GetActiveWindow();
- 
-        SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
-        SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
-        DwmExtendFrameIntoClientArea(hwnd, ref margins);
- 
-        Application.runInBackground = true;
+#if !UNITY_EDITOR
+		InitWnd();
 #endif
 	}
 
 	void Update()
 	{
 		int layer = LayerMask.NameToLayer("Default");
-		// If our mouse is overlapping an object
 
-		Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit = new RaycastHit();
-		clickThrough = !Physics.Raycast(ray, out hit, 100);
-
-		if (clickThrough != prevClickThrough)
+		bool hoverModel = true;
+		Vector3 mousePosition = Input.mousePosition;
+		if (mousePosition != lastMousePosition)
 		{
-			if (clickThrough)
+			Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+			RaycastHit hit = new RaycastHit();
+			hoverModel = Physics.Raycast(ray, out hit, 100);
+			lastMousePosition = mousePosition;
+
+			if (hoverModel != lastHoverModel)
 			{
-				//Log.Instance.Error("through");
 #if !UNITY_EDITOR
-                SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
-                SetWindowLong (hwnd, -20, (uint)524288 | (uint)32);//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
-                SetLayeredWindowAttributes (hwnd, 0, 255, 2);// Transparency=51=20%, LWA_ALPHA=2
-                SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+				SetTransparent(!hoverModel);
 #endif
+				lastHoverModel = hoverModel;
 			}
-			else
-			{
-				//Log.Instance.Error("through not");
-#if !UNITY_EDITOR
-                SetWindowLong (hwnd, -20, ~(((uint)524288) | ((uint)32)));//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
-                SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
-#endif
-			}
-			prevClickThrough = clickThrough;
 		}
+
 	}
 
 	void OnRenderImage(RenderTexture from, RenderTexture to)
 	{
 		Graphics.Blit(from, to, m_Material);
+	}
+
+	private void InitWnd()
+	{
+		fWidth = Screen.width;
+		fHeight = Screen.height;
+		margins = new MARGINS() { cxLeftWidth = -1 };
+		hwnd = GetActiveWindow();
+
+		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+		DwmExtendFrameIntoClientArea(hwnd, ref margins);
+	}
+
+	private void SetTransparent(bool transparent)
+	{
+		if (transparent)
+		{
+			SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+			SetWindowLong(hwnd, -20, (uint)524288 | (uint)32);//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
+			SetLayeredWindowAttributes(hwnd, 0, 255, 2);// Transparency=51=20%, LWA_ALPHA=2
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+		}
+		else
+		{
+			SetWindowLong(hwnd, -20, ~(((uint)524288) | ((uint)32)));//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+		}
 	}
 }

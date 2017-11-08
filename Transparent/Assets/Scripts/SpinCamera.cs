@@ -85,23 +85,29 @@ public class SpinCamera : MonoBehaviour
 		
 		Vector3 targetPosition = target.transform.position + Vector3.up * 4;
 
-		//重新计算位置和角度
-		Quaternion mRotation = Quaternion.Euler(angelX, angelY, 0);
-		Vector3 mPosition = mRotation * new Vector3(0, 0, -Distance) + targetPosition;
-
-		//设置相机的角度和位置
-		if (!force && EnableDamping)
+		if (force)
 		{
-			//球形插值
-			transform.rotation = Quaternion.Lerp(transform.rotation, mRotation, Time.deltaTime * Damping);
-			//线性插值
-			transform.position = Vector3.Lerp(transform.position, mPosition, Time.deltaTime * Damping);
+			Quaternion rotation = Quaternion.Euler(angelX, angelY, 0);
+			Vector3 position = rotation * new Vector3(0, 0, -Distance) + targetPosition;
+			transform.rotation = rotation;
+			transform.position = position;
+			force = false;
 		}
 		else
 		{
-			force = false;
-			transform.rotation = mRotation;
-			transform.position = mPosition;
+			Quaternion rotation = Quaternion.Euler(angelX, angelY, 0);
+			if (EnableDamping)
+			{
+				transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * Damping);
+				Vector3 position = transform.rotation * new Vector3(0, 0, -Distance) + targetPosition;
+				transform.position = position;
+			}
+			else
+			{
+				Vector3 position = rotation * new Vector3(0, 0, -Distance) + targetPosition;
+				transform.rotation = rotation;
+				transform.position = position;
+			}
 		}
 
 	}
