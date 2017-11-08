@@ -50,7 +50,7 @@ public class SpinCamera : MonoBehaviour
         }
         catch (UnityException ue)
         {
-            Log.Instance.Error(ue.ToString());
+            Log.Error(ue.ToString());
         }
 	}
 

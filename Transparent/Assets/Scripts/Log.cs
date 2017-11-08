@@ -8,7 +8,7 @@ using UnityEngine;
 public class Log
 {
 	private static Log _inst;
-	public static Log Instance
+	private static Log Instance
 	{
 		get
 		{
@@ -20,6 +20,22 @@ public class Log
 			return _inst;
 		}
 	}
+
+	public static void Info(string text)
+	{
+		Instance.Info_(text);
+	}
+
+	public static void Warning(string text)
+	{
+		Instance.Warning_(text);
+	}
+
+	public static void Error(string text)
+	{
+		Instance.Error_(text);
+	}
+
 	const bool EnableLogConsole = true;
 
 	const bool EnableLogFile = true;
@@ -32,7 +48,7 @@ public class Log
 		Close();
 	}
 
-	public void Info(string text)
+	void Info_(string text)
 	{
 		UnityEngine.Debug.Log(text);
 		if (EnableLogConsole)
@@ -40,7 +56,7 @@ public class Log
 		WriteLog("[Info] " + text);
 	}
 
-	public void Warning(string text)
+	void Warning_(string text)
 	{
 		UnityEngine.Debug.LogWarning(text);
 		if (EnableLogConsole)
@@ -48,15 +64,13 @@ public class Log
 		WriteLog("[Warning] " + text);
 	}
 
-	public void Error(string text)
+	void Error_(string text)
 	{
 		UnityEngine.Debug.LogError(text);
 		if (EnableLogConsole)
 			UnityEngine.Debug.LogError(text);
 		WriteLog("[Error] " + text);
 	}
-
-
 
 	public void Init()
 	{
@@ -85,23 +99,6 @@ public class Log
 		{
 			Debug.LogError(e.ToString());
 		}
-	}
-
-	public void RenderTick()
-	{
-
-	}
-
-
-	public void FrameTick()
-	{
-
-	}
-
-
-	public void Destroy()
-	{
-
 	}
 
 	public void WriteLog(string message)

@@ -19,7 +19,7 @@ public class KeyboardMouse : MonoBehaviour
 		}
 		catch (System.Exception e)
 		{
-			Log.Instance.Error(e.ToString());
+			Log.Error(e.ToString());
 		}
 	}
 
