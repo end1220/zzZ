@@ -203,7 +203,7 @@ public class BuildAssetBundles
 	private static string CreateNewOutputPath(bool deleteOld)
 	{
 		string outputPath = Path.Combine(tmpOutputPath, UtilsForEdit.GetPlatformName());
-		outputPath = Path.Combine(outputPath, AppConst.AppName);
+		outputPath = Path.Combine(outputPath, AppDefine.AppName);
 		if (Directory.Exists(outputPath))
 		{
 			if (deleteOld)

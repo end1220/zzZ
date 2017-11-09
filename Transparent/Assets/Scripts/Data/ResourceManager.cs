@@ -22,7 +22,7 @@ public class LoadedAssetBundle
 }
 
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : MonoBehaviour, IManager
 {
 	string m_BaseDownloadingURL = "Assets/StreamingAssets/";
 
@@ -67,32 +67,17 @@ public class ResourceManager : MonoBehaviour
 	}
 #endif
 
-	private static ResourceManager _inst;
-	public static ResourceManager Instance
+	public static ResourceManager Instance { private set; get; }
+
+	public void Init()
 	{
-		get
-		{
-			return _inst;
-		}
+		Instance = this;
 	}
 
-	void Awake()
-	{
-		_inst = this;
-	}
-
-
-	public void RenderTick()
+	public void Tick()
 	{
 		UpdateLoading();
 	}
-
-
-	public void FrameTick()
-	{
-
-	}
-
 
 	public void Destroy()
 	{
@@ -102,7 +87,7 @@ public class ResourceManager : MonoBehaviour
 
 	public AssetBundleLoadManifestOperation Initialize()
 	{
-		string url = "file://" + AppConst.PersistentDataPath;
+		string url = "file://" + AppDefine.PersistentDataPath;
 		SetSourceAssetBundleURL(url);
 		//SetSourceAssetBundleURL("http://www.MyWebsite/MyAssetBundles");
 
@@ -112,7 +97,7 @@ public class ResourceManager : MonoBehaviour
 		else
 			Log.Info("Asset Bundle Mode !");
 #endif
-		string manifestAssetBundleName = AppConst.AppName;
+		string manifestAssetBundleName = AppDefine.AppName;
 		LoadAssetBundle(manifestAssetBundleName, true);
 		var operation = new AssetBundleLoadManifestOperation(manifestAssetBundleName, "AssetBundleManifest", typeof(AssetBundleManifest));
 		m_InProgressOperations.Add(operation);
@@ -263,7 +248,7 @@ public class ResourceManager : MonoBehaviour
 
 	public T LoadAsset<T>(string assetBundleName, string assetName) where T : UnityEngine.Object
 	{
-		string path = AppConst.PersistentDataPath + assetBundleName;
+		string path = AppDefine.PersistentDataPath + assetBundleName;
 
 #if UNITY_EDITOR
 		if (SimulateAssetBundleInEditor)

@@ -26,7 +26,7 @@ public class LuaLoader : FileUtils
 	/// <param name="bundleName"></param>
 	public void AddBundle(string bundleName)
 	{
-		string url = AppConst.PersistentDataPath + bundleName.ToLower();
+		string url = AppDefine.PersistentDataPath + bundleName.ToLower();
         string err = null;
 		if (File.Exists(url))
 		{

@@ -2,14 +2,13 @@
 using UnityEngine;
 
 
-public class AppConst
+public class AppDefine
 {
 	public const string AppName = "Floating";
+	public const int FPS = 30;
+	public static int SocketPort = 8866;
+	public static string SocketAddress = "127.0.0.1";
 
-	/// <summary>
-	/// 热更到本地的数据存放目录.
-	/// 注意standalone模式www不能读取persistentDataPath.
-	/// </summary>
 	public static string PersistentDataPath
 	{
 		get

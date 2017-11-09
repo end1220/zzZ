@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using XLua;
 
 
-public class LuaManager : MonoBehaviour
+public class LuaManager : MonoBehaviour, IManager
 {
 	public static LuaManager Instance { private set; get; }
 
@@ -21,45 +21,32 @@ public class LuaManager : MonoBehaviour
 
 	private Dictionary<string, LuaFuncCall> funcList = new Dictionary<string, LuaFuncCall>();
 
-	private void Awake()
+	public void Init()
 	{
 		Instance = this;
-	}
-
-	private void Start()
-	{
 		loader = new LuaLoader();
 		luaEnv = new LuaEnv();
 		luaEnv.AddLoader(CustomLoad);
 	}
 
-
-	private void Update()
+	public void Tick()
 	{
-		try
+		if (tickFunc != null)
 		{
-			if (tickFunc != null)
-			{
-				tickFunc();
-			}
-
-			if (Time.timeSinceLevelLoad - updateTime > 60)
-			{
-				luaEnv.Tick();
-				updateTime = Time.timeSinceLevelLoad;
-			}
+			tickFunc();
 		}
-		catch (Exception e)
+
+		if (Time.timeSinceLevelLoad - updateTime > 60)
 		{
-			Log.Error(e.ToString());
+			luaEnv.Tick();
+			updateTime = Time.timeSinceLevelLoad;
 		}
 	}
 
-	private void OnDestroy()
+	public void Destroy()
 	{
 		Close();
 	}
-
 
 	public void InitStart()
 	{
@@ -95,7 +82,7 @@ public class LuaManager : MonoBehaviour
 				return null;
 			}
 
-			/*if (AppConst.openZbsDebugger)
+			/*if (AppDefine.openZbsDebugger)
 			{
 				fileName = FileUtils.Instance.FindFile(fileName);
 			}*/
@@ -125,7 +112,7 @@ public class LuaManager : MonoBehaviour
 			return;
 		}
 #endif
-		AddSearchPath(AppConst.PersistentDataPath + "/twlua");
+		AddSearchPath(AppDefine.PersistentDataPath + "/twlua");
 	}
 
 	public void AddSearchPath(string fullPath)
