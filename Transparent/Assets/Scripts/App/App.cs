@@ -12,32 +12,50 @@ public class App : MonoBehaviour
 
 	void Awake()
 	{
-		Screen.sleepTimeout = SleepTimeout.NeverSleep;
-		Application.targetFrameRate = AppDefine.FPS;
+		try
+		{
+			Screen.sleepTimeout = SleepTimeout.NeverSleep;
+			Application.targetFrameRate = AppDefine.FPS;
 
-		this.AddManager<ResourceManager>();
-		this.AddManager<LuaManager>();
-		this.AddManager<NetworkManager>();
+			AddManager<Hook>();
+			AddManager<ResourceManager>();
+			AddManager<LuaManager>();
 
-		foreach (var mgr in mManagerDic.Values)
-			mgr.Init();
+			foreach (var item in mManagerDic)
+				item.Value.Init();
+		}
+		catch (Exception e)
+		{
+			Log.Error(e.ToString());
+		}
 	}
 
 
 	void OnDestroy()
 	{
-		foreach (var mgr in mManagerDic.Values)
+		try
 		{
-			mgr.Destroy();
+			foreach (var item in mManagerDic)
+				item.Value.Destroy();
+		}
+		catch (Exception e)
+		{
+			Log.Error(e.ToString());
 		}
 	}
 
 
 	void Update()
 	{
-		var itor = mManagerDic.GetEnumerator();
-		while (itor.MoveNext())
-			itor.Current.Value.Tick();
+		try
+		{
+			foreach (var item in mManagerDic)
+				item.Value.Tick();
+		}
+		catch (Exception e)
+		{
+			Log.Error(e.ToString());
+		}
 	}
 
 
@@ -47,7 +65,7 @@ public class App : MonoBehaviour
 		Type name = typeof(T);
 		if (!mManagerDic.ContainsKey(name))
 		{
-			mgr = new T();
+			mgr = gameObject.AddComponent<T>();
 			mManagerDic.Add(name, mgr);
 		}
 		return mgr;
