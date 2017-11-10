@@ -117,7 +117,9 @@ namespace Float
 			m1.Click += OnClickNotifyOpenMainWindow;
 			System.Windows.Forms.MenuItem m2 = new System.Windows.Forms.MenuItem("Exit");
 			m2.Click += OnClickNotifyExit;
-			System.Windows.Forms.MenuItem[] menu = new System.Windows.Forms.MenuItem[] { m1, m2 };
+			System.Windows.Forms.MenuItem m3 = new System.Windows.Forms.MenuItem("Send");
+			m3.Click += OnClickSend;
+			System.Windows.Forms.MenuItem[] menu = new System.Windows.Forms.MenuItem[] { m1, m2, m3 };
 			this.notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(menu);
 		}
 
@@ -145,6 +147,12 @@ namespace Float
 			this.Show();
 			WindowState = lastState;
 		}
+
+		void OnClickSend(object sender, EventArgs e)
+		{
+			App.Instance.SendToUnity();
+		}
+
 
 		#endregion
 

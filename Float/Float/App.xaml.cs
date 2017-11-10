@@ -13,6 +13,16 @@ namespace Float
 	/// </summary>
 	public partial class App : Application
 	{
+		Send send = new Send();
+
+		public static App Instance
+		{
+			get
+			{
+				return Current as App;
+			}
+		}
+
 		private void AppActivated(object sender, EventArgs e)
 		{
 
@@ -31,6 +41,11 @@ namespace Float
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
 
+		}
+
+		public void SendToUnity()
+		{
+			send.SendToUnity();
 		}
 	}
 }
