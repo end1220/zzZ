@@ -94,7 +94,8 @@ public class test15 : MonoBehaviour
 		if (pData != null)
 		{
 			//效验长度
-			if (wDataSize > 1024) return false;
+			if (wDataSize > 1024)
+				return false;
 			//拷贝数据
 			IPCBuffer.Head.wPacketSize += wDataSize;
 

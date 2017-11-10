@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Lite;
 
-public class Protocal
+public class CommandHandler
 {
 	public const ushort Connect = 101;
 	public const ushort Exception = 102;

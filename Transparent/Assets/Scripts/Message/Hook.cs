@@ -7,7 +7,6 @@ using Debug = UnityEngine.Debug;
 
 public class Hook : MonoBehaviour, IManager
 {
-	//钩子接收消息的结构
 	public struct CWPSTRUCT
 	{
 		public int lparam;
@@ -22,8 +21,6 @@ public class Hook : MonoBehaviour, IManager
 	[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
 	private static extern bool UnhookWindowsHookEx(int idHook);
 
-
-	//把信息传递到下一个监听
 	[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
 	private static extern int CallNextHookEx(int idHook, int nCode, int wParam, int lParam);
 
@@ -32,9 +29,8 @@ public class Hook : MonoBehaviour, IManager
 	int idHook = 0;
 	bool isHooked = false;
 	GCHandle gc;
-	private const int WH_CALLWNDPROC = 4;  //钩子类型 全局钩子
+	private const int WH_CALLWNDPROC = 4;
 
-	//定义结构和发送的结构对应
 	public unsafe struct IPC_Head
 	{
 		public int wVersion;
@@ -43,12 +39,12 @@ public class Hook : MonoBehaviour, IManager
 		public int wSubCmdID;
 	}
 
-	private const int IPC_BUFFER = 10240;//最大缓冲长度
+	private const int IPC_BUFFER = 10240;
 
 	public unsafe struct IPC_Buffer
 	{
 		public IPC_Head Head;
-		public fixed byte cbBuffer[IPC_BUFFER];  //json数据存的地方
+		public fixed byte cbBuffer[IPC_BUFFER];
 	}
 
 	public struct COPYDATASTRUCT
@@ -61,6 +57,7 @@ public class Hook : MonoBehaviour, IManager
 	public void Init()
 	{
 		AddHook();
+		CommandHandler.Register();
 	}
 
 	public void Destroy()
@@ -70,9 +67,7 @@ public class Hook : MonoBehaviour, IManager
 
 	public void Tick()
 	{
-
 	}
-
 
 	private void AddHook()
 	{
@@ -84,7 +79,7 @@ public class Hook : MonoBehaviour, IManager
 		{
 			Debug.Log("钩子[" + idHook + "]安装成功");
 			isHooked = true;
-			//保持活动 避免 回调过程 被垃圾回收
+			//避免被垃圾回收
 			gc = GCHandle.Alloc(lpfn);
 		}
 		else
@@ -93,7 +88,6 @@ public class Hook : MonoBehaviour, IManager
 			isHooked = false;
 			UnhookWindowsHookEx(idHook);
 		}
-
 	}
 
 	private void RemoveHook()
@@ -108,19 +102,26 @@ public class Hook : MonoBehaviour, IManager
 	{
 		try
 		{
-			IntPtr p = new IntPtr(lParam);
-			CWPSTRUCT m = (CWPSTRUCT)Marshal.PtrToStructure(p, typeof(CWPSTRUCT));
-
+			IntPtr ptr = new IntPtr(lParam);
+			CWPSTRUCT m = (CWPSTRUCT)Marshal.PtrToStructure(ptr, typeof(CWPSTRUCT));
 			if (m.message == 74)
 			{
-				COPYDATASTRUCT entries = (COPYDATASTRUCT)Marshal.PtrToStructure((IntPtr)m.lparam, typeof(COPYDATASTRUCT));
-				IPC_Buffer entries1 = (IPC_Buffer)Marshal.PtrToStructure((IntPtr)entries.lpData, typeof(IPC_Buffer));
+				COPYDATASTRUCT copydata = (COPYDATASTRUCT)Marshal.PtrToStructure((IntPtr)m.lparam, typeof(COPYDATASTRUCT));
+				IPC_Buffer ipc = (IPC_Buffer)Marshal.PtrToStructure(copydata.lpData, typeof(IPC_Buffer));
 
-				IntPtr intp = new IntPtr(entries1.cbBuffer);
-				string str = new string((sbyte*)intp);
-				Debug.Log("json数据：" + str);
+				IntPtr intp = new IntPtr(ipc.cbBuffer);
+				int length = copydata.cbData - (ushort)Marshal.SizeOf(typeof(IPC_Head));
+				byte[] data = new byte[length];
+				Marshal.Copy(intp, data, 0, length);
+				
+				Lite.ByteBuffer buffer = new Lite.ByteBuffer(data);
+				Lite.Packet packet = new Lite.Packet();
+				packet.length = (ushort)data.Length;
+				packet.msgId = buffer.ReadShort();
+				packet.stamp = 0;
+				packet.data = buffer.ReadBytes();
+				CommandHandler.Handle(packet);
 			}
-
 			return CallNextHookEx(idHook, nCode, wParam, lParam);
 		}
 		catch (Exception ex)
@@ -128,6 +129,6 @@ public class Hook : MonoBehaviour, IManager
 			Debug.Log(ex.Message);
 			return 0;
 		}
-
 	}
+
 }

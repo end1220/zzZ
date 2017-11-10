@@ -69,24 +69,6 @@ public class Send
 		}
 	}
 
-
-	/*private void sendJson()
-	{
-		IntPtr hWndPalaz = FindWindow(null, "Transparent");//就是窗体的的标题
-		Console.WriteLine(hWndPalaz);
-		if (hWndPalaz != null)
-		{
-			//获得游戏本身句柄
-			m_hWnd = FindWindow("UnityWndClass", null);
-
-			string uRstr = "666 2333 999 123456789";
-			byte[] bytes = Encoding.UTF8.GetBytes(uRstr);
-			IntPtr pData = Marshal.AllocHGlobal(2 * bytes.Length);
-			Marshal.Copy(bytes, 0, pData, bytes.Length);
-			SendData(m_hWnd, IPC_CMD_GF_SOCKET, IPC_SUB_GF_SOCKET_SEND, pData, (ushort)bytes.Length);
-		}
-	}*/
-
 	/// <summary>
 	/// SendMessage发送
 	/// </summary>
@@ -110,7 +92,8 @@ public class Send
 		if (pData != null)
 		{
 			//效验长度
-			if (wDataSize > 1024) return false;
+			if (wDataSize > 1024)
+				return false;
 			//拷贝数据
 			IPCBuffer.Head.wPacketSize += wDataSize;
 
@@ -125,12 +108,12 @@ public class Send
 
 
 		//发送数据
-		COPYDATASTRUCT CopyDataStruct;
+		COPYDATASTRUCT copydata;
 		IPC_Buffer* pPCBuffer = &IPCBuffer;
-		CopyDataStruct.lpData = (IntPtr)pPCBuffer;
-		CopyDataStruct.dwData = (IntPtr)IDT_ASYNCHRONISM;
-		CopyDataStruct.cbData = IPCBuffer.Head.wPacketSize;
-		SendMessage(hWndServer, 0x004A, (int)m_hWnd, ref CopyDataStruct);
+		copydata.lpData = (IntPtr)pPCBuffer;
+		copydata.dwData = (IntPtr)IDT_ASYNCHRONISM;
+		copydata.cbData = IPCBuffer.Head.wPacketSize;
+		SendMessage(hWndServer, 0x004A, (int)m_hWnd, ref copydata);
 
 		Log.Info("sendmessage success.");
 
