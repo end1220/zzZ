@@ -52,7 +52,7 @@ public class Send
 		public fixed byte cbBuffer[IPC_BUFFER]; //指针        存放json数据 利用byte[]接收存放 
 	}
 
-	public void SendToUnity()
+	public void SendToUnity(byte[] bytes)
 	{
 		IntPtr hWndPalaz = FindWindow(null, "Wind");//就是窗体的的标题
 		Log.Info("hwnd " + hWndPalaz);
@@ -61,8 +61,6 @@ public class Send
 			//获得游戏本身句柄
 			m_hWnd = FindWindow("UnityWndClass", null);
 
-			string uRstr = "666 2333 999 123456789";
-			byte[] bytes = Encoding.UTF8.GetBytes(uRstr);
 			IntPtr pData = Marshal.AllocHGlobal(2 * bytes.Length);
 			Marshal.Copy(bytes, 0, pData, bytes.Length);
 			SendData(m_hWnd, IPC_CMD_GF_SOCKET, IPC_SUB_GF_SOCKET_SEND, pData, (ushort)bytes.Length);

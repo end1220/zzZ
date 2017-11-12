@@ -1,11 +1,11 @@
-﻿using System;
+﻿
+using System;
 using UnityEngine;
-using System.Collections;
 using System.Runtime.InteropServices;
 using System.Text;
 
 
-public class test15 : MonoBehaviour
+public class Send
 {
 	public IntPtr m_hWnd;
 
@@ -51,6 +51,70 @@ public class test15 : MonoBehaviour
 	{
 		public IPC_Head Head;  //IPC_Head结构
 		public fixed byte cbBuffer[IPC_BUFFER]; //指针        存放json数据 利用byte[]接收存放 
+	}
+
+	public unsafe void SendTest(ushort msgId, byte[] buffer)
+	{
+		var bb = new Lite.ByteBuffer();
+		bb.WriteShort(msgId);
+		bb.WriteBytes(buffer);
+		byte[] bytes = bb.ToBytes();
+
+		IntPtr pData = Marshal.AllocHGlobal(2 * bytes.Length);
+		Marshal.Copy(bytes, 0, pData, bytes.Length);
+
+		//给IPCBuffer结构赋值
+		IPC_Buffer IPCBuffer;
+		IPCBuffer.Head.wVersion = IPC_VER;
+		IPCBuffer.Head.wSubCmdID = IPC_SUB_GF_SOCKET_SEND;
+		IPCBuffer.Head.wMainCmdID = IPC_CMD_GF_SOCKET;
+		IPCBuffer.Head.wPacketSize = (ushort)Marshal.SizeOf(typeof(IPC_Head));
+
+		ushort wDataSize = (ushort)bytes.Length;
+
+		//内存操作
+		if (pData != null)
+		{
+			//效验长度
+			if (wDataSize > 1024)
+				return;
+			//拷贝数据
+			IPCBuffer.Head.wPacketSize += wDataSize;
+
+			byte[] data = new byte[IPC_BUFFER];
+			Marshal.Copy(pData, data, 0, wDataSize);
+
+			for (int i = 0; i < IPC_BUFFER; i++)
+			{
+				IPCBuffer.cbBuffer[i] = data[i];
+			}
+		}
+
+
+		//发送数据
+		COPYDATASTRUCT copydata;
+		IPC_Buffer* pPCBuffer = &IPCBuffer;
+		copydata.lpData = (IntPtr)pPCBuffer;
+		copydata.dwData = (IntPtr)IDT_ASYNCHRONISM;
+		copydata.cbData = IPCBuffer.Head.wPacketSize;
+		
+		/////////////
+
+		IPC_Buffer ipc = (IPC_Buffer)Marshal.PtrToStructure(copydata.lpData, typeof(IPC_Buffer));
+
+		IntPtr intp = new IntPtr(ipc.cbBuffer);
+		int length = copydata.cbData - (ushort)Marshal.SizeOf(typeof(IPC_Head));
+		byte[] data2 = new byte[length];
+		Marshal.Copy(intp, data2, 0, length);
+
+		Lite.ByteBuffer bb2 = new Lite.ByteBuffer(data2);
+		Lite.Packet packet = new Lite.Packet();
+		packet.length = (ushort)data2.Length;
+		packet.msgId = bb2.ReadShort();
+		packet.stamp = 0;
+		packet.data = bb2.ReadBytes();
+
+		CommandHandler.Handle(packet);
 	}
 
 

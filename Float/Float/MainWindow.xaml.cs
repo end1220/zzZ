@@ -150,7 +150,15 @@ namespace Float
 
 		void OnClickSend(object sender, EventArgs e)
 		{
-			App.Instance.SendToUnity();
+			Command cmd = new Command();
+			cmd.cmdType = (ushort)CommandId.ShowWindow;
+			cmd.number1 = 1;
+			cmd.number2 = 22;
+			cmd.number3 = 33;
+			cmd.string1 = "s1111";
+			cmd.string2 = "s2222";
+			cmd.string3 = "s3333";
+			CommandHandler.SendCommand(CommandId.ShowWindow, cmd);
 		}
 
 

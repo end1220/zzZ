@@ -42,10 +42,5 @@ namespace Float
 		{
 
 		}
-
-		public void SendToUnity()
-		{
-			send.SendToUnity();
-		}
 	}
 }

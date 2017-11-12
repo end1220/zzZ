@@ -50,7 +50,6 @@ public class Log
 
 	void Info_(string text)
 	{
-		UnityEngine.Debug.Log(text);
 		if (EnableLogConsole)
 			UnityEngine.Debug.Log(text);
 		WriteLog("[Info] " + text);
@@ -58,7 +57,6 @@ public class Log
 
 	void Warning_(string text)
 	{
-		UnityEngine.Debug.LogWarning(text);
 		if (EnableLogConsole)
 			UnityEngine.Debug.LogWarning(text);
 		WriteLog("[Warning] " + text);
@@ -66,7 +64,6 @@ public class Log
 
 	void Error_(string text)
 	{
-		UnityEngine.Debug.LogError(text);
 		if (EnableLogConsole)
 			UnityEngine.Debug.LogError(text);
 		WriteLog("[Error] " + text);

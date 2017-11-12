@@ -104,8 +104,9 @@ public class Hook : MonoBehaviour, IManager
 		{
 			IntPtr ptr = new IntPtr(lParam);
 			CWPSTRUCT m = (CWPSTRUCT)Marshal.PtrToStructure(ptr, typeof(CWPSTRUCT));
-			if (m.message == 74)
+			if (m.message == 0x004A)
 			{
+				Log.Error("HookCallback 1");
 				COPYDATASTRUCT copydata = (COPYDATASTRUCT)Marshal.PtrToStructure((IntPtr)m.lparam, typeof(COPYDATASTRUCT));
 				IPC_Buffer ipc = (IPC_Buffer)Marshal.PtrToStructure(copydata.lpData, typeof(IPC_Buffer));
 
@@ -120,6 +121,7 @@ public class Hook : MonoBehaviour, IManager
 				packet.msgId = buffer.ReadShort();
 				packet.stamp = 0;
 				packet.data = buffer.ReadBytes();
+				Log.Error("HookCallback 2");
 				CommandHandler.Handle(packet);
 			}
 			return CallNextHookEx(idHook, nCode, wParam, lParam);
