@@ -53,6 +53,8 @@ public class NetworkManager : MonoBehaviour, IManager
 			{
 				PacketPair pair = messageQueue.Dequeue();
 				Packet packet = pair.Value;
+
+				CommandHandler.Handle(packet);
 			}
 		}
 	}

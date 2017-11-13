@@ -81,10 +81,19 @@ namespace Lite
 			UdpState udpReceiveState = iar.AsyncState as UdpState;
 			if (iar.IsCompleted)
 			{
-				Byte[] receiveBytes = udpReceiveState.udpClient.EndReceive(iar, ref udpReceiveState.ipEndPoint);
+				Byte[] bytes = udpReceiveState.udpClient.EndReceive(iar, ref udpReceiveState.ipEndPoint);
 				//string receiveString = Encoding.ASCII.GetString(receiveBytes);
 				//Console.WriteLine("Received: {0}", receiveString);
 				//Thread.Sleep(100);
+
+				ByteBuffer buffer = new ByteBuffer(bytes);
+				Packet packet = new Packet();
+				packet.length = (ushort)bytes.Length;
+				packet.msgId = buffer.ReadShort();
+				packet.stamp = 0;
+				packet.data = buffer.ReadBytes();
+				NetworkManager.PushPacket(packet.msgId, packet);
+
 				receiveDone.Set();
 				//SendMsg();
 			}

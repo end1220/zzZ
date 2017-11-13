@@ -14,6 +14,7 @@ public class App : MonoBehaviour
 	{
 		try
 		{
+			Application.runInBackground = true;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			Application.targetFrameRate = AppDefine.FPS;
 

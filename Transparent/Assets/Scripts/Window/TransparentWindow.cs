@@ -52,7 +52,6 @@ public class TransparentWindow : MonoBehaviour
 
 	void Start()
 	{
-		Application.runInBackground = true;
 		mainCamera = GetComponent<Camera>();
 		lastMousePosition = Input.mousePosition;
 
