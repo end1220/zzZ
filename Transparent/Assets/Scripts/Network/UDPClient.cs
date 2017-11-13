@@ -82,20 +82,20 @@ namespace Lite
 			if (iar.IsCompleted)
 			{
 				Byte[] bytes = udpReceiveState.udpClient.EndReceive(iar, ref udpReceiveState.ipEndPoint);
-				//string receiveString = Encoding.ASCII.GetString(receiveBytes);
-				//Console.WriteLine("Received: {0}", receiveString);
-				//Thread.Sleep(100);
+				string receiveString = System.Text.Encoding.ASCII.GetString(bytes);
+				Log.Error(receiveString);
+				Thread.Sleep(100);
 
-				ByteBuffer buffer = new ByteBuffer(bytes);
+				/*ByteBuffer buffer = new ByteBuffer(bytes);
 				Packet packet = new Packet();
 				packet.length = (ushort)bytes.Length;
 				packet.msgId = buffer.ReadShort();
 				packet.stamp = 0;
 				packet.data = buffer.ReadBytes();
-				NetworkManager.PushPacket(packet.msgId, packet);
+				NetworkManager.PushPacket(packet.msgId, packet);*/
 
 				receiveDone.Set();
-				//SendMsg();
+				//Send(null);
 			}
 		}
 		

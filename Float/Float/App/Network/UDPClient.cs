@@ -96,8 +96,8 @@ namespace Lite
 			sendState.udpClient = udpSend;
 			sendState.counter++;
 
-			//string message = string.Format("第{0}个UDP请求处理完成！", sendState.counter);
-			//Byte[] sendBytes = Encoding.Unicode.GetBytes(message);
+			string message = string.Format("第{0}个UDP请求处理完成！", sendState.counter);
+			buffer = System.Text.Encoding.Unicode.GetBytes(message);
 			udpSend.BeginSend(buffer, buffer.Length, new AsyncCallback(SendCallback), sendState);
 			sendDone.WaitOne();
 		}
