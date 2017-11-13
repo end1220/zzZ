@@ -60,14 +60,4 @@ public class CommandHandler
 			func(packet.data);
 	}
 
-	public static void SendCommand(CommandId id, Command cmd)
-	{
-		cmd.cmdType = (ushort)id;
-		byte[] buffer = ProtobufUtil.Serialize<Command>(cmd);
-		var bb = new ByteBuffer();
-		bb.WriteShort(cmd.cmdType);
-		bb.WriteBytes(buffer);
-		byte[] bytes = bb.ToBytes();
-		send.SendToUnity(bytes);
-	}
 }

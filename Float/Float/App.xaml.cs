@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Lite;
 
 namespace Float
 {
@@ -13,7 +14,7 @@ namespace Float
 	/// </summary>
 	public partial class App : Application
 	{
-		Send send = new Send();
+		private NetworkManager network = new NetworkManager();
 
 		public static App Instance
 		{
@@ -21,6 +22,16 @@ namespace Float
 			{
 				return Current as App;
 			}
+		}
+
+		private void AppStartup(object sender, StartupEventArgs e)
+		{
+			network.Init();
+		}
+
+		private void AppExit(object sender, ExitEventArgs e)
+		{
+
 		}
 
 		private void AppActivated(object sender, EventArgs e)
@@ -33,14 +44,15 @@ namespace Float
 
 		}
 
-		private void AppExit(object sender, ExitEventArgs e)
+		public void SendCommand(CommandId id, Command cmd)
 		{
-
-		}
-
-		private void AppStartup(object sender, StartupEventArgs e)
-		{
-
+			cmd.cmdType = (ushort)id;
+			byte[] buffer = ProtobufUtil.Serialize<Command>(cmd);
+			var bb = new ByteBuffer();
+			bb.WriteShort(cmd.cmdType);
+			bb.WriteBytes(buffer);
+			byte[] bytes = bb.ToBytes();
+			network.SendBytes((ushort)id, bytes);
 		}
 	}
 }

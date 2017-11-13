@@ -17,9 +17,10 @@ public class App : MonoBehaviour
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			Application.targetFrameRate = AppDefine.FPS;
 
-			AddManager<Hook>();
+			//AddManager<Hook>();
 			AddManager<ResourceManager>();
 			AddManager<LuaManager>();
+			AddManager<NetworkManager>();
 
 			foreach (var item in mManagerDic)
 				item.Value.Init();

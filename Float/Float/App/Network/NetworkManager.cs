@@ -1,12 +1,11 @@
-using UnityEngine;
+
 using System.Collections.Generic;
 using Lite;
 
 
-
 using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Lite.Packet>;
 
-public class NetworkManager : MonoBehaviour, IManager
+public class NetworkManager
 {
 	static bool UseTcp = false;
 	private NetClient client;

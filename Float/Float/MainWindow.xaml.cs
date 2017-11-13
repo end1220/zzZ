@@ -158,7 +158,7 @@ namespace Float
 			cmd.string1 = "s1111";
 			cmd.string2 = "s2222";
 			cmd.string3 = "s3333";
-			CommandHandler.SendCommand(CommandId.ShowWindow, cmd);
+			App.Instance.SendCommand(CommandId.ShowWindow, cmd);
 		}
 
 
