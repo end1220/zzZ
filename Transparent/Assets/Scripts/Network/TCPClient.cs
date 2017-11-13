@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿
 using System;
 using System.IO;
 using System.Net.Sockets;
@@ -22,7 +22,6 @@ namespace Lite
 
 		private const int MAX_READ = 8192;
 		private byte[] byteBuffer = new byte[MAX_READ];
-		public static bool loggedIn = false;
 
 
 		public override void Init()
@@ -33,7 +32,7 @@ namespace Lite
 
 		public override void Destroy()
 		{
-			this.CloseClient();
+			CloseClient();
 			reader.Close();
 			memStream.Close();
 		}
@@ -52,7 +51,7 @@ namespace Lite
 			catch (Exception e)
 			{
 				CloseClient();
-				Debug.LogError(e.Message);
+				Log.Error(e.Message);
 			}
 		}
 
@@ -60,7 +59,6 @@ namespace Lite
 		{
 			outStream = tcpClient.GetStream();
 			tcpClient.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
-			//NetworkManager.AddEvent(Protocal.Connect, new ByteBuffer());
 		}
 
 		void WriteMessage(byte[] message)
@@ -82,7 +80,7 @@ namespace Lite
 				}
 				else
 				{
-					Debug.LogError("client.connected----->>false");
+					Log.Error("client.connected----->>false");
 				}
 			}
 		}
@@ -129,7 +127,7 @@ namespace Lite
 			ByteBuffer buffer = new ByteBuffer();
 			buffer.WriteShort((ushort)protocal);
 			NetworkManager.PushPacket(protocal, buffer);*/
-			Debug.Log("Connection closed. Distype: " + dis + ". Msg: " + msg);
+			Log.Error("Connection closed. Distype: " + dis + ". Msg: " + msg);
 		}
 
 		void PrintBytes()
@@ -139,7 +137,7 @@ namespace Lite
 			{
 				returnStr += byteBuffer[i].ToString("X2");
 			}
-			Debug.LogError(returnStr);
+			Log.Error(returnStr);
 		}
 
 		void OnWrite(IAsyncResult r)
@@ -150,7 +148,7 @@ namespace Lite
 			}
 			catch (Exception ex)
 			{
-				Debug.LogError("OnWrite--->>>" + ex.Message);
+				Log.Error("OnWrite--->>>" + ex.Message);
 			}
 		}
 
@@ -211,7 +209,6 @@ namespace Lite
 					tcpClient.Close();
 				tcpClient = null;
 			}
-			loggedIn = false;
 		}
 
 		public override void Send(byte[] buffer)
