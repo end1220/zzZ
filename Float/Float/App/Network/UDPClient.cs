@@ -12,17 +12,12 @@ namespace Lite
 	{
 		public class UdpState
 		{
-			public UdpClient udpClient;
-			public IPEndPoint ipEndPoint;
+			public UdpClient udp;
+			public IPEndPoint endPoint;
 			public const int BufferSize = 1024;
 			public byte[] buffer = new byte[BufferSize];
 			public int counter = 0;
 		}
-
-		private IPEndPoint localPoint = null;
-		private IPEndPoint remotePoint = null;
-		private UdpClient udpReceive = null;
-		private UdpClient udpSend = null;
 		
 		UdpState receiveState = null;
 		UdpState sendState = null;
@@ -44,19 +39,16 @@ namespace Lite
 		public void Run(string remoteIP, int remotePort, int listenPort)
 		{
 			IPAddress remoteAddr = IPAddress.Parse(remoteIP);
-
-			localPoint = new IPEndPoint(IPAddress.Any, listenPort);
-			remotePoint = new IPEndPoint(remoteAddr, remotePort);
-			udpReceive = new UdpClient(localPoint);
-			udpSend = new UdpClient();
+			IPEndPoint localPoint = new IPEndPoint(IPAddress.Any, listenPort);
+			IPEndPoint remotePoint = new IPEndPoint(remoteAddr, remotePort);
 
 			receiveState = new UdpState();
-			receiveState.udpClient = udpReceive;
-			receiveState.ipEndPoint = localPoint;
+			receiveState.udp = new UdpClient(localPoint);
+			receiveState.endPoint = localPoint;
 
 			sendState = new UdpState();
-			sendState.udpClient = udpSend;
-			sendState.ipEndPoint = remotePoint;
+			sendState.udp = new UdpClient();
+			sendState.endPoint = remotePoint;
 
 			Thread t = new Thread(new ThreadStart(Receive));
 			t.Start();
@@ -69,7 +61,7 @@ namespace Lite
 			{
 				lock (this)
 				{
-					IAsyncResult iar = udpReceive.BeginReceive(new AsyncCallback(ReceiveCallback), receiveState);
+					IAsyncResult iar = receiveState.udp.BeginReceive(new AsyncCallback(ReceiveCallback), receiveState);
 					receiveDone.WaitOne();
 					Thread.Sleep(100);
 				}
@@ -78,27 +70,34 @@ namespace Lite
 		
 		private void ReceiveCallback(IAsyncResult iar)
 		{
-			UdpState udpReceiveState = iar.AsyncState as UdpState;
 			if (iar.IsCompleted)
 			{
-				Byte[] receiveBytes = udpReceiveState.udpClient.EndReceive(iar, ref udpReceiveState.ipEndPoint);
-				//string receiveString = Encoding.ASCII.GetString(receiveBytes);
-				//Console.WriteLine("Received: {0}", receiveString);
-				//Thread.Sleep(100);
+				Byte[] bytes = receiveState.udp.EndReceive(iar, ref receiveState.endPoint);
+				string receiveString = System.Text.Encoding.Unicode.GetString(bytes);
+				Log.Error(receiveString);
+				Thread.Sleep(100);
+
+				/*ByteBuffer buffer = new ByteBuffer(bytes);
+				Packet packet = new Packet();
+				packet.length = (ushort)bytes.Length;
+				packet.msgId = buffer.ReadShort();
+				packet.stamp = 0;
+				packet.data = buffer.ReadBytes();
+				NetworkManager.PushPacket(packet.msgId, packet);*/
+
 				receiveDone.Set();
-				//SendMsg();
+				//Send(null);
 			}
 		}
 		
 		public override void Send(byte[] buffer)
 		{
-			udpSend.Connect(sendState.ipEndPoint);
-			sendState.udpClient = udpSend;
+			//udpSend.Connect(sendState.ipEndPoint);
 			sendState.counter++;
 
 			string message = string.Format("第{0}个UDP请求处理完成！", sendState.counter);
 			buffer = System.Text.Encoding.Unicode.GetBytes(message);
-			udpSend.BeginSend(buffer, buffer.Length, new AsyncCallback(SendCallback), sendState);
+			sendState.udp.BeginSend(buffer, buffer.Length, sendState.endPoint, new AsyncCallback(SendCallback), sendState);
 			sendDone.WaitOne();
 		}
 		
@@ -106,7 +105,7 @@ namespace Lite
 		{
 			UdpState udpState = iar.AsyncState as UdpState;
 			Log.Error(string.Format("第{0}个请求处理完毕！", udpState.counter));
-			Log.Error(string.Format("number of bytes sent: {0}", udpState.udpClient.EndSend(iar)));
+			Log.Error(string.Format("number of bytes sent: {0}", udpState.udp.EndSend(iar)));
 			sendDone.Set();
 		}
 		
