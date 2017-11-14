@@ -33,6 +33,14 @@ namespace Float
 			network.Tick();
 		}
 
+		public void Destory()
+		{
+			network.Destroy();
+			dispatcherTimer.Stop();
+			Shutdown();
+			//Environment.Exit(0);
+		}
+
 		public void SendCommand(CommandId id, Command cmd)
 		{
 			cmd.cmdType = (ushort)id;

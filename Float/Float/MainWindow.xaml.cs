@@ -86,8 +86,8 @@ namespace Float
 			if (WindowState == WindowState.Minimized)
 			{
 				this.Hide();
-				this.notifyIcon.Visible = true;
-				this.notifyIcon.ShowBalloonTip(5, "Note", "Show Main Window from here", ToolTipIcon.Info);
+				notifyIcon.Visible = true;
+				notifyIcon.ShowBalloonTip(5, "Note", "Show Main Window from here", ToolTipIcon.Info);
 			}
 		}
 
@@ -105,13 +105,13 @@ namespace Float
 
 		private void CreateNotifyIcon()
 		{
-			this.notifyIcon = new NotifyIcon();
-			this.notifyIcon.BalloonTipText = "Floating fun";
-			this.notifyIcon.Text = "Floating icon";
-			this.notifyIcon.Icon = new Icon("float.ico");
-			this.notifyIcon.Visible = true;
+			notifyIcon = new NotifyIcon();
+			notifyIcon.BalloonTipText = "Floating fun";
+			notifyIcon.Text = "Floating icon";
+			notifyIcon.Icon = new Icon("float.ico");
+			notifyIcon.Visible = true;
 			notifyIcon.MouseDoubleClick += OnNotifyIconDoubleClick;
-			this.notifyIcon.ShowBalloonTip(1000);
+			notifyIcon.ShowBalloonTip(1000);
 
 			System.Windows.Forms.MenuItem m1 = new System.Windows.Forms.MenuItem("Show Main Window");
 			m1.Click += OnClickNotifyOpenMainWindow;
@@ -120,7 +120,13 @@ namespace Float
 			System.Windows.Forms.MenuItem m3 = new System.Windows.Forms.MenuItem("Send");
 			m3.Click += OnClickSend;
 			System.Windows.Forms.MenuItem[] menu = new System.Windows.Forms.MenuItem[] { m1, m2, m3 };
-			this.notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(menu);
+			notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(menu);
+		}
+
+		private void DestroyNotifyIcon()
+		{
+			notifyIcon.Visible = false;
+			notifyIcon.Dispose();
 		}
 
 		private void OnNotifyIconDoubleClick(object sender, EventArgs e)
@@ -131,15 +137,9 @@ namespace Float
 
 		void OnClickNotifyExit(object sender, EventArgs e)
 		{
-			/*if (System.Windows.MessageBox.Show("sure to exit?", "application",
-												MessageBoxButton.YesNo,
-												MessageBoxImage.Question,
-												MessageBoxResult.No) == MessageBoxResult.Yes)
-			{
-				System.Windows.Application.Current.Shutdown();
-			}*/
-			this.notifyIcon.Visible = false;
-			System.Windows.Application.Current.Shutdown();
+			notifyIcon.Visible = false;
+			notifyIcon.Dispose();
+			App.Instance.Destory();
 		}
 
 		void OnClickNotifyOpenMainWindow(object sender, EventArgs e)
