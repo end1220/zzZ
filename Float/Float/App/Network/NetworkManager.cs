@@ -16,7 +16,7 @@ public class NetworkManager
 	{
 		server = new UDPServer();
 		server.Init();
-		//udpClient.Run(AppDefine.remoteIP, AppDefine.remotePort, AppDefine.listenPort);
+		CommandHandler.Register();
 	}
 
 	public void Destroy()
