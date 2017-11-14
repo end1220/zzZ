@@ -40,7 +40,7 @@ public enum CommandId
 
 public class CommandHandler
 {
-	delegate void HandleMethod(byte[] data);
+	delegate void HandleMethod(CommandId msgId, byte[] data);
 
 	private static Dictionary<CommandId, HandleMethod> handles = new Dictionary<CommandId, HandleMethod>();
 
@@ -48,7 +48,7 @@ public class CommandHandler
 
 	public static void Register()
 	{
-		//handles.Add(CommandId.ShowWindow, OnShowWindow);
+		handles.Add(CommandId.Connect, OnConnect);
 		// ...
 	}
 
@@ -57,7 +57,11 @@ public class CommandHandler
 		CommandId id = (CommandId)packet.msgId;
 		HandleMethod func;
 		if (handles.TryGetValue(id, out func))
-			func(packet.data);
+			func(id, packet.data);
 	}
 
+	static void OnConnect(CommandId msgId, byte[] bytes)
+	{
+		Log.Error("connect one");
+	}
 }

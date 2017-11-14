@@ -1,4 +1,5 @@
 
+using System.IO;
 using System.Collections.Generic;
 using Lite;
 
@@ -39,17 +40,34 @@ public class NetworkManager
 			{
 				PacketPair pair = messageQueue.Dequeue();
 				Packet packet = pair.Value;
+				CommandHandler.Handle(packet);
 			}
 		}
 	}
 
-	public void SendBytes(ushort msgId, byte[] buffer)
+	public void SendBytes(ushort msgId, byte[] bytes)
 	{
-		ByteBuffer bb = new ByteBuffer();
+		/*ByteBuffer bb = new ByteBuffer();
+		bb.WriteShort((ushort)(bytes.Length + 2));
 		bb.WriteShort(msgId);
-		bb.WriteBytes(buffer);
-		server.Send(bb.ToBytes());
-		bb.Close();
+		bb.WriteBytes(bytes);
+		byte[] array = bb.ToBytes();
+		server.Send(array);
+		bb.Close();*/
+
+		using (MemoryStream ms = new MemoryStream())
+		{
+			ms.Position = 0;
+			BinaryWriter writer = new BinaryWriter(ms);
+			int msglen = bytes.Length + sizeof(ushort);
+			writer.Write((ushort)msglen);
+			writer.Write(msgId);
+			writer.Write(bytes);
+			writer.Flush();
+
+			byte[] array = ms.ToArray();
+			server.Send(array);
+		}
 	}
 
 }
