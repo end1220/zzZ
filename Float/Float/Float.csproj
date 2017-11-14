@@ -72,11 +72,9 @@
     <Compile Include="App\Network\ByteBuffer.cs" />
     <Compile Include="App\Network\CommandHandler.cs" />
     <Compile Include="App\Network\Converter.cs" />
-    <Compile Include="App\Network\NetClient.cs" />
     <Compile Include="App\Network\NetworkManager.cs" />
     <Compile Include="App\Network\Packet.cs" />
-    <Compile Include="App\Network\TCPClient.cs" />
-    <Compile Include="App\Network\UDPClient.cs" />
+    <Compile Include="App\Network\UDPServer.cs" />
     <Compile Include="App\Send.cs" />
     <Compile Include="App\Util\Log.cs" />
     <Compile Include="App\Util\ProtobufUtil.cs" />

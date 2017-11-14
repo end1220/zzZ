@@ -7,33 +7,20 @@ using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Lite.Packet>;
 
 public class NetworkManager
 {
-	static bool UseTcp = false;
-	private NetClient client;
+	private UDPServer server;
 	static readonly object lockObject = new object();
 	static Queue<PacketPair> messageQueue = new Queue<PacketPair>();
 
 	public void Init()
 	{
-		if (UseTcp)
-		{
-			TCPClient tcpClient = new TCPClient();
-			tcpClient.Init();
-			tcpClient.ConnectServer(AppDefine.remoteIP, AppDefine.remotePort);
-			client = tcpClient;
-		}
-		else
-		{
-			UDPClient udpClient = new UDPClient();
-			udpClient.Init();
-			udpClient.Run(AppDefine.remoteIP, AppDefine.remotePort, AppDefine.listenPort);
-			client = udpClient;
-		}
+		server = new UDPServer();
+		server.Init();
+		//udpClient.Run(AppDefine.remoteIP, AppDefine.remotePort, AppDefine.listenPort);
 	}
-
 
 	public void Destroy()
 	{
-		client.Destroy();
+		server.Destroy();
 	}
 
 	public static void PushPacket(ushort msgId, Packet packet)
@@ -61,7 +48,7 @@ public class NetworkManager
 		ByteBuffer bb = new ByteBuffer();
 		bb.WriteShort(msgId);
 		bb.WriteBytes(buffer);
-		client.Send(bb.ToBytes());
+		server.Send(bb.ToBytes());
 		bb.Close();
 	}
 

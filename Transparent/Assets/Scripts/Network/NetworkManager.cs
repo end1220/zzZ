@@ -26,7 +26,6 @@ public class NetworkManager : MonoBehaviour, IManager
 		{
 			UDPClient udpClient = new UDPClient();
 			udpClient.Init();
-			udpClient.Run(AppDefine.remoteIP, AppDefine.remotePort, AppDefine.listenPort);
 			client = udpClient;
 		}
 	}

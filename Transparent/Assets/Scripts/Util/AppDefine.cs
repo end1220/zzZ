@@ -7,8 +7,8 @@ public class AppDefine
 	public const string AppName = "Floating";
 	public const int FPS = 30;
 
-	public static string remoteIP = "127.0.0.1";
-	public static int remotePort = 1503;
+	public const string remoteIP = "127.0.0.1";
+	public const int remotePort = 1503;
 	public const int listenPort = 1504;
 
 	public static string PersistentDataPath

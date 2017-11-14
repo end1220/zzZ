@@ -1,5 +1,5 @@
 ﻿
-using System;
+using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -10,104 +10,76 @@ namespace Lite
 
 	public class UDPClient : NetClient
 	{
-		public class UdpState
-		{
-			public UdpClient udp;
-			public IPEndPoint endPoint;
-			public const int BufferSize = 1024;
-			public byte[] buffer = new byte[BufferSize];
-			public int counter = 0;
-		}
+		string editString = "hello wolrd";
 
-		UdpState receiveState = null;
-		UdpState sendState = null;
-
-		private ManualResetEvent sendDone = new ManualResetEvent(false);
-		private ManualResetEvent receiveDone = new ManualResetEvent(false);
+		Socket socket;
+		EndPoint serverEnd;
+		IPEndPoint ipEnd;
+		string recvStr;
+		string sendStr;
+		byte[] recvData = new byte[1024];
+		byte[] sendData = new byte[1024];
+		int recvLen;
+		Thread connectThread;
 
 
 		public override void Init()
 		{
+			ipEnd = new IPEndPoint(IPAddress.Parse(AppDefine.remoteIP), AppDefine.remotePort);
+			socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
+			IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+			serverEnd = (EndPoint)sender;
+			Log.Error("waiting for sending UDP dgram");
+
+			Send("hello");
+
+			connectThread = new Thread(new ThreadStart(Receive));
+			connectThread.Start();
 		}
 
 		public override void Destroy()
 		{
-
+			Quit();
 		}
 
-		public void Run(string remoteIP, int remotePort, int listenPort)
+		void Send(string sendStr)
 		{
-			IPAddress remoteAddr = IPAddress.Parse(remoteIP);
-			IPEndPoint localPoint = new IPEndPoint(IPAddress.Any, listenPort);
-			IPEndPoint remotePoint = new IPEndPoint(remoteAddr, remotePort);
-
-			receiveState = new UdpState();
-			receiveState.udp = new UdpClient(localPoint);
-			receiveState.endPoint = remotePoint;
-
-			sendState = new UdpState();
-			sendState.udp = new UdpClient();
-			sendState.endPoint = remotePoint;
-
-			Thread t = new Thread(new ThreadStart(Receive));
-			t.Start();
+			sendData = new byte[1024];
+			sendData = Encoding.ASCII.GetBytes(sendStr);
+			socket.SendTo(sendData, sendData.Length, SocketFlags.None, ipEnd);
 		}
 
-		private void Receive()
+		void Receive()
 		{
-			Log.Error("listening for messages");
 			while (true)
 			{
-				lock (this)
-				{
-					IAsyncResult iar = receiveState.udp.BeginReceive(new AsyncCallback(ReceiveCallback), receiveState);
-					receiveDone.WaitOne();
-					Thread.Sleep(100);
-				}
+				recvData = new byte[1024];
+				recvLen = socket.ReceiveFrom(recvData, ref serverEnd);
+				Log.Error("message from: " + serverEnd.ToString());
+
+				recvStr = Encoding.ASCII.GetString(recvData, 0, recvLen);
+				Log.Error("recv: " + recvStr);
 			}
 		}
 
-		private void ReceiveCallback(IAsyncResult iar)
+		void Quit()
 		{
-			if (iar.IsCompleted)
+			if (connectThread != null)
 			{
-				Byte[] bytes = receiveState.udp.EndReceive(iar, ref receiveState.endPoint);
-				string receiveString = System.Text.Encoding.Unicode.GetString(bytes);
-				Log.Error(receiveString);
-				Thread.Sleep(100);
-
-				/*ByteBuffer buffer = new ByteBuffer(bytes);
-				Packet packet = new Packet();
-				packet.length = (ushort)bytes.Length;
-				packet.msgId = buffer.ReadShort();
-				packet.stamp = 0;
-				packet.data = buffer.ReadBytes();
-				NetworkManager.PushPacket(packet.msgId, packet);*/
-
-				receiveDone.Set();
-				//Send(null);
+				connectThread.Interrupt();
+				connectThread.Abort();
 			}
+			if (socket != null)
+				socket.Close();
 		}
 
-		public override void Send(byte[] buffer)
+		/*void OnGUI()
 		{
-			//udpSend.Connect(sendState.ipEndPoint);
-			sendState.counter++;
-
-			string message = string.Format("第{0}个UDP请求处理完成！", sendState.counter);
-			buffer = System.Text.Encoding.Unicode.GetBytes(message);
-			sendState.udp.BeginSend(buffer, buffer.Length, sendState.endPoint, new AsyncCallback(SendCallback), sendState);
-			sendDone.WaitOne();
-		}
-
-		private void SendCallback(IAsyncResult iar)
-		{
-			UdpState udpState = iar.AsyncState as UdpState;
-			Log.Error(string.Format("第{0}个请求处理完毕！", udpState.counter));
-			Log.Error(string.Format("number of bytes sent: {0}", udpState.udp.EndSend(iar)));
-			sendDone.Set();
-		}
+			editString = GUI.TextField(new Rect(10, 10, 100, 20), editString);
+			if (GUI.Button(new Rect(10, 30, 60, 20), "send"))
+				Send(editString);
+		}*/
 
 	}
 
