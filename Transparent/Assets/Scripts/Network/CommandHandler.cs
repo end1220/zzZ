@@ -71,4 +71,10 @@ public class CommandHandler
 		Command cmd = ProtobufUtil.DeSerialize<Command>(data);
 		Log.Error("hide window");
 	}
+
+	static void PlayThis(byte[] data)
+	{
+		Command cmd = ProtobufUtil.DeSerialize<Command>(data);
+		Log.Error("hide window");
+	}
 }
