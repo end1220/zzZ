@@ -41,9 +41,6 @@ public class ResourceManager : MonoBehaviour, IManager
 	List<AssetBundleLoadOperation> m_InProgressOperations = new List<AssetBundleLoadOperation>();
 	Dictionary<string, string[]> m_Dependencies = new Dictionary<string, string[]>();
 
-	// hot update
-	List<string> _downloadFiles = new List<string>();
-
 #if UNITY_EDITOR
 	// Flag to indicate if we want to simulate assetBundles in Editor without building them actually.
 	public static bool SimulateAssetBundleInEditor

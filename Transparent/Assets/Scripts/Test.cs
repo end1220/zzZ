@@ -9,7 +9,7 @@ public class Test: MonoBehaviour
 	{
 		if (GUI.Button(new Rect(10, 10, 100, 30), "send"))
 		{
-			var id = CommandId.ShowWindow;
+			//var id = CommandId.ShowWindow;
 			Command cmd = new Command();
 			cmd.number1 = 1;
 			cmd.number2 = 22;

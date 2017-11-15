@@ -62,7 +62,7 @@ public class TransparentWindow : MonoBehaviour
 
 	void Update()
 	{
-		int layer = LayerMask.NameToLayer("Default");
+		//int layer = LayerMask.NameToLayer("Default");
 
 		bool hoverModel = true;
 		Vector3 mousePosition = Input.mousePosition;

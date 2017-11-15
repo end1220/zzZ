@@ -40,7 +40,7 @@ public enum CommandId
 
 public class CommandHandler
 {
-	delegate void HandleMethod(byte[] data);
+	delegate void HandleMethod(Command cmd);
 
 	private static Dictionary<CommandId, HandleMethod> handles = new Dictionary<CommandId, HandleMethod>();
 
@@ -56,25 +56,22 @@ public class CommandHandler
 		CommandId id = (CommandId)packet.msgId;
 		HandleMethod func;
 		if (handles.TryGetValue(id, out func))
-			func(packet.data);
+			func(ProtobufUtil.DeSerialize<Command>(packet.data));
 		Log.Error("Handle id : " + id);
 	}
 
-	static void OnShowWindow(byte[] data)
+	static void OnShowWindow(Command cmd)
 	{
-		Command cmd = ProtobufUtil.DeSerialize<Command>(data);
 		Log.Error("show window");
 	}
 
-	static void OnHideWindow(byte[] data)
+	static void OnHideWindow(Command cmd)
 	{
-		Command cmd = ProtobufUtil.DeSerialize<Command>(data);
 		Log.Error("hide window");
 	}
 
-	static void PlayThis(byte[] data)
+	static void PlayThis(Command cmd)
 	{
-		Command cmd = ProtobufUtil.DeSerialize<Command>(data);
 		Log.Error("hide window");
 	}
 }

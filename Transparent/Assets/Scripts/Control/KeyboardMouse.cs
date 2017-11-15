@@ -3,8 +3,8 @@
 
 public class KeyboardMouse : MonoBehaviour
 {
-	private float lastMultiTouchDistance = 0;
-	private bool isMultiTouching = false;
+	//private float lastMultiTouchDistance = 0;
+	//private bool isMultiTouching = false;
 
 	void Start()
 	{
