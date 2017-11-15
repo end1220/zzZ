@@ -108,11 +108,11 @@ public class LuaManager : MonoBehaviour, IManager
 #if UNITY_EDITOR
 		if (ResourceManager.SimulateAssetBundleInEditor)
 		{
-			AddSearchPath(Application.dataPath + "/TwLua/Lua");
+			AddSearchPath(Application.dataPath + "/Lua");
 			return;
 		}
 #endif
-		AddSearchPath(AppDefine.PersistentDataPath + "/twlua");
+		AddSearchPath(AppDefine.PersistentDataPath + "/lua");
 	}
 
 	public void AddSearchPath(string fullPath)

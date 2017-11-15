@@ -27,7 +27,7 @@ namespace Lite
 
 			IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
 			serverEnd = (EndPoint)sender;
-			Log.Error("waiting for sending UDP dgram");
+			//Log.Error("waiting for sending UDP dgram");
 
 			SendConnect();
 

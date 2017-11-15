@@ -16,11 +16,11 @@ public class App : MonoBehaviour
 	{
 		try
 		{
+			Instance = this;
 			Application.runInBackground = true;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			Application.targetFrameRate = AppDefine.FPS;
 
-			//AddManager<Hook>();
 			AddManager<ResourceManager>();
 			AddManager<LuaManager>();
 			AddManager<NetworkManager>();

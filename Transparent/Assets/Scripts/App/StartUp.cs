@@ -12,10 +12,10 @@ public class StartUp : MonoBehaviour
 	void Awake()
 	{
 		Instance = this;
-		StartCoroutine(LoadResAndStartGame());
+		StartCoroutine(LoadResAndStart());
 	}
 
-	IEnumerator LoadResAndStartGame()
+	IEnumerator LoadResAndStart()
 	{
 		yield return new WaitForEndOfFrame();
 
@@ -23,7 +23,9 @@ public class StartUp : MonoBehaviour
 		if (request != null)
 			yield return StartCoroutine(request);
 
+		yield return ResourceManager.Instance.LoadAssetBundleAsync("lua/common");
 		yield return ResourceManager.Instance.LoadAssetBundleAsync("lua/lua");
+		yield return ResourceManager.Instance.LoadAssetBundleAsync("lua/xlua");
 
 		OnLoaded();
 	}
@@ -31,6 +33,7 @@ public class StartUp : MonoBehaviour
 
 	private void OnLoaded()
 	{
+		Log.Error("OnLoaded");
 		try
 		{
 			LuaManager luaMgr = App.Instance.GetManager<LuaManager>();
@@ -40,6 +43,7 @@ public class StartUp : MonoBehaviour
 			var luaTable = luaMgr.GetTable("Game");
 			var fun = luaTable.GetInPath<XLua.LuaFunction>("OnInitOK");
 			fun.Call();
+			Log.Error("OnLoaded 2");
 		}
 		catch (Exception e)
 		{

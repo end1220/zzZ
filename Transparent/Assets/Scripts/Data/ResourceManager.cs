@@ -188,14 +188,11 @@ public class ResourceManager : MonoBehaviour, IManager
 	private List<string> keysToRemove = new List<string>();
 	void UpdateLoading()
 	{
-		var iter = m_DownloadingWWWs.GetEnumerator();
-		while (iter.MoveNext())
-		//foreach (var keyValue in m_DownloadingWWWs)
+		foreach (var keyValue in m_DownloadingWWWs)
 		{
-			string key = iter.Current.Key;
-			WWW download = iter.Current.Value;
+			string key = keyValue.Key;
+			WWW download = keyValue.Value;
 
-			// If downloading fails.
 			if (download.error != null)
 			{
 				m_DownloadingErrors.Add(key, string.Format("Failed downloading bundle {0} from {1}: {2}", key, download.url, download.error));
@@ -203,18 +200,15 @@ public class ResourceManager : MonoBehaviour, IManager
 				continue;
 			}
 
-			// If downloading succeeds.
 			if (download.isDone)
 			{
-				AssetBundle bundle = download.assetBundle;
-				if (bundle == null)
+				if (download.assetBundle == null)
 				{
 					m_DownloadingErrors.Add(key, string.Format("{0} is not a valid asset bundle.", key));
 					keysToRemove.Add(key);
 					continue;
 				}
 
-				//Log.Info("Downloading " + keyValue.Key + " is done at frame " + Time.frameCount);
 				m_LoadedAssetBundles.Add(key, new LoadedAssetBundle(download.assetBundle));
 				keysToRemove.Add(key);
 			}
@@ -262,6 +256,24 @@ public class ResourceManager : MonoBehaviour, IManager
 			if (bundle == null)
 			{
 				assetbundle = AssetBundle.LoadFromFile(path);
+				if (assetbundle != null)
+					m_LoadedAssetBundles.Add(assetBundleName, new LoadedAssetBundle(assetbundle));
+
+				if (AssetBundleManifestObject == null)
+				{
+					Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
+				}
+				else
+				{
+					string[] dependencies = AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+					for (int i = 0; i < dependencies.Length; i++)
+					{
+						dependencies[i] = RemapVariantName(dependencies[i]);
+						LoadAssetBundleSync(dependencies[i]);
+					}
+
+					m_Dependencies.Add(assetBundleName, dependencies);
+				}
 			}
 			else
 			{
@@ -284,7 +296,7 @@ public class ResourceManager : MonoBehaviour, IManager
 	}
 
 
-	public AssetBundleLoadAssetOperation LoadAssetAsync(string assetBundleName, string assetName, System.Type type)
+	public AssetBundleLoadAssetOperation LoadAssetAsync(string assetBundleName, string assetName, Type type)
 	{
 		//Log.Info("Loading " + assetName + " from " + assetBundleName + " bundle");
 
@@ -294,16 +306,15 @@ public class ResourceManager : MonoBehaviour, IManager
 		{
 			int index1 = assetName.LastIndexOf("/");
 			int len = assetName.LastIndexOf(".") - index1 - 1;
-			assetName = assetName.Substring(index1 + 1, len);
-			string[] assetPaths = UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(assetBundleName, assetName);
+			string assetNameShort = assetName.Substring(index1 + 1, len);
+			string[] assetPaths = UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(assetBundleName, assetNameShort);
 			if (assetPaths.Length == 0)
 			{
 				Log.Error("There is no asset with name \"" + assetName + "\" in " + assetBundleName);
 				return null;
 			}
 
-			// @TODO: Now we only get the main object from the first asset. Should consider type also.
-			UnityEngine.Object target = UnityEditor.AssetDatabase.LoadMainAssetAtPath(assetPaths[0]);
+			UObject target = UnityEditor.AssetDatabase.LoadMainAssetAtPath(assetName);
 			operation = new AssetBundleLoadAssetOperationSimulation(target);
 		}
 		else
@@ -357,7 +368,7 @@ public class ResourceManager : MonoBehaviour, IManager
 		{
 			if (AssetBundleManifestObject == null)
 			{
-				Log.Error("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
+				Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 				return;
 			}
 		}
@@ -371,23 +382,78 @@ public class ResourceManager : MonoBehaviour, IManager
 	}
 
 
-	public AssetBundleLoadOperationPure LoadAssetBundleAsync(string assetBundleName)
+	public AssetBundle LoadAssetBundleSync(string assetBundleName)
 	{
-		if (AssetBundleManifestObject == null)
+		string path = AppDefine.PersistentDataPath + assetBundleName;
+#if UNITY_EDITOR
+		if (SimulateAssetBundleInEditor)
 		{
-			Log.Error("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
 			return null;
 		}
+		else
+#endif
+		{
+			string err;
+			AssetBundle assetbundle = null;
+			LoadedAssetBundle loadedBundle = GetLoadedAssetBundle(assetBundleName, out err);
+			if (loadedBundle != null)
+			{
+				return loadedBundle.assetBundle;
+			}
+			else
+			{
+				assetbundle = AssetBundle.LoadFromFile(path);
+				if (assetbundle != null)
+					m_LoadedAssetBundles.Add(assetBundleName, new LoadedAssetBundle(assetbundle));
 
-		// Check if the assetBundle has already been processed.
-		bool isAlreadyProcessed = LoadAssetBundleInternal(assetBundleName, false);
-		if (!isAlreadyProcessed)
-			LoadDependencies(assetBundleName);
+				if (AssetBundleManifestObject == null)
+				{
+					Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
+				}
+				else
+				{
+					string[] dependencies = AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+					for (int i = 0; i < dependencies.Length; i++)
+					{
+						dependencies[i] = RemapVariantName(dependencies[i]);
+						LoadAssetBundleSync(dependencies[i]);
+					}
 
-		AssetBundleLoadOperationPure operation = null;
-		operation = new AssetBundleLoadOperationPure(assetBundleName);
-		m_InProgressOperations.Add(operation);
-		return operation;
+					m_Dependencies.Add(assetBundleName, dependencies);
+				}
+
+				return assetbundle;
+			}
+		}
+	}
+
+
+	public AssetBundleLoadOperationPure LoadAssetBundleAsync(string assetBundleName)
+	{
+#if UNITY_EDITOR
+		if (SimulateAssetBundleInEditor)
+		{
+			return null;
+		}
+		else
+#endif
+		{
+			if (AssetBundleManifestObject == null)
+			{
+				Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
+				return null;
+			}
+
+			// Check if the assetBundle has already been processed.
+			bool isAlreadyProcessed = LoadAssetBundleInternal(assetBundleName, false);
+			if (!isAlreadyProcessed)
+				LoadDependencies(assetBundleName);
+
+			AssetBundleLoadOperationPure operation = null;
+			operation = new AssetBundleLoadOperationPure(assetBundleName);
+			m_InProgressOperations.Add(operation);
+			return operation;
+		}
 	}
 
 
@@ -427,7 +493,7 @@ public class ResourceManager : MonoBehaviour, IManager
 	{
 		if (AssetBundleManifestObject == null)
 		{
-			Log.Error("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
+			Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 			return;
 		}
 
@@ -489,5 +555,18 @@ public class ResourceManager : MonoBehaviour, IManager
 	}
 
 
-} // End of AssetBundleManager.
+	public void Dump()
+	{
+		Debug.Log("------begin dump------");
+		Debug.Log("Total asset bundle in memory: " + m_LoadedAssetBundles.Count);
+		foreach (var item in m_LoadedAssetBundles)
+		{
+			Debug.Log(item.Key);
+		}
+		Debug.Log("------end dump------");
+	}
+
+
+
+}
 
