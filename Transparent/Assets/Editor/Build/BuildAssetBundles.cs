@@ -40,7 +40,7 @@ public class BuildAssetBundles
 
 	static BuildConfig[] configs = new BuildConfig[]
 	{
-			new BuildConfig(AssignType.Whole, "behaviour", "Assets/BehaviourTree"),
+			/*new BuildConfig(AssignType.Whole, "behaviour", "Assets/BehaviourTree"),
 			new BuildConfig(AssignType.ChildFolder, "character", "Assets/Characters"),
 			new BuildConfig(AssignType.Whole, "config", "Assets/Config"),
 			new BuildConfig(AssignType.ChildFolder, "effect", "Assets/Effects"),
@@ -55,7 +55,7 @@ public class BuildAssetBundles
 			new BuildConfig(AssignType.ChildFolder, "control", "Assets/Ui/Control"),
 			new BuildConfig(AssignType.ChildFolder, "sprite", "Assets/Ui/Sprite"),
 			new BuildConfig(AssignType.ChildFolder, "smallwidget", "Assets/Ui/smallWidget"),
-			new BuildConfig(AssignType.Whole, "protocol", "Assets/TwLua/Protocol/proto2"),
+			new BuildConfig(AssignType.Whole, "protocol", "Assets/TwLua/Protocol/proto2"),*/
 	};
 
 
@@ -68,14 +68,14 @@ public class BuildAssetBundles
 		{
 			string outputPath = CreateNewOutputPath(true);
 
-			MakeLuaTempDir();
+			//MakeLuaTempDir();
 			RefreshAssetBundleNames();
 			BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 			BuildFileIndex(outputPath);
-			DeleteLuaTempDir();
+			//DeleteLuaTempDir();
 			Debug.Log("Bulid done.");
 
-			CopyAssetBundles(outputPath, copyTargetPath);
+			//CopyAssetBundles(outputPath, copyTargetPath);
 			Debug.Log("Copy done.");
 
 			AssetDatabase.Refresh();
@@ -87,7 +87,7 @@ public class BuildAssetBundles
 		}
 	}
 
-	public static void Build_Config()
+	/*public static void Build_Config()
 	{
 		string category = "config";
 		string subDir = "/Config";
@@ -200,25 +200,6 @@ public class BuildAssetBundles
 		Debug.Log("Build effect done.");
 	}
 
-	private static string CreateNewOutputPath(bool deleteOld)
-	{
-		string outputPath = Path.Combine(tmpOutputPath, UtilsForEdit.GetPlatformName());
-		outputPath = Path.Combine(outputPath, AppDefine.AppName);
-		if (Directory.Exists(outputPath))
-		{
-			if (deleteOld)
-			{
-				Directory.Delete(outputPath, true);
-				Directory.CreateDirectory(outputPath);
-			}
-		}
-		else
-		{
-			Directory.CreateDirectory(outputPath);
-		}
-		return outputPath;
-	}
-
 	private static List<AssetBundleBuild> CollectBuildListRecur(string sourceDir, string category)
 	{
 		List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
@@ -252,6 +233,25 @@ public class BuildAssetBundles
 		}
 
 		return builds;
+	}*/
+
+	private static string CreateNewOutputPath(bool deleteOld)
+	{
+		string outputPath = Path.Combine(tmpOutputPath, UtilsForEdit.GetPlatformName());
+		outputPath = Path.Combine(outputPath, AppDefine.AppName);
+		if (Directory.Exists(outputPath))
+		{
+			if (deleteOld)
+			{
+				Directory.Delete(outputPath, true);
+				Directory.CreateDirectory(outputPath);
+			}
+		}
+		else
+		{
+			Directory.CreateDirectory(outputPath);
+		}
+		return outputPath;
 	}
 
 	public static void RefreshAssetBundleNames()

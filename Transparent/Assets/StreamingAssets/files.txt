@@ -1,0 +1,8 @@
+capsule|f124a4543a1dfb7ad4ce357a9c252cb1
+capsule.manifest|e68c395c83af365e75a2207a1b757e5c
+cube|102fa40e1febf7a0cb28c5acf8a1d922
+cube.manifest|6af5cff33571155489ccfda2813967b8
+Floating|3ef71ab8f1ea2ac3fa2cd3fc937c812d
+Floating.manifest|1cea67da0fef772a80c20f23e410eb44
+sphere|5f36ed4c837174c6f8b683713875db96
+sphere.manifest|53bc00f7b014c12b5052f11314a051e3

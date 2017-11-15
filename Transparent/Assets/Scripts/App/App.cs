@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class App : MonoBehaviour
 {
+	public static App Instance { private set; get; }
+
 	private Dictionary<Type, IManager> mManagerDic = new Dictionary<Type, IManager>();
 
 
