@@ -14,7 +14,7 @@ public class BuildAssetBundles
 	static string tmpOutputPath = "AssetBundles";
 	static string copyTargetPath = "Assets/StreamingAssets";
 
-	static string LuaSrcPath = Application.dataPath + "/TwLua";
+	static string LuaSrcPath = Application.dataPath + "/Lua";
 	static string luaTempDir = Application.dataPath + "/LuaTemp";
 
 
@@ -40,22 +40,8 @@ public class BuildAssetBundles
 
 	static BuildConfig[] configs = new BuildConfig[]
 	{
-			/*new BuildConfig(AssignType.Whole, "behaviour", "Assets/BehaviourTree"),
-			new BuildConfig(AssignType.ChildFolder, "character", "Assets/Characters"),
-			new BuildConfig(AssignType.Whole, "config", "Assets/Config"),
-			new BuildConfig(AssignType.ChildFolder, "effect", "Assets/Effects"),
-			new BuildConfig(AssignType.Mannully, "environment", "Assets/Environment"),
-			new BuildConfig(AssignType.Mannully, "prefab", "Assets/Prefabs"),
-			new BuildConfig(AssignType.ChildFolder, "missile", "Assets/Prefabs/Missile"),
-			new BuildConfig(AssignType.Mannully, "scene", "Assets/Scenes"),
-			new BuildConfig(AssignType.ChildFolder, "sound", "Assets/Sound"),
-			new BuildConfig(AssignType.Whole, "template", "Assets/Templates"),
-			new BuildConfig(AssignType.ChildFolder, "lua", "Assets/LuaTemp/Lua"),
-			new BuildConfig(AssignType.ChildFolder, "ui", "Assets/Ui/Ui"),
-			new BuildConfig(AssignType.ChildFolder, "control", "Assets/Ui/Control"),
-			new BuildConfig(AssignType.ChildFolder, "sprite", "Assets/Ui/Sprite"),
-			new BuildConfig(AssignType.ChildFolder, "smallwidget", "Assets/Ui/smallWidget"),
-			new BuildConfig(AssignType.Whole, "protocol", "Assets/TwLua/Protocol/proto2"),*/
+		new BuildConfig(AssignType.Mannully, "model", "Assets/Models"),
+		new BuildConfig(AssignType.ChildFolder, "lua", "Assets/LuaTemp/Lua"),
 	};
 
 
@@ -68,14 +54,14 @@ public class BuildAssetBundles
 		{
 			string outputPath = CreateNewOutputPath(true);
 
-			//MakeLuaTempDir();
+			MakeLuaTempDir();
 			RefreshAssetBundleNames();
 			BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 			BuildFileIndex(outputPath);
-			//DeleteLuaTempDir();
+			DeleteLuaTempDir();
 			Debug.Log("Bulid done.");
 
-			//CopyAssetBundles(outputPath, copyTargetPath);
+			CopyAssetBundles(outputPath, copyTargetPath);
 			Debug.Log("Copy done.");
 
 			AssetDatabase.Refresh();

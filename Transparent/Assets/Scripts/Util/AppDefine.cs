@@ -15,7 +15,7 @@ public class AppDefine
 	{
 		get
 		{
-			if (Application.isMobilePlatform)
+			/*if (Application.isMobilePlatform)
 			{
 				return Application.persistentDataPath + "/" + AppName + "/";
 			}
@@ -33,7 +33,8 @@ public class AppDefine
 				return Application.streamingAssetsPath + "/";
 			}
 
-			return string.Empty;
+			return string.Empty;*/
+			return Application.streamingAssetsPath + "/";
 		}
 	}
 
