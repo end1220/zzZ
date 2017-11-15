@@ -7,3 +7,6 @@ Float/Float/bin/
 Float/Float/obj/
 Transparent/Temp/
 Transparent/Transparent.Editor.csproj
+Transparent/AssetBundles/
+Transparent/Assets/StreamingAssets/
+Transparent/Assets/StreamingAssets.meta
