@@ -1,4 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using System.IO;
+using UnityEngine;
+
+
+[Serializable]
+public class ModelData
+{
+	public int id;
+	public string name;
+}
+
+[Serializable]
+public class ModelDataArray
+{
+	public ModelData[] models;
+}
 
 public class ModelScene : MonoBehaviour
 {
@@ -6,10 +22,14 @@ public class ModelScene : MonoBehaviour
 
 	private Transform root;
 
+	ModelDataArray models;
+
+
 	void Awake()
 	{
 		Instance = this;
 		root = transform;
+		ReloadAll();
 	}
 
 	public void LoadModel()
@@ -21,7 +41,22 @@ public class ModelScene : MonoBehaviour
 	{
 		for (int i = 0; i < root.childCount; ++i)
 		{
-			Object.DestroyImmediate(root.GetChild(i).gameObject);
+			GameObject.DestroyImmediate(root.GetChild(i).gameObject);
 		}
 	}
+
+	public void ReloadAll()
+	{
+		string path = AppDefine.PersistentDataPath + "models.json";
+		string jsonStr = File.ReadAllText(path);
+		if (string.IsNullOrEmpty(jsonStr))
+		{
+			Log.Error("Cannot load model data !");
+			return;
+		}
+
+		models = JsonUtility.FromJson<ModelDataArray>(jsonStr);
+	}
+
+	
 }

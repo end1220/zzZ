@@ -259,7 +259,7 @@ public class FileUtils
 		if (abFile != null)
 		{
 			StringBuilder sbAssetName = StringBuilderCache.Acquire();
-			sbAssetName.Append("Assets/LuaTemp/Lua/");
+			sbAssetName.Append("Assets/LuaTemp/");
 			sbAssetName.Append(fileName);
 			if (!fileName.EndsWith(".lua"))
 				sbAssetName.Append(".lua.bytes");

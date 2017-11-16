@@ -40,7 +40,7 @@ public class BuildAssetBundles
 
 	static BuildConfig[] configs = new BuildConfig[]
 	{
-		new BuildConfig(AssignType.Mannully, "model", "Assets/Models"),
+		new BuildConfig(AssignType.ChildFolder, "model", "Assets/Models"),
 		new BuildConfig(AssignType.ChildFolder, "lua", "Assets/LuaTemp"),
 	};
 

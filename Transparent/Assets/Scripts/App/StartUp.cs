@@ -33,7 +33,7 @@ public class StartUp : MonoBehaviour
 
 	private void OnLoaded()
 	{
-		Log.Error("OnLoaded");
+		Log.Info("OnLoaded");
 		try
 		{
 			LuaManager luaMgr = App.Instance.GetManager<LuaManager>();
@@ -43,7 +43,7 @@ public class StartUp : MonoBehaviour
 			var luaTable = luaMgr.GetTable("Game");
 			var fun = luaTable.GetInPath<XLua.LuaFunction>("OnInitOK");
 			fun.Call();
-			Log.Error("OnLoaded 2");
+			Log.Info("OnLoaded 2");
 		}
 		catch (Exception e)
 		{

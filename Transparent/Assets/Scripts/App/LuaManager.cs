@@ -147,9 +147,6 @@ public class LuaManager : MonoBehaviour, IManager
 		if (loader.beBundle)
 		{
 			loader.AddBundle("lua/lua");
-			loader.AddBundle("lua/common");
-			loader.AddBundle("lua/component");
-			loader.AddBundle("lua/ui");
 			loader.AddBundle("lua/xlua");
 		}
 	}
