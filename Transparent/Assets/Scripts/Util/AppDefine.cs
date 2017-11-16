@@ -38,4 +38,7 @@ public class AppDefine
 		}
 	}
 
+	public static string modelListPath = PersistentDataPath + "models.json";
+	public static string modelPath = PersistentDataPath + "model";
+
 }

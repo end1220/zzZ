@@ -25,20 +25,11 @@ public class SpinCamera : MonoBehaviour
 	//速度
 	public float Damping = 5f;
 
-	public GameObject target;
+	public Transform target;
 
 	void Awake()
 	{
 		Instance = this;
-	}
-
-	void Start()
-	{
-	}
-
-	void Update()
-	{
-		
 	}
 
 	void LateUpdate()
@@ -82,7 +73,7 @@ public class SpinCamera : MonoBehaviour
         if (null == target)
             return;
 		
-		Vector3 targetPosition = target.transform.position + Vector3.up * 4;
+		Vector3 targetPosition = target.position + Vector3.up * 4;
 
 		if (force)
 		{

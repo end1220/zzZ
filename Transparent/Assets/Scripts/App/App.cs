@@ -24,6 +24,7 @@ public class App : MonoBehaviour
 			AddManager<ResourceManager>();
 			AddManager<LuaManager>();
 			AddManager<NetworkManager>();
+			AddManager<DataManager>();
 
 			foreach (var item in mManagerDic)
 				item.Value.Init();

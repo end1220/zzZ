@@ -1,61 +1,48 @@
-﻿using System;
-using System.IO;
+﻿
 using UnityEngine;
 
 
-[Serializable]
-public class ModelData
-{
-	public int id;
-	public string name;
-}
-
-[Serializable]
-public class ModelDataArray
-{
-	public ModelData[] models;
-}
 
 public class ModelScene : MonoBehaviour
 {
 	public static ModelScene Instance { get; private set; }
 
-	private Transform root;
-
-	ModelDataArray models;
+	private Transform modelRoot;
+	
 
 
 	void Awake()
 	{
 		Instance = this;
-		root = transform;
-		ReloadAll();
+		modelRoot = transform;
 	}
 
-	public void LoadModel()
+	public void LoadModel(int id)
 	{
-
-	}
-
-	public void RemoveAll()
-	{
-		for (int i = 0; i < root.childCount; ++i)
+		ModelData data = DataManager.Instance.GetModelData(id);
+		if (data != null)
 		{
-			GameObject.DestroyImmediate(root.GetChild(i).gameObject);
+			GameObject go = ResourceManager.Instance.LoadAsset<GameObject>(data.bundleName, data.assetName);
+			Transform model = go.transform;
+			model.parent = modelRoot;
+			model.localPosition = Vector3.zero;
+			model.localScale = Vector3.one;
+			model.localRotation = Quaternion.identity;
+
+			SpinCamera.Instance.target = modelRoot;
+		}
+		else
+		{
+			Log.Error("ModelScene.LoadModel: cannot find Id: " + id);
 		}
 	}
 
-	public void ReloadAll()
+	public void RemoveModel()
 	{
-		string path = AppDefine.PersistentDataPath + "models.json";
-		string jsonStr = File.ReadAllText(path);
-		if (string.IsNullOrEmpty(jsonStr))
+		for (int i = 0; i < modelRoot.childCount; ++i)
 		{
-			Log.Error("Cannot load model data !");
-			return;
+			GameObject.DestroyImmediate(modelRoot.GetChild(i).gameObject);
 		}
-
-		models = JsonUtility.FromJson<ModelDataArray>(jsonStr);
 	}
 
 	
