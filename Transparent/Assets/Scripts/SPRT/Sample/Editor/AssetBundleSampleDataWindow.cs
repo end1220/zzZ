@@ -12,7 +12,7 @@ namespace Sample
         private int testDataNum = 1000;
         private List<string> testVariants = new List<string>();
 
-        [MenuItem("Samples/SampleWindow")]
+        [MenuItem(AppDefine.AppName + "/SampleWindow")]
         public static void Create()
         {
             EditorWindow.GetWindow<AssetBundleSampleDataWindow>();

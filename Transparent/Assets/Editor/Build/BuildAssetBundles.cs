@@ -115,7 +115,7 @@ public class BuildAssetBundles
 		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
 		Debug.Log("Build template done.");
-	}
+	}*/
 
 	public static void Build_Character()
 	{
@@ -131,7 +131,7 @@ public class BuildAssetBundles
 		Debug.Log("Build character done.");
 	}
 
-	public static void Build_UI()
+	/*public static void Build_UI()
 	{
 		string category = "ui";
 		string subDir = "/Ui/Ui";
@@ -184,7 +184,7 @@ public class BuildAssetBundles
 		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
 		Debug.Log("Build effect done.");
-	}
+	}*/
 
 	private static List<AssetBundleBuild> CollectBuildListRecur(string sourceDir, string category)
 	{
@@ -219,7 +219,7 @@ public class BuildAssetBundles
 		}
 
 		return builds;
-	}*/
+	}
 
 	private static string CreateNewOutputPath(bool deleteOld)
 	{

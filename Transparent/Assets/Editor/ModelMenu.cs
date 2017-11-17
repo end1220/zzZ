@@ -7,7 +7,7 @@ using UnityEditor;
 public class ModelMenu
 {
 
-	[MenuItem("Tools/Model/Refresh Model List", false, 3)]
+	[MenuItem(AppDefine.AppName + "/Model/Refresh Model List", false, 3)]
 	static public void RefreshModelList()
 	{
 		try

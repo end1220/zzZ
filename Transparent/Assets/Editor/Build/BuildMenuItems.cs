@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class BuildMenuItems
 {
-	const string kSimulationMode = "Tools/AssetBundle/Simulation Mode";
+	const string kSimulationMode = AppDefine.AppName + "/AssetBundle/Simulation Mode";
 
 
 	[MenuItem(kSimulationMode, false, 1)]
@@ -24,7 +24,7 @@ public class BuildMenuItems
 	}
 
 
-	[MenuItem("Tools/AssetBundle/Refresh AssetBundle Names", false, 3)]
+	[MenuItem(AppDefine.AppName + "/AssetBundle/Refresh AssetBundle Names", false, 3)]
 	static public void RefreshABNames()
 	{
 		try
@@ -40,7 +40,7 @@ public class BuildMenuItems
 
 	//===============================Build Asset Bundle=========================
 
-	[MenuItem("Tools/AssetBundle/Build AB", false, 4)]
+	[MenuItem(AppDefine.AppName + "/AssetBundle/Build AB", false, 4)]
 	static public void BuildAB()
 	{
 		try
