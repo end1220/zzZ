@@ -43,7 +43,6 @@ namespace Float
 
 		public void SendCommand(CommandId id, Command cmd)
 		{
-			cmd.cmdType = (ushort)id;
 			byte[] bytes = ProtobufUtil.Serialize<Command>(cmd);
 			network.SendBytes((ushort)id, bytes);
 		}

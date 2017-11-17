@@ -8,6 +8,7 @@ using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Lite.Packet>;
 
 public class NetworkManager : MonoBehaviour, IManager
 {
+	public static NetworkManager Instance { get; private set; }
 	static bool UseTcp = false;
 	private NetClient client;
 	static readonly object lockObject = new object();
@@ -15,6 +16,8 @@ public class NetworkManager : MonoBehaviour, IManager
 
 	public void Init()
 	{
+		Instance = this;
+		CommandHandler.Register();
 		if (UseTcp)
 		{
 			TCPClient tcpClient = new TCPClient();
@@ -63,7 +66,17 @@ public class NetworkManager : MonoBehaviour, IManager
 		ByteBuffer bb = new ByteBuffer();
 		bb.WriteShort(msgId);
 		bb.WriteBytes(buffer);
-		client.Send(bb.ToBytes());
+		if (AppDefine.LocalMode)
+		{
+			Packet packet = new Packet();
+			packet.msgId = msgId;
+			packet.data = buffer;
+			CommandHandler.Handle(packet);
+		}
+		else
+		{
+			client.Send(bb.ToBytes());
+		}
 		bb.Close();
 	}
 

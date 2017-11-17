@@ -65,7 +65,6 @@ namespace Lite
 		{
 			ushort msgId = (ushort)CommandId.Connect;
 			Command cmd = new Command();
-			cmd.cmdType = msgId;
 			byte[] bytes = ProtobufUtil.Serialize<Command>(cmd);
 			ByteBuffer bb = new ByteBuffer();
 			bb.WriteShort(msgId);

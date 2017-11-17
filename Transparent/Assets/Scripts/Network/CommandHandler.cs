@@ -9,19 +9,24 @@ using ProtoBuf;
 public class Command
 {
 	[ProtoMember(1)]
-	public ushort cmdType;
-	[ProtoMember(2)]
 	public int number1;
-	[ProtoMember(3)]
+	[ProtoMember(2)]
 	public int number2;
-	[ProtoMember(4)]
+	[ProtoMember(3)]
 	public int number3;
-	[ProtoMember(5)]
+	[ProtoMember(4)]
 	public string string1;
-	[ProtoMember(6)]
+	[ProtoMember(5)]
 	public string string2;
-	[ProtoMember(7)]
+	[ProtoMember(6)]
 	public string string3;
+
+	public Command() { }
+	public Command(int n1 = 0, int n2 = 0, int n3 = 0, string s1 = null, string s2 = null, string s3 = null)
+	{
+		number1 = n1; number2 = n2; number3 = n3;
+		string1 = s1; string2 = s2; string3 = s3;
+	}
 }
 
 
@@ -48,7 +53,7 @@ public class CommandHandler
 	{
 		handles.Add(CommandId.ShowWindow, OnShowWindow);
 		handles.Add(CommandId.HideWindow, OnHideWindow);
-		// ...
+		handles.Add(CommandId.PlayThisOne, PlayThis);
 	}
 
 	public static void Handle(Packet packet)
@@ -72,6 +77,8 @@ public class CommandHandler
 
 	static void PlayThis(Command cmd)
 	{
-		Log.Error("hide window");
+		Log.Error("play this");
+		int id = cmd.number1;
+		ModelScene.Instance.LoadModel(id);
 	}
 }

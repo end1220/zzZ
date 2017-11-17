@@ -89,8 +89,6 @@ public class Log
 				logFile = logInfo.CreateText();
 				logFile.AutoFlush = true;
 			}
-
-			Info("Log.Init success.");
 		}
 		catch (Exception e)
 		{

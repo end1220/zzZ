@@ -64,7 +64,6 @@ namespace Float
 		void OnSend(object sender, EventArgs e)
 		{
 			Command cmd = new Command();
-			cmd.cmdType = (ushort)CommandId.ShowWindow;
 			cmd.number1 = 1;
 			cmd.number2 = 22;
 			cmd.number3 = 33;

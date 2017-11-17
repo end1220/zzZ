@@ -11,6 +11,8 @@ public class AppDefine
 	public const int remotePort = 1503;
 	public const int listenPort = 1504;
 
+	public static bool LocalMode = true;
+
 	public static string PersistentDataPath
 	{
 		get

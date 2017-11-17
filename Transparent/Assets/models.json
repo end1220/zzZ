@@ -2,15 +2,21 @@
 "models":[
 	{
 		"id": 333,
-		"name": "name 1"
+		"name": "cube",
+		"bundleName": "model/cube",
+		"assetName": "Assets/Models/Cube/Cube.prefab"
 	},
 	{
 		"id": 666,
-		"name": "name 2"
+		"name": "capsule",
+		"bundleName": "model/capsule",
+		"assetName": "Assets/Models/Capsule/Capsule.prefab"
 	},
 	{
 		"id": 999,
-		"name": "name 3"
+		"name": "sphere",
+		"bundleName": "model/sphere",
+		"assetName": "Assets/Models/Sphere/Sphere.prefab"
 	}
 ]
 }
