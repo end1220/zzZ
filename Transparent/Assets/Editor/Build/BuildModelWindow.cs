@@ -89,9 +89,10 @@ public class BuildModelWindow : EditorWindow
 			AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb }, 
 				BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 
-			MyAssetBundleManifest myManifest = new MyAssetBundleManifest();
-			myManifest.AddUnityManifest(manifest);
-			string json = JsonConvert.SerializeObject(myManifest, Formatting.Indented);
+			string manifestPath = outputPath + "/" + abName + ".manifest";
+			SubAssetBundleManifest subManifest = new SubAssetBundleManifest();
+			subManifest.SetUnityManifest(manifestPath);
+			string json = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
 			File.WriteAllText(outputPath + "/" + abName + ".json", json, Encoding.UTF8);
 
 			AssetDatabase.Refresh();
@@ -177,14 +178,5 @@ public class BuildModelWindow : EditorWindow
 		FileUtil.CopyFileOrDirectory(source, destination);
 	}
 
-	private static void MakeSub(string filePath)
-	{
-		FileStream readFs = File.Open(filePath, FileMode.Open);
-		StreamReader sr = new StreamReader(readFs);
-		while (!sr.EndOfStream)
-		{
-			string line = sr.ReadLine();
-		}
-	}
 
 }
