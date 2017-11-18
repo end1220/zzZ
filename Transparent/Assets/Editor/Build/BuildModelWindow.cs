@@ -2,7 +2,9 @@
 using UnityEditor;
 using System;
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 
 public class BuildModelWindow : EditorWindow
@@ -20,7 +22,7 @@ public class BuildModelWindow : EditorWindow
 	string outputPath;
 	void OnEnable()
 	{
-		modelPath = Application.dataPath;
+		modelPath = Application.dataPath + "/Models/Test/";
 		outputPath = Application.streamingAssetsPath;
 	}
 
@@ -42,7 +44,7 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Space(leftSpace);
 		GUILayout.Label("Model Path", EditorStyles.label, GUILayout.Width(titleLen));
 		modelPath = GUILayout.TextField(modelPath, GUILayout.Width(textLen));
-		if (GUILayout.Button("Open", GUILayout.Width(buttonLen2)))
+		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
 		{
 			modelPath = EditorUtility.OpenFolderPanel("Select Model Folder", String.Empty, "");
 		}
@@ -53,7 +55,7 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Space(spaceSize);
 		GUILayout.Label("Output Path", EditorStyles.label, GUILayout.Width(titleLen));
 		outputPath = GUILayout.TextField(outputPath, GUILayout.Width(textLen));
-		if (GUILayout.Button("Open", GUILayout.Width(buttonLen2)))
+		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
 		{
 			outputPath = EditorUtility.OpenFolderPanel("Select Output Folder", String.Empty, "");
 		}
@@ -79,13 +81,27 @@ public class BuildModelWindow : EditorWindow
 
 	public static void Build(string sourcePath, string outputPath)
 	{
-		string category = "character";
-		CreateNewOutputPath(outputPath, true);
-		AssignNameRecur(sourcePath, "AB_Name_aaa666");
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(sourcePath, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		//CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		EditorUtility.DisplayDialog("title", "Build success!", "good");
+		try
+		{
+			string abName = AppUtils.GenUniqueGUIDLong().ToString();
+			CreateNewOutputPath(outputPath, true);
+			AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
+			AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb }, 
+				BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
+
+			MyAssetBundleManifest myManifest = new MyAssetBundleManifest();
+			myManifest.AddUnityManifest(manifest);
+			string json = JsonConvert.SerializeObject(myManifest, Formatting.Indented);
+			File.WriteAllText(outputPath + "/" + abName + ".json", json, Encoding.UTF8);
+
+			AssetDatabase.Refresh();
+			EditorUtility.DisplayDialog("Floating", "Build success!", "OK");
+		}
+		catch (Exception e)
+		{
+			AssetDatabase.Refresh();
+			Log.Error(e.ToString());
+		}
 	}
 
 	private static string CreateNewOutputPath(string outputPath, bool deleteOld)
@@ -105,35 +121,10 @@ public class BuildModelWindow : EditorWindow
 		return outputPath;
 	}
 
-	private static void AssignNameRecur(string source, string ABName)
+	private static AssetBundleBuild CollectBuildInfo(string sourceDir, string ABName)
 	{
-		string[] files = Directory.GetFiles(source);
-		for (int i = 0; i < files.Length; ++i)
-		{
-			if (!files[i].EndsWith(".meta") && !files[i].EndsWith(".cs"))
-			{
-				AssignName(files[i], ABName);
-			}
-		}
-
-		string[] folders = Directory.GetDirectories(source);
-		for (int i = 0; i < folders.Length; ++i)
-		{
-			AssignNameRecur(folders[i], ABName);
-		}
-	}
-
-
-	private static void AssignName(string assetPath, string ABName)
-	{
-		AssetImporter assetImporter = AssetImporter.GetAtPath(assetPath);
-		if (assetImporter != null)
-			assetImporter.assetBundleName = ABName;
-	}
-
-	private static List<AssetBundleBuild> CollectBuildListRecur(string sourceDir, string category)
-	{
-		List<AssetBundleBuild> builds = new List<AssetBundleBuild>();
+		AssetBundleBuild abb = new AssetBundleBuild();
+		abb.assetBundleName = ABName;
 		List<string> assetNames = new List<string>();
 
 		// root dir
@@ -141,11 +132,7 @@ public class BuildModelWindow : EditorWindow
 		for (int i = 0; i < files.Length; ++i)
 			if (!files[i].EndsWith(".meta") && !files[i].EndsWith(".cs"))
 				assetNames.Add(files[i].Substring(files[i].IndexOf("Assets")).Replace("\\", "/"));
-		AssetBundleBuild abb0 = new AssetBundleBuild();
-		abb0.assetBundleName = category + "/" + category;
-		abb0.assetNames = assetNames.ToArray();
-		builds.Add(abb0);
-
+		
 		// sub dir
 		string[] folders = Directory.GetDirectories(sourceDir);
 		for (int i = 0; i < folders.Length; ++i)
@@ -153,17 +140,12 @@ public class BuildModelWindow : EditorWindow
 			if (folders[i].Contains("."))
 				continue;
 			folders[i] = folders[i].Replace("\\", "/");
-			string abName = category + "/" + folders[i].Substring(folders[i].LastIndexOf("/") + 1);
-
-			assetNames.Clear();
 			CollectAssetNamesRecur(folders[i], assetNames);
-			AssetBundleBuild abb = new AssetBundleBuild();
-			abb.assetBundleName = abName;
-			abb.assetNames = assetNames.ToArray();
-			builds.Add(abb);
 		}
 
-		return builds;
+		abb.assetNames = assetNames.ToArray();
+
+		return abb;
 	}
 
 	private static void CollectAssetNamesRecur(string source, List<string> assetNames)
@@ -194,4 +176,15 @@ public class BuildModelWindow : EditorWindow
 
 		FileUtil.CopyFileOrDirectory(source, destination);
 	}
+
+	private static void MakeSub(string filePath)
+	{
+		FileStream readFs = File.Open(filePath, FileMode.Open);
+		StreamReader sr = new StreamReader(readFs);
+		while (!sr.EndOfStream)
+		{
+			string line = sr.ReadLine();
+		}
+	}
+
 }

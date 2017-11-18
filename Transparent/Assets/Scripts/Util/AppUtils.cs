@@ -7,6 +7,16 @@ using UnityEngine;
 
 static public class AppUtils
 {
+	public static string GenUniqueGUID()
+	{
+		return Guid.NewGuid().ToString();
+	}
+
+	public static long GenUniqueGUIDLong()
+	{
+		byte[] buffer = System.Guid.NewGuid().ToByteArray();
+		return System.BitConverter.ToInt64(buffer, 0);
+	}
 
 	/// <summary>
 	/// 计算字符串的MD5值
