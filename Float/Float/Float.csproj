@@ -69,6 +69,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="App\AppDefine.cs" />
+    <Compile Include="App\Model\ModelManager.cs" />
     <Compile Include="App\Network\ByteBuffer.cs" />
     <Compile Include="App\Network\CommandHandler.cs" />
     <Compile Include="App\Network\Converter.cs" />

@@ -7,8 +7,16 @@ using System.Collections.Generic;
 [Serializable]
 public class SubAssetBundleManifest
 {
+	public string FileName;
+	public string AssetBundleName;
 	public List<string> Assets = new List<string>();
 	public List<string> Dependencies = new List<string>();
+
+	public SubAssetBundleManifest(string fileName, string assetBundleName)
+	{
+		FileName = fileName;
+		AssetBundleName = assetBundleName;
+	}
 
 	public void SetUnityManifest(string filePath)
 	{

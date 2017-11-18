@@ -45,9 +45,7 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Label("Model Path", EditorStyles.label, GUILayout.Width(titleLen));
 		modelPath = GUILayout.TextField(modelPath, GUILayout.Width(textLen));
 		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
-		{
 			modelPath = EditorUtility.OpenFolderPanel("Select Model Folder", String.Empty, "");
-		}
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 
@@ -56,18 +54,16 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Label("Output Path", EditorStyles.label, GUILayout.Width(titleLen));
 		outputPath = GUILayout.TextField(outputPath, GUILayout.Width(textLen));
 		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
-		{
 			outputPath = EditorUtility.OpenFolderPanel("Select Output Folder", String.Empty, "");
-		}
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(leftSpace);
 		if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
-		{
-			Build(modelPath, outputPath);
-		}
+			BuildSingleAB(modelPath, outputPath);
+		if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
+			RebuildModelList(outputPath, outputPath + "/" + "models.abm");
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 	}
@@ -79,24 +75,53 @@ public class BuildModelWindow : EditorWindow
 		EditorUtility.DisplayProgressBar(title, desc, value);
 	}
 
-	public static void Build(string sourcePath, string outputPath)
+	public static void BuildSingleAB(string sourcePath, string outputPath)
 	{
 		try
 		{
 			string abName = AppUtils.GenUniqueGUIDLong().ToString();
+			abName = abName + "/" + abName;
 			CreateNewOutputPath(outputPath, true);
 			AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
 			AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb }, 
 				BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
+			AssetDatabase.Refresh();
 
-			string manifestPath = outputPath + "/" + abName + ".manifest";
-			SubAssetBundleManifest subManifest = new SubAssetBundleManifest();
-			subManifest.SetUnityManifest(manifestPath);
-			string json = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
-			File.WriteAllText(outputPath + "/" + abName + ".json", json, Encoding.UTF8);
+			string subManifestName = abName + ".sbm";
+			SubAssetBundleManifest subManifest = new SubAssetBundleManifest(subManifestName, abName);
+			subManifest.SetUnityManifest(outputPath + "/" + abName + ".manifest");
+			string jsonStr = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
+			File.WriteAllText(outputPath + "/" + subManifestName, jsonStr, Encoding.UTF8);
 
 			AssetDatabase.Refresh();
 			EditorUtility.DisplayDialog("Floating", "Build success!", "OK");
+		}
+		catch (Exception e)
+		{
+			AssetDatabase.Refresh();
+			Log.Error(e.ToString());
+		}
+	}
+
+	public static void RebuildModelList(string modelPath, string modelManifestPath)
+	{
+		try
+		{
+			MyAssetBundleManifest manifest = new MyAssetBundleManifest();
+			string[] subDirs = Directory.GetDirectories(modelPath);
+			for (int i = 0; i < subDirs.Length; ++i)
+			{
+				string subDir = subDirs[i].Replace('\\', '/');
+				string dirName = subDir.Substring(subDir.LastIndexOf("/") + 1);
+				string sbmPath = subDir + "/" + dirName + ".sbm";
+				string jsonStr = File.ReadAllText(sbmPath);
+				SubAssetBundleManifest sub = JsonConvert.DeserializeObject<SubAssetBundleManifest>(jsonStr);
+				manifest.AddSubManifest(sub);
+			}
+			string mainJsonStr = JsonConvert.SerializeObject(manifest, Formatting.Indented);
+			File.WriteAllText(modelManifestPath, mainJsonStr, Encoding.UTF8);
+
+			AssetDatabase.Refresh();
 		}
 		catch (Exception e)
 		{
@@ -177,6 +202,5 @@ public class BuildModelWindow : EditorWindow
 
 		FileUtil.CopyFileOrDirectory(source, destination);
 	}
-
 
 }

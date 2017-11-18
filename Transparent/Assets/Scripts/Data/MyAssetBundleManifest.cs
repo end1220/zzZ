@@ -31,7 +31,8 @@ public class MyAssetBundleManifest
 
 	public void AddUnityManifest(AssetBundleManifest manifest)
 	{
-		if (manifest == null) { return; }
+		if (manifest == null)
+			return;
 		string[] inOriginList = manifest.GetAllAssetBundles();
 		foreach (var origin in inOriginList)
 		{
@@ -40,4 +41,14 @@ public class MyAssetBundleManifest
 			allHash.Add(origin, manifest.GetAssetBundleHash(origin));
 		}
 	}
+
+	public void AddSubManifest(SubAssetBundleManifest manifest)
+	{
+		if (manifest == null)
+			return;
+		allAssetBundles.Add(manifest.AssetBundleName);
+		allDependencies.Add(manifest.AssetBundleName, manifest.Dependencies.ToArray());
+		//allHash.Add(manifest.AssetBundleName, null);
+	}
+
 }
