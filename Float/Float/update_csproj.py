@@ -1,4 +1,4 @@
-
+﻿
 # scan source files and add to csprj.
 
 import os
@@ -27,7 +27,7 @@ pass
 
 def write_csprj(file_name, gen_text):
 	findItemGroup = False
-	f = open(os.path.abspath('.') + "/" + file_name,'r')
+	f = open(os.path.abspath('.') + "/" + file_name,'r',encoding='utf-8')
 	lines = f.readlines()
 	startIndex = 0
 	endIndex = 0
@@ -39,7 +39,7 @@ def write_csprj(file_name, gen_text):
 				findItemGroup = True
 				startIndex = tmpIndex
 		else:
-			find_indx = line.find('.cs\"')
+			find_indx = line.find('.cs\" />')
 			if find_indx != -1:
 				pass
 			elif tmpIndex == startIndex + 1:
@@ -65,15 +65,14 @@ def write_csprj(file_name, gen_text):
 			pass
 		pass
 	pass
-	open(os.path.abspath('.') + '/' + file_name, 'wb').write(new_file_text)
+	open(os.path.abspath('.') + '/' + file_name, 'w',encoding='utf-8').write(new_file_text)
 	
 pass
 
 ###
 
 dest_filePathList = []
-scan_folder("Properties", dest_filePathList)
-scan_folder("App", dest_filePathList)
+scan_folder("Source", dest_filePathList)
 
 dest_gen_text = ""
 for i in range(0, len(dest_filePathList)):
@@ -82,9 +81,9 @@ pass
 
 #print("ret: " + dest_gen_text)
 
-write_csprj("Float.csproj", dest_gen_text);
-	
-	
+write_csprj("Float.csproj", dest_gen_text)
+
+
 
 
 

@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Reference\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>Reference\protobuf-net.dll</HintPath>
     </Reference>
@@ -68,23 +71,30 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="App\AppDefine.cs" />
-    <Compile Include="App\Model\ModelManager.cs" />
-    <Compile Include="App\Network\ByteBuffer.cs" />
-    <Compile Include="App\Network\CommandHandler.cs" />
-    <Compile Include="App\Network\Converter.cs" />
-    <Compile Include="App\Network\NetworkManager.cs" />
-    <Compile Include="App\Network\Packet.cs" />
-    <Compile Include="App\Network\UDPServer.cs" />
-    <Compile Include="App\Util\Log.cs" />
-    <Compile Include="App\Util\ProtobufUtil.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Notify.cs" />
+    <Compile Include="Source\AppDefine.cs" />
+    <Compile Include="Source\Data\DataManager.cs" />
+    <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
+    <Compile Include="Source\Data\SubAssetBundleManifest.cs" />
+    <Compile Include="Source\FloatDecade.cs" />
+    <Compile Include="Source\IManager.cs" />
+    <Compile Include="Source\Model\ModelManager.cs" />
+    <Compile Include="Source\Network\ByteBuffer.cs" />
+    <Compile Include="Source\Network\CommandHandler.cs" />
+    <Compile Include="Source\Network\Converter.cs" />
+    <Compile Include="Source\Network\NetworkManager.cs" />
+    <Compile Include="Source\Network\Packet.cs" />
+    <Compile Include="Source\Network\UDPServer.cs" />
+    <Compile Include="Source\Notify.cs" />
+    <Compile Include="Source\Util\Log.cs" />
+    <Compile Include="Source\Util\ProtobufUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

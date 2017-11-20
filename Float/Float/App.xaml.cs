@@ -16,13 +16,12 @@ namespace Float
 	public partial class App : Application
 	{
 		public static App Instance { get { return Current as App; } }
-
 		private DispatcherTimer dispatcherTimer = new DispatcherTimer();
 		private NetworkManager network = new NetworkManager();
 
 		private void Init()
 		{
-			network.Init();
+			FloatDecade.Instance.Init();
 			dispatcherTimer.Tick += new EventHandler(Tick);
 			dispatcherTimer.Interval = TimeSpan.FromMilliseconds(500);
 			dispatcherTimer.Start();
@@ -30,21 +29,15 @@ namespace Float
 
 		private void Tick(object sender, EventArgs e)
 		{
-			network.Tick();
+			FloatDecade.Instance.Tick();
 		}
 
 		public void Destory()
 		{
-			network.Destroy();
+			FloatDecade.Instance.Destory();
 			dispatcherTimer.Stop();
 			Shutdown();
 			//Environment.Exit(0);
-		}
-
-		public void SendCommand(CommandId id, Command cmd)
-		{
-			byte[] bytes = ProtobufUtil.Serialize<Command>(cmd);
-			network.SendBytes((ushort)id, bytes);
 		}
 
 		private void AppStartup(object sender, StartupEventArgs e)

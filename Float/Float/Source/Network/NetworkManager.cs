@@ -6,20 +6,22 @@ using Lite;
 
 using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Lite.Packet>;
 
-public class NetworkManager
+public class NetworkManager : IManager
 {
+	public static NetworkManager Instance { get; private set; }
 	private UDPServer server;
 	static readonly object lockObject = new object();
 	static Queue<PacketPair> messageQueue = new Queue<PacketPair>();
 
-	public void Init()
+	public override void Init()
 	{
+		Instance = this;
 		server = new UDPServer();
 		server.Init();
 		CommandHandler.Register();
 	}
 
-	public void Destroy()
+	public override void Destroy()
 	{
 		server.Destroy();
 	}
@@ -32,7 +34,7 @@ public class NetworkManager
 		}
 	}
 
-	public void Tick()
+	public override void Tick()
 	{
 		if (messageQueue.Count > 0)
 		{
@@ -68,6 +70,12 @@ public class NetworkManager
 			byte[] array = ms.ToArray();
 			server.Send(array);
 		}
+	}
+
+	public void SendCommand(CommandId id, Command cmd)
+	{
+		byte[] bytes = ProtobufUtil.Serialize<Command>(cmd);
+		SendBytes((ushort)id, bytes);
 	}
 
 }
