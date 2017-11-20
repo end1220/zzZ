@@ -91,8 +91,8 @@ public class BuildModelWindow : EditorWindow
 		try
 		{
 			long uid = AppUtils.GenUniqueGUIDLong();
-			string abName = uid.ToString();
-			abName = abName + "/" + abName;
+			string subfolderName = uid.ToString();
+			string abName = subfolderName + "/" + subfolderName;
 			CreateNewOutputPath(outputPath, true);
 			AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
 			AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb }, 
@@ -111,11 +111,10 @@ public class BuildModelWindow : EditorWindow
 			modelData.bundleName = abName;
 			modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
 			jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
-			File.WriteAllText(outputPath + "/" + AppDefine.modelDataName, jsonStr, Encoding.UTF8);
+			File.WriteAllText(outputPath + "/" + subfolderName + "/" + AppDefine.subModelDataName, jsonStr, Encoding.UTF8);
 
 			AssetDatabase.Refresh();
-			//EditorUtility.DisplayDialog("Floating", "Build success!", "OK");
-			CopyFiles(outputPath, AppDefine.PersistentDataPath);
+			EditorUtility.DisplayDialog("Floating", "Make model success!", "OK");
 		}
 		catch (Exception e)
 		{
@@ -128,6 +127,7 @@ public class BuildModelWindow : EditorWindow
 	{
 		try
 		{
+			// gen .sbm files
 			MyAssetBundleManifest manifest = new MyAssetBundleManifest();
 			string[] subDirs = Directory.GetDirectories(modelPath);
 			for (int i = 0; i < subDirs.Length; ++i)
@@ -142,7 +142,22 @@ public class BuildModelWindow : EditorWindow
 			string mainJsonStr = JsonConvert.SerializeObject(manifest, Formatting.Indented);
 			File.WriteAllText(modelManifestPath, mainJsonStr, Encoding.UTF8);
 
+			// gen model list
+			ModelDataArray modelArray = new ModelDataArray();
+			modelArray.models = new ModelData[subDirs.Length];
+			for (int i = 0; i < subDirs.Length; ++i)
+			{
+				string txt = File.ReadAllText(subDirs[i] + "/" + AppDefine.subModelDataName);
+				modelArray.models[i] = JsonConvert.DeserializeObject<ModelData>(txt);
+			}
+			string arrayStr = JsonConvert.SerializeObject(modelArray, Formatting.Indented);
+			File.WriteAllText(modelPath + "/" + AppDefine.modelListName, arrayStr, Encoding.UTF8);
+
+			// copy to streamingsassets
+			CopyAssetBundles(modelPath, AppDefine.PersistentDataPath);
+
 			AssetDatabase.Refresh();
+			EditorUtility.DisplayDialog("Floating", "Build list success!", "OK");
 		}
 		catch (Exception e)
 		{
@@ -211,26 +226,17 @@ public class BuildModelWindow : EditorWindow
 		}
 	}
 
-	private static void CopyFiles(string sourcePath, string destPath)
+	private static void CopyAssetBundles(string sourcePath, string outputPath)
 	{
-		Directory.CreateDirectory(destPath);
+		Directory.CreateDirectory(outputPath);
 
 		var source = Path.Combine(System.Environment.CurrentDirectory, sourcePath);
 
-		var destination = System.IO.Path.Combine(System.Environment.CurrentDirectory, destPath);
+		var destination = System.IO.Path.Combine(System.Environment.CurrentDirectory, outputPath);
 		if (System.IO.Directory.Exists(destination))
 			FileUtil.DeleteFileOrDirectory(destination);
 
 		FileUtil.CopyFileOrDirectory(source, destination);
-
-		/*if (Directory.Exists(destPath))
-		{
-			FileUtil.DeleteFileOrDirectory(destPath);
-			//Directory.Delete(destPath, true);
-			Directory.CreateDirectory(destPath);
-		}
-		sourcePath = Path.Combine(Environment.CurrentDirectory, sourcePath);
-		FileUtil.CopyFileOrDirectory(sourcePath, destPath);*/
 	}
 
 }

@@ -79,6 +79,6 @@ public class CommandHandler
 	{
 		Log.Error("play this");
 		int id = cmd.number1;
-		ModelScene.Instance.LoadModel(id);
+		ModelScene.Instance.LoadModel(5488790688738896725);
 	}
 }

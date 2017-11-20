@@ -17,7 +17,7 @@ public class ModelScene : MonoBehaviour
 		modelRoot = transform;
 	}
 
-	public void LoadModel(int id)
+	public void LoadModel(long id)
 	{
 		ModelData data = DataManager.Instance.GetModelData(id);
 		if (data != null)
