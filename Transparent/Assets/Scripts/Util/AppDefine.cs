@@ -26,5 +26,5 @@ public class AppDefine
 	public const string subMetaName = "info.sbm";
 	public static string modelListPath = PersistentDataPath + modelListName;
 	public static string modelPath = PersistentDataPath;
-
+	public const string modelDataName = "modeldata.json";
 }

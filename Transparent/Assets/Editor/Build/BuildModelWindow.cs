@@ -20,10 +20,12 @@ public class BuildModelWindow : EditorWindow
 
 	string modelPath;
 	string outputPath;
+	string prefabPath;
 	void OnEnable()
 	{
 		modelPath = Application.dataPath + "/Models/Test/";
-		outputPath = Application.streamingAssetsPath + "/" + AppDefine.AppName;
+		outputPath = "Output/" + AppDefine.AppName; //Application.streamingAssetsPath + "/" + AppDefine.AppName;
+		prefabPath = "D:/Locke/git/zzZ/Transparent/Assets/Models/Test/Directional Light.prefab";
 	}
 
 
@@ -59,9 +61,18 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Space(leftSpace);
 
 		GUILayout.BeginHorizontal();
+		GUILayout.Space(spaceSize);
+		GUILayout.Label("Prefab Path", EditorStyles.label, GUILayout.Width(titleLen));
+		prefabPath = GUILayout.TextField(prefabPath, GUILayout.Width(textLen));
+		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
+			prefabPath = EditorUtility.OpenFilePanel("Select Prefab", String.Empty, "");
+		GUILayout.EndHorizontal();
+		GUILayout.Space(leftSpace);
+
+		GUILayout.BeginHorizontal();
 		GUILayout.Space(leftSpace);
 		if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
-			BuildSingleAB(modelPath, outputPath);
+			BuildSingleAB(modelPath, outputPath, prefabPath);
 		if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			RebuildModelList(outputPath, outputPath + "/" + AppDefine.manifestName);
 		GUILayout.EndHorizontal();
@@ -75,11 +86,12 @@ public class BuildModelWindow : EditorWindow
 		EditorUtility.DisplayProgressBar(title, desc, value);
 	}
 
-	public static void BuildSingleAB(string sourcePath, string outputPath)
+	public static void BuildSingleAB(string sourcePath, string outputPath, string assetName)
 	{
 		try
 		{
-			string abName = AppUtils.GenUniqueGUIDLong().ToString();
+			long uid = AppUtils.GenUniqueGUIDLong();
+			string abName = uid.ToString();
 			abName = abName + "/" + abName;
 			CreateNewOutputPath(outputPath, true);
 			AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
@@ -93,8 +105,17 @@ public class BuildModelWindow : EditorWindow
 			string jsonStr = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
 			File.WriteAllText(outputPath + "/" + subManifestName, jsonStr, Encoding.UTF8);
 
+			ModelData modelData = new ModelData();
+			modelData.id = uid;
+			modelData.name = abName;
+			modelData.bundleName = abName;
+			modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
+			jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
+			File.WriteAllText(outputPath + "/" + AppDefine.modelDataName, jsonStr, Encoding.UTF8);
+
 			AssetDatabase.Refresh();
-			EditorUtility.DisplayDialog("Floating", "Build success!", "OK");
+			//EditorUtility.DisplayDialog("Floating", "Build success!", "OK");
+			CopyFiles(outputPath, AppDefine.PersistentDataPath);
 		}
 		catch (Exception e)
 		{
@@ -190,17 +211,26 @@ public class BuildModelWindow : EditorWindow
 		}
 	}
 
-	private static void CopyAssetBundles(string sourcePath, string outputPath)
+	private static void CopyFiles(string sourcePath, string destPath)
 	{
-		Directory.CreateDirectory(outputPath);
+		Directory.CreateDirectory(destPath);
 
 		var source = Path.Combine(System.Environment.CurrentDirectory, sourcePath);
 
-		var destination = System.IO.Path.Combine(System.Environment.CurrentDirectory, outputPath);
+		var destination = System.IO.Path.Combine(System.Environment.CurrentDirectory, destPath);
 		if (System.IO.Directory.Exists(destination))
 			FileUtil.DeleteFileOrDirectory(destination);
 
 		FileUtil.CopyFileOrDirectory(source, destination);
+
+		/*if (Directory.Exists(destPath))
+		{
+			FileUtil.DeleteFileOrDirectory(destPath);
+			//Directory.Delete(destPath, true);
+			Directory.CreateDirectory(destPath);
+		}
+		sourcePath = Path.Combine(Environment.CurrentDirectory, sourcePath);
+		FileUtil.CopyFileOrDirectory(sourcePath, destPath);*/
 	}
 
 }
