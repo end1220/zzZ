@@ -23,7 +23,7 @@ public class BuildModelWindow : EditorWindow
 	void OnEnable()
 	{
 		modelPath = Application.dataPath + "/Models/Test/";
-		outputPath = Application.streamingAssetsPath;
+		outputPath = Application.streamingAssetsPath + "/" + AppDefine.AppName;
 	}
 
 
@@ -63,7 +63,7 @@ public class BuildModelWindow : EditorWindow
 		if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			BuildSingleAB(modelPath, outputPath);
 		if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
-			RebuildModelList(outputPath, outputPath + "/" + AppDefine.modelListName);
+			RebuildModelList(outputPath, outputPath + "/" + AppDefine.manifestName);
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 	}

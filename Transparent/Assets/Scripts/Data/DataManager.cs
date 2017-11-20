@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using System.Text;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using XLua;
 
 
 [Serializable]

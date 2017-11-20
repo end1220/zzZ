@@ -77,7 +77,7 @@ public class ResourceManager : IManager
 		if (SimulateAssetBundleInEditor)
 			return;
 #endif
-		string txt = File.ReadAllText(m_BaseDownloadingURL + AppDefine.modelListName);
+		string txt = File.ReadAllText(AppDefine.modelListPath);
 		manifest = JsonConvert.DeserializeObject<MyAssetBundleManifest>(txt);
 	}
 

@@ -17,11 +17,12 @@ public class AppDefine
 	{
 		get
 		{
-			return Application.streamingAssetsPath + "/";
+			return Application.streamingAssetsPath + "/" + AppName;
 		}
 	}
 
-	public const string modelListName = "models.abm";
+	public const string modelListName = "models.json";
+	public const string manifestName = AppName + ".abm";
 	public const string subMetaName = "info.sbm";
 	public static string modelListPath = PersistentDataPath + modelListName;
 	public static string modelPath = PersistentDataPath;
