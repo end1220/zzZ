@@ -63,7 +63,7 @@ public class BuildModelWindow : EditorWindow
 		if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			BuildSingleAB(modelPath, outputPath);
 		if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
-			RebuildModelList(outputPath, outputPath + "/" + "models.abm");
+			RebuildModelList(outputPath, outputPath + "/" + AppDefine.modelListName);
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 	}

@@ -239,7 +239,7 @@ public class AssetBundleLoadManifestOperation : AssetBundleLoadAssetOperationFul
 
 		if (m_Request != null && m_Request.isDone)
 		{
-			ResourceManager.Instance.AssetBundleManifestObject = GetAsset<AssetBundleManifest>();
+			//ResourceManager.Instance.AssetBundleManifestObject = GetAsset<AssetBundleManifest>();
 			return false;
 		}
 		else

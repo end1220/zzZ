@@ -1,12 +1,12 @@
 
 
 
-public interface IManager
+public class IManager
 {
-	void Init();
+	public virtual void Init() { }
 
-	void Destroy();
+	public virtual void Destroy() { }
 
-	void Tick();
+	public virtual void Tick() { }
 
 }

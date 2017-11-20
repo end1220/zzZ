@@ -17,30 +17,13 @@ public class AppDefine
 	{
 		get
 		{
-			/*if (Application.isMobilePlatform)
-			{
-				return Application.persistentDataPath + "/" + AppName + "/";
-			}
-			else if (Application.platform == RuntimePlatform.OSXEditor)
-			{
-				int i = Application.dataPath.LastIndexOf('/');
-				return Application.dataPath.Substring(0, i + 1) + AppName + "/";
-			}
-			else if (Application.platform == RuntimePlatform.WindowsEditor)
-			{
-				return "D:/PersistentAssets/" + AppName + "/";
-			}
-			else if (Application.platform == RuntimePlatform.WindowsPlayer)
-			{
-				return Application.streamingAssetsPath + "/";
-			}
-
-			return string.Empty;*/
 			return Application.streamingAssetsPath + "/";
 		}
 	}
 
-	public static string modelListPath = PersistentDataPath + "models.json";
-	public static string modelPath = PersistentDataPath + "model";
+	public const string modelListName = "models.abm";
+	public const string subMetaName = "info.sbm";
+	public static string modelListPath = PersistentDataPath + modelListName;
+	public static string modelPath = PersistentDataPath;
 
 }

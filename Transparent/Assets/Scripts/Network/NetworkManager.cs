@@ -6,7 +6,7 @@ using Lite;
 
 using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Lite.Packet>;
 
-public class NetworkManager : MonoBehaviour, IManager
+public class NetworkManager : IManager
 {
 	public static NetworkManager Instance { get; private set; }
 	static bool UseTcp = false;
@@ -14,7 +14,7 @@ public class NetworkManager : MonoBehaviour, IManager
 	static readonly object lockObject = new object();
 	static Queue<PacketPair> messageQueue = new Queue<PacketPair>();
 
-	public void Init()
+	public override void Init()
 	{
 		Instance = this;
 		CommandHandler.Register();
@@ -34,7 +34,7 @@ public class NetworkManager : MonoBehaviour, IManager
 	}
 
 
-	public void Destroy()
+	public override void Destroy()
 	{
 		client.Destroy();
 	}
@@ -47,7 +47,7 @@ public class NetworkManager : MonoBehaviour, IManager
 		}
 	}
 
-	public void Tick()
+	public override void Tick()
 	{
 		if (messageQueue.Count > 0)
 		{

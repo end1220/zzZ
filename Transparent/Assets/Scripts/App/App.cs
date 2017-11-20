@@ -64,20 +64,20 @@ public class App : MonoBehaviour
 	}
 
 
-	private T AddManager<T>() where T : MonoBehaviour, IManager, new()
+	private T AddManager<T>() where T : IManager, new()
 	{
 		T mgr = null;
 		Type name = typeof(T);
 		if (!mManagerDic.ContainsKey(name))
 		{
-			mgr = gameObject.AddComponent<T>();
+			mgr = new T();
 			mManagerDic.Add(name, mgr);
 		}
 		return mgr;
 	}
 
 
-	public T GetManager<T>() where T : MonoBehaviour, IManager
+	public T GetManager<T>() where T : IManager
 	{
 		Type name = typeof(T);
 		IManager mgr = null;

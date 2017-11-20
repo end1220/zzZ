@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using XLua;
 
 
-public class LuaManager : MonoBehaviour, IManager
+public class LuaManager : IManager
 {
 	public static LuaManager Instance { private set; get; }
 
@@ -21,7 +21,7 @@ public class LuaManager : MonoBehaviour, IManager
 
 	private Dictionary<string, LuaFuncCall> funcList = new Dictionary<string, LuaFuncCall>();
 
-	public void Init()
+	public override void Init()
 	{
 		Instance = this;
 		loader = new LuaLoader();
@@ -29,7 +29,7 @@ public class LuaManager : MonoBehaviour, IManager
 		luaEnv.AddLoader(CustomLoad);
 	}
 
-	public void Tick()
+	public override void Tick()
 	{
 		if (tickFunc != null)
 		{
@@ -43,7 +43,7 @@ public class LuaManager : MonoBehaviour, IManager
 		}
 	}
 
-	public void Destroy()
+	public override void Destroy()
 	{
 		Close();
 	}

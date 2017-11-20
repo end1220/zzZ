@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
-
+using Newtonsoft.Json;
 
 using UObject = UnityEngine.Object;
 
@@ -22,18 +21,11 @@ public class LoadedAssetBundle
 }
 
 
-public class ResourceManager : MonoBehaviour, IManager
+public class ResourceManager : IManager
 {
 	string m_BaseDownloadingURL = "Assets/StreamingAssets/";
 
-	string[] m_ActiveVariants = { };
-
-	public AssetBundleManifest AssetBundleManifestObject;
-
-#if UNITY_EDITOR
-	static int m_SimulateAssetBundleInEditor = -1;
-	const string kSimulateAssetBundles = "SimulateAssetBundles";
-#endif
+	public MyAssetBundleManifest manifest;
 
 	Dictionary<string, LoadedAssetBundle> m_LoadedAssetBundles = new Dictionary<string, LoadedAssetBundle>();
 	Dictionary<string, WWW> m_DownloadingWWWs = new Dictionary<string, WWW>();
@@ -42,7 +34,8 @@ public class ResourceManager : MonoBehaviour, IManager
 	Dictionary<string, string[]> m_Dependencies = new Dictionary<string, string[]>();
 
 #if UNITY_EDITOR
-	// Flag to indicate if we want to simulate assetBundles in Editor without building them actually.
+	static int m_SimulateAssetBundleInEditor = -1;
+	const string kSimulateAssetBundles = "SimulateAssetBundles";
 	public static bool SimulateAssetBundleInEditor
 	{
 		get
@@ -66,47 +59,27 @@ public class ResourceManager : MonoBehaviour, IManager
 
 	public static ResourceManager Instance { private set; get; }
 
-	public void Init()
+	public override void Init()
 	{
 		Instance = this;
 	}
 
-	public void Tick()
+	public override void Tick()
 	{
 		UpdateLoading();
 	}
 
-	public void Destroy()
+	public void Initialize()
 	{
-
-	}
-
-
-	public AssetBundleLoadManifestOperation Initialize()
-	{
-		string url = "file://" + AppDefine.PersistentDataPath;
-		SetSourceAssetBundleURL(url);
-		//SetSourceAssetBundleURL("http://www.MyWebsite/MyAssetBundles");
+		m_BaseDownloadingURL = "file://" + AppDefine.PersistentDataPath;// = "http://www.MyWebsite/MyAssetBundles";
 
 #if UNITY_EDITOR
 		if (SimulateAssetBundleInEditor)
-			return null;
-		else
-			Log.Info("Asset Bundle Mode !");
+			return;
 #endif
-		string manifestAssetBundleName = AppDefine.AppName;
-		LoadAssetBundle(manifestAssetBundleName, true);
-		var operation = new AssetBundleLoadManifestOperation(manifestAssetBundleName, "AssetBundleManifest", typeof(AssetBundleManifest));
-		m_InProgressOperations.Add(operation);
-		return operation;
+		string txt = File.ReadAllText(m_BaseDownloadingURL + AppDefine.modelListName);
+		manifest = JsonConvert.DeserializeObject<MyAssetBundleManifest>(txt);
 	}
-
-
-	public void SetSourceAssetBundleURL(string absolutePath)
-	{
-		m_BaseDownloadingURL = absolutePath;
-	}
-
 
 	public LoadedAssetBundle GetLoadedAssetBundle(string assetBundleName, out string error)
 	{
@@ -138,52 +111,6 @@ public class ResourceManager : MonoBehaviour, IManager
 
 		return bundle;
 	}
-
-
-	// Remaps the asset bundle name to the best fitting asset bundle variant.
-	protected string RemapVariantName(string assetBundleName)
-	{
-		string[] bundlesWithVariant = AssetBundleManifestObject.GetAllAssetBundlesWithVariant();
-
-		string[] split = assetBundleName.Split('.');
-
-		int bestFit = int.MaxValue;
-		int bestFitIndex = -1;
-		// Loop all the assetBundles with variant to find the best fit variant assetBundle.
-		for (int i = 0; i < bundlesWithVariant.Length; i++)
-		{
-			string[] curSplit = bundlesWithVariant[i].Split('.');
-			if (curSplit[0] != split[0])
-				continue;
-
-			int found = System.Array.IndexOf(m_ActiveVariants, curSplit[1]);
-
-			// If there is no active variant found. We still want to use the first 
-			if (found == -1)
-				found = int.MaxValue - 1;
-
-			if (found < bestFit)
-			{
-				bestFit = found;
-				bestFitIndex = i;
-			}
-		}
-
-		if (bestFit == int.MaxValue - 1)
-		{
-			Log.Warning("Ambigious asset bundle variant chosen because there was no matching active variant: " + bundlesWithVariant[bestFitIndex]);
-		}
-
-		if (bestFitIndex != -1)
-		{
-			return bundlesWithVariant[bestFitIndex];
-		}
-		else
-		{
-			return assetBundleName;
-		}
-	}
-
 
 	private List<string> keysToRemove = new List<string>();
 	void UpdateLoading()
@@ -259,16 +186,15 @@ public class ResourceManager : MonoBehaviour, IManager
 				if (assetbundle != null)
 					m_LoadedAssetBundles.Add(assetBundleName, new LoadedAssetBundle(assetbundle));
 
-				if (AssetBundleManifestObject == null)
+				if (manifest == null)
 				{
 					Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 				}
 				else
 				{
-					string[] dependencies = AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+					string[] dependencies = manifest.GetAllDependencies(assetBundleName);
 					for (int i = 0; i < dependencies.Length; i++)
 					{
-						dependencies[i] = RemapVariantName(dependencies[i]);
 						LoadAssetBundleSync(dependencies[i]);
 					}
 
@@ -320,7 +246,6 @@ public class ResourceManager : MonoBehaviour, IManager
 		else
 #endif
 		{
-			assetBundleName = RemapVariantName(assetBundleName);
 			LoadAssetBundle(assetBundleName, false);
 			operation = new AssetBundleLoadAssetOperationFull(assetBundleName, assetName, type);
 
@@ -344,7 +269,6 @@ public class ResourceManager : MonoBehaviour, IManager
 		else
 #endif
 		{
-			assetBundleName = RemapVariantName(assetBundleName);
 			LoadAssetBundle(assetBundleName, false);
 			operation = new AssetBundleLoadLevelOperation(assetBundleName, levelName, isAdditive);
 
@@ -366,7 +290,7 @@ public class ResourceManager : MonoBehaviour, IManager
 
 		if (!isLoadingAssetBundleManifest)
 		{
-			if (AssetBundleManifestObject == null)
+			if (manifest == null)
 			{
 				Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 				return;
@@ -406,16 +330,15 @@ public class ResourceManager : MonoBehaviour, IManager
 				if (assetbundle != null)
 					m_LoadedAssetBundles.Add(assetBundleName, new LoadedAssetBundle(assetbundle));
 
-				if (AssetBundleManifestObject == null)
+				if (manifest == null)
 				{
 					Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 				}
 				else
 				{
-					string[] dependencies = AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+					string[] dependencies = manifest.GetAllDependencies(assetBundleName);
 					for (int i = 0; i < dependencies.Length; i++)
 					{
-						dependencies[i] = RemapVariantName(dependencies[i]);
 						LoadAssetBundleSync(dependencies[i]);
 					}
 
@@ -438,7 +361,7 @@ public class ResourceManager : MonoBehaviour, IManager
 		else
 #endif
 		{
-			if (AssetBundleManifestObject == null)
+			if (manifest == null)
 			{
 				Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 				return null;
@@ -481,7 +404,7 @@ public class ResourceManager : MonoBehaviour, IManager
 		if (isLoadingAssetBundleManifest)
 			download = new WWW(url);
 		else
-			download = WWW.LoadFromCacheOrDownload(url, AssetBundleManifestObject.GetAssetBundleHash(assetBundleName), 0);
+			download = WWW.LoadFromCacheOrDownload(url, manifest.GetAssetBundleHash(assetBundleName), 0);
 
 		m_DownloadingWWWs.Add(assetBundleName, download);
 
@@ -491,19 +414,16 @@ public class ResourceManager : MonoBehaviour, IManager
 
 	protected void LoadDependencies(string assetBundleName)
 	{
-		if (AssetBundleManifestObject == null)
+		if (manifest == null)
 		{
 			Log.Error("Please initialize AssetBundleManifest by calling ResourceManager.Initialize()");
 			return;
 		}
 
 		// Get dependecies from the AssetBundleManifest object..
-		string[] dependencies = AssetBundleManifestObject.GetAllDependencies(assetBundleName);
+		string[] dependencies = manifest.GetAllDependencies(assetBundleName);
 		if (dependencies.Length == 0)
 			return;
-
-		for (int i = 0; i < dependencies.Length; i++)
-			dependencies[i] = RemapVariantName(dependencies[i]);
 
 		// Record and load all dependencies.
 		m_Dependencies.Add(assetBundleName, dependencies);

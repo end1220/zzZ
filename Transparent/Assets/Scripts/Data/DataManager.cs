@@ -21,25 +21,25 @@ public class ModelDataArray
 	public ModelData[] models;
 }
 
-public class DataManager : MonoBehaviour, IManager
+public class DataManager : IManager
 {
 	public static DataManager Instance { private set; get; }
 
 	Dictionary<int, ModelData> modelDic = new Dictionary<int, ModelData>();
 
 
-	public void Init()
+	public override void Init()
 	{
 		Instance = this;
 		ReloadModelData();
 	}
 
-	public void Tick()
+	public override void Tick()
 	{
 		
 	}
 
-	public void Destroy()
+	public override void Destroy()
 	{
 		
 	}
@@ -52,7 +52,7 @@ public class DataManager : MonoBehaviour, IManager
 			Log.Error("RefreshModelList: Directory Not Exists: " + modelPath);
 			return;
 		}
-
+		
 		string[] directories = Directory.GetDirectories(modelPath);
 		string[] files = Directory.GetFiles(modelPath);
 		if (directories.Length + files.Length == 0)
@@ -61,7 +61,8 @@ public class DataManager : MonoBehaviour, IManager
 		List<ModelData> models = new List<ModelData>();
 		foreach (string subdir in directories)
 		{
-			string infoPath = subdir + "/info.json";
+			string dirName = subdir.Substring(subdir.LastIndexOf("/") + 1);
+			string infoPath = subdir + "/" + dirName + ".sbm";
 			if (File.Exists(infoPath))
 			{
 				string text = File.ReadAllText(infoPath);

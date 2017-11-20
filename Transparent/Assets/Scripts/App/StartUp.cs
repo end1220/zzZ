@@ -19,9 +19,7 @@ public class StartUp : MonoBehaviour
 	{
 		yield return new WaitForEndOfFrame();
 
-		var request = ResourceManager.Instance.Initialize();
-		if (request != null)
-			yield return StartCoroutine(request);
+		ResourceManager.Instance.Initialize();
 
 		yield return ResourceManager.Instance.LoadAssetBundleAsync("lua/common");
 		yield return ResourceManager.Instance.LoadAssetBundleAsync("lua/lua");

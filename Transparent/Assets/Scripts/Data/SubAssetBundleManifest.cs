@@ -35,6 +35,8 @@ public class SubAssetBundleManifest
 		while (!reader.EndOfStream)
 		{
 			string line = reader.ReadLine();
+			if (!line.Contains("- Assets"))
+				break;
 			string asset = line.Substring(2);
 			Assets.Add(asset);
 		}
