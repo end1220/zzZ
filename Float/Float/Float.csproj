@@ -81,6 +81,7 @@
     <Compile Include="Source\Data\DataManager.cs" />
     <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
     <Compile Include="Source\Data\SubAssetBundleManifest.cs" />
+    <Compile Include="Source\Data\ZipHelper.cs" />
     <Compile Include="Source\FloatDecade.cs" />
     <Compile Include="Source\IManager.cs" />
     <Compile Include="Source\Model\ModelManager.cs" />
