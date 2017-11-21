@@ -9,7 +9,7 @@ public class CustomSettings
 	
 	private static string settingFilePath = System.Environment.CurrentDirectory + "/settings.json";
 
-	public string ModelPath = System.Environment.CurrentDirectory + "/Models";
+	public string ModelPath = System.Environment.CurrentDirectory + "u/Floating_Data/StreamingAssets/Floating";
 	public bool StartEnabled = true;
 	public float scale = 1;
 

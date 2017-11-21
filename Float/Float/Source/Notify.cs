@@ -30,7 +30,9 @@ namespace Float
 			m6.Click += OnExit;
 			MenuItem m10 = new MenuItem("Send");
 			m10.Click += OnSend;
-			MenuItem[] menu = new MenuItem[] { m1, m2, m3, m6, m10 };
+			MenuItem m11 = new MenuItem("Rebuild");
+			m10.Click += OnRebuildModelList;
+			MenuItem[] menu = new MenuItem[] { m1, m2, m3, m6, m10, m11 };
 			notifyIcon.ContextMenu = new ContextMenu(menu);
 		}
 
@@ -64,13 +66,13 @@ namespace Float
 		void OnSend(object sender, EventArgs e)
 		{
 			Command cmd = new Command();
-			cmd.number1 = 1;
-			cmd.number2 = 22;
-			cmd.number3 = 33;
-			cmd.string1 = "s1111";
-			cmd.string2 = "s2222";
-			cmd.string3 = "s3333";
 			NetworkManager.Instance.SendCommand(CommandId.ShowWindow, cmd);
+		}
+
+		void OnRebuildModelList(object sender, EventArgs e)
+		{
+			string modelPath = CustomSettings.Current.ModelPath;
+			DataManager.RebuildModelList(modelPath);
 		}
 
 	}
