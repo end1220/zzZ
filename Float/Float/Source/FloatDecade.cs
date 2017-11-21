@@ -15,6 +15,7 @@ namespace Float
 		{
 			try
 			{
+				CustomSettings.Load();
 				AddManager<NetworkManager>();
 				AddManager<DataManager>();
 
@@ -44,6 +45,7 @@ namespace Float
 		{
 			try
 			{
+				CustomSettings.Save();
 				foreach (var item in mManagerDic)
 					item.Value.Destroy();
 			}

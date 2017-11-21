@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -29,16 +30,6 @@ public class DataManager : IManager
 	{
 		Instance = this;
 		ReloadModelData();
-	}
-
-	public override void Tick()
-	{
-		
-	}
-
-	public override void Destroy()
-	{
-		
 	}
 
 	public static void RefreshModelList()
@@ -100,5 +91,26 @@ public class DataManager : IManager
 		ModelData data;
 		modelDic.TryGetValue(id, out data);
 		return data;
+	}
+
+	public static void RebuildModelList(string modelPath)
+	{
+		try
+		{
+			string[] subDirs = Directory.GetDirectories(modelPath);
+			ModelDataArray modelArray = new ModelDataArray();
+			modelArray.models = new ModelData[subDirs.Length];
+			for (int i = 0; i < subDirs.Length; ++i)
+			{
+				string txt = File.ReadAllText(subDirs[i] + "/" + AppDefine.subModelDataName);
+				modelArray.models[i] = JsonConvert.DeserializeObject<ModelData>(txt);
+			}
+			string arrayStr = JsonConvert.SerializeObject(modelArray, Formatting.Indented);
+			File.WriteAllText(modelPath + "/" + AppDefine.modelListName, arrayStr, Encoding.UTF8);
+		}
+		catch (Exception e)
+		{
+			Log.Error(e.ToString());
+		}
 	}
 }
