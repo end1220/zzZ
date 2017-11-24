@@ -23,6 +23,18 @@ namespace Float.Pages
 		public Home()
 		{
 			InitializeComponent();
+
+			List<VideoNotify> videos = new List<VideoNotify>();
+			for (int i = 0; i < 10; i++)
+			{
+				videos.Add(new VideoNotify()
+				{
+					Name = "Name " + i,
+					Local = "Local " + i,
+					Image = "Image " + i
+				});
+			}
+			listBox1.ItemsSource = videos;
 		}
 	}
 }

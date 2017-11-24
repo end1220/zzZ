@@ -3,13 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Style="{StaticResource ContentRoot}">
-        <ScrollViewer>
-            <StackPanel MinWidth="200">
-                <TextBlock Text="TODO: add content" />
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+             mc:Ignorable="d" d:DesignWidth="493.5" Height="427.5">
+	<Grid x:Name="LayoutRoot"  Margin="5,-13,5,5" ShowGridLines="True" Style="{StaticResource ContentRoot}" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+		<ListBox Height="417" HorizontalAlignment="Left" Margin="10,10,-158,0" Name="listBox1" VerticalAlignment="Top"
+				Width="458" Background="Transparent" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White">
+
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel ItemHeight="140" ItemWidth="120" >
+					</WrapPanel>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid HorizontalAlignment="Center">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="0"></RowDefinition>
+							<RowDefinition Height="100" ></RowDefinition>
+							<RowDefinition Height="40"></RowDefinition>
+						</Grid.RowDefinitions>
+						<Image Source="{Binding Image}" Grid.Row="1" Width="120" Height="100" HorizontalAlignment="Stretch"/>
+						<TextBlock Text="{Binding Name}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="8pt" TextWrapping="Wrap" />
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</Grid>
 </UserControl>

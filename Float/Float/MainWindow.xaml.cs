@@ -36,7 +36,8 @@ namespace Float
 			InitializeComponent();
 
 			notify.Create(this);
-			this.Visibility = Visibility.Hidden;
+			this.Visibility = Visibility.Visible;
+
 		}
 
 		void OnActivated(object sender, EventArgs e) { }
