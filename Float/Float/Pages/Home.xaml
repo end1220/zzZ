@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignWidth="493.5" Height="427.5">
-	<Grid x:Name="LayoutRoot"  Margin="5,-13,5,5" ShowGridLines="True" Style="{StaticResource ContentRoot}" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-		<ListBox Height="417" HorizontalAlignment="Left" Margin="10,10,-158,0" Name="listBox1" VerticalAlignment="Top"
-				Width="458" Background="Transparent" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
+             mc:Ignorable="d" d:DesignWidth="300" Height="300" Background="#FF444444">
+	<Grid x:Name="LayoutRoot"  Margin="5,-13,5,5" ShowGridLines="True" Style="{StaticResource ContentRoot}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="#FF747474">
+		<ListBox Height="417" HorizontalAlignment="Left" Margin="-10,-10,-450,-110" Name="listBox1" VerticalAlignment="Top"
+				Width="600" Background="Transparent" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
 				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White">
-
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<WrapPanel ItemHeight="140" ItemWidth="120" >
@@ -17,7 +16,7 @@
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Grid HorizontalAlignment="Center">
+					<Grid HorizontalAlignment="Center" Background="#FFFF7D7D">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="0"></RowDefinition>
 							<RowDefinition Height="100" ></RowDefinition>
