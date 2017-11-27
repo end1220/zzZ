@@ -25,13 +25,13 @@ namespace Float.Pages
 			InitializeComponent();
 
 			List<VideoNotify> videos = new List<VideoNotify>();
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 30; i++)
 			{
 				videos.Add(new VideoNotify()
 				{
 					Name = "Name " + i,
 					Local = "Local " + i,
-					Image = "Image " + i
+					Image = "d:/233.png"
 				});
 			}
 			listBox1.ItemsSource = videos;

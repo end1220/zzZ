@@ -3,14 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignWidth="300" Height="300" Background="#FF444444">
-	<Grid x:Name="LayoutRoot"  Margin="5,-13,5,5" ShowGridLines="True" Style="{StaticResource ContentRoot}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="#FF747474">
-		<ListBox Height="417" HorizontalAlignment="Left" Margin="-10,-10,-450,-110" Name="listBox1" VerticalAlignment="Top"
-				Width="600" Background="Transparent" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
-				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White">
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300" Background="#FF444444">
+	<Grid x:Name="LayoutRoot"  Margin="5,5,5,5" ShowGridLines="True" Style="{StaticResource ContentRoot}" Background="#FF747474">
+		<ListBox Name="listBox1" Width="640" Height="620" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White" Background="#FF4B7859">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<WrapPanel ItemHeight="140" ItemWidth="120" >
+					<WrapPanel ItemWidth="120" ItemHeight="150" >
 					</WrapPanel>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
@@ -18,11 +17,11 @@
 				<DataTemplate>
 					<Grid HorizontalAlignment="Center" Background="#FFFF7D7D">
 						<Grid.RowDefinitions>
-							<RowDefinition Height="0"></RowDefinition>
-							<RowDefinition Height="100" ></RowDefinition>
+							<RowDefinition Height="5"></RowDefinition>
+							<RowDefinition Height="100"></RowDefinition>
 							<RowDefinition Height="40"></RowDefinition>
 						</Grid.RowDefinitions>
-						<Image Source="{Binding Image}" Grid.Row="1" Width="120" Height="100" HorizontalAlignment="Stretch"/>
+						<Image Source="{Binding Image}" Grid.Row="1" Width="118" Height="150" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 						<TextBlock Text="{Binding Name}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="8pt" TextWrapping="Wrap" />
 					</Grid>
 				</DataTemplate>
