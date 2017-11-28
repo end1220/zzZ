@@ -31,7 +31,7 @@ namespace Float.Pages
 				{
 					Name = "Name " + i,
 					Local = "Local " + i,
-					Image = "d:/233.png"
+					Image = ""//"d:/233.jpg"
 				});
 			}
 			listBox1.ItemsSource = videos;
