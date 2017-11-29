@@ -6,12 +6,14 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 
 
-public class ModelData
+public partial class ModelData
 {
 	public long id;
 	public string name;
 	public string bundleName;
 	public string assetName;
+	public string title;
+	public string author;
 }
 
 public class ModelDataArray
@@ -23,7 +25,13 @@ public class DataManager : IManager
 {
 	public static DataManager Instance { private set; get; }
 
+	List<ModelData> modelList = new List<ModelData>();
 	Dictionary<long, ModelData> modelDic = new Dictionary<long, ModelData>();
+
+	public List<ModelData> ModelList
+	{
+		get { return modelList; }
+	}
 
 
 	public override void Init()
@@ -81,9 +89,13 @@ public class DataManager : IManager
 		}
 
 		ModelDataArray modelArray = JsonConvert.DeserializeObject<ModelDataArray>(jsonStr);
+		modelList.Clear();
 		modelDic.Clear();
 		for (int i = 0; i < modelArray.models.Length; ++i)
+		{
+			modelList.Add(modelArray.models[i]);
 			modelDic.Add(modelArray.models[i].id, modelArray.models[i]);
+		}
 	}
 
 	public ModelData GetModelData(long id)

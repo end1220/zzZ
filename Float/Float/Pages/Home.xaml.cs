@@ -24,16 +24,7 @@ namespace Float.Pages
 		{
 			InitializeComponent();
 
-			List<VideoNotify> videos = new List<VideoNotify>();
-			for (int i = 0; i < 30; i++)
-			{
-				videos.Add(new VideoNotify()
-				{
-					Name = "Name " + i,
-					Local = "Local " + i,
-					Image = ""//"d:/233.jpg"
-				});
-			}
+			List<ModelData> videos = DataManager.Instance.ModelList;
 			listBox1.ItemsSource = videos;
 		}
 	}

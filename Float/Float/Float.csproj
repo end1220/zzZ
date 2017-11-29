@@ -77,7 +77,7 @@
     <Compile Include="Source\Notify.cs" />
     <Compile Include="Source\Util\Log.cs" />
     <Compile Include="Source\Util\ProtobufUtil.cs" />
-    <Compile Include="Source\VideoNotify.cs" />
+    <Compile Include="Source\ModelData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
