@@ -12,6 +12,9 @@ public class ModelData
 	public string name;
 	public string bundleName;
 	public string assetName;
+	public string title;
+	public string author;
+	public string image;
 }
 
 [Serializable]

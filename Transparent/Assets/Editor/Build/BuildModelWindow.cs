@@ -21,6 +21,10 @@ public class BuildModelWindow : EditorWindow
 	string modelPath;
 	string outputPath;
 	string prefabPath;
+	string titleDesc = "";
+	string author = "";
+	string imageName = "";
+
 	void OnEnable()
 	{
 		modelPath = Application.dataPath + "/Models/Test/";
@@ -70,6 +74,27 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Space(leftSpace);
 
 		GUILayout.BeginHorizontal();
+		GUILayout.Space(spaceSize);
+		GUILayout.Label("Title", EditorStyles.label, GUILayout.Width(titleLen));
+		titleDesc = GUILayout.TextField(titleDesc, GUILayout.Width(textLen));
+		GUILayout.EndHorizontal();
+		GUILayout.Space(leftSpace);
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(spaceSize);
+		GUILayout.Label("Author", EditorStyles.label, GUILayout.Width(titleLen));
+		author = GUILayout.TextField(author, GUILayout.Width(textLen));
+		GUILayout.EndHorizontal();
+		GUILayout.Space(leftSpace);
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(spaceSize);
+		GUILayout.Label("Thumb", EditorStyles.label, GUILayout.Width(titleLen));
+		imageName = GUILayout.TextField(imageName, GUILayout.Width(textLen));
+		GUILayout.EndHorizontal();
+		GUILayout.Space(leftSpace);
+
+		GUILayout.BeginHorizontal();
 		GUILayout.Space(leftSpace);
 		if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			BuildSingleAB(modelPath, outputPath, prefabPath);
@@ -86,14 +111,14 @@ public class BuildModelWindow : EditorWindow
 		EditorUtility.DisplayProgressBar(title, desc, value);
 	}
 
-	public static void BuildSingleAB(string sourcePath, string outputPath, string assetName)
+	public void BuildSingleAB(string sourcePath, string outputPath, string assetName)
 	{
 		try
 		{
 			long uid = AppUtils.GenUniqueGUIDLong();
 			string subfolderName = uid.ToString();
 			string abName = subfolderName + "/" + subfolderName;
-			CreateNewOutputPath(outputPath, true);
+			CreateNewOutputPath(outputPath, false);
 			AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
 			AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb }, 
 				BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
@@ -110,6 +135,9 @@ public class BuildModelWindow : EditorWindow
 			modelData.name = abName;
 			modelData.bundleName = abName;
 			modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
+			modelData.title = titleDesc;
+			modelData.author = author;
+			modelData.image = imageName;
 			jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
 			File.WriteAllText(outputPath + "/" + subfolderName + "/" + AppDefine.subModelDataName, jsonStr, Encoding.UTF8);
 
