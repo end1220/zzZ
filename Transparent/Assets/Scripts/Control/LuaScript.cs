@@ -11,19 +11,21 @@ public class LuaScript : MonoBehaviour
 
 	private void Awake()
 	{
+		
+	}
+
+	private void Start()
+	{
 		luaMgr = LuaManager.Instance;
 
-		var ret = CallMethod("Require", luaPath);
+		var ret = CallMethod("Game.New", luaPath);
 		// ref to luatable
 		luaTable = ret[0] as LuaTable;
 
 		/*var luaTable = luaMgr.GetTable("Game");
 		var fun = luaTable.GetInPath<LuaFunction>("OnInitOK");
 		fun.Call();*/
-	}
 
-	private void Start()
-	{
 		var func = luaTable.GetInPath<LuaFunction>("Start");
 		func.Call();
 	}

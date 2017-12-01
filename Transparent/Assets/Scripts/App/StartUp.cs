@@ -42,6 +42,21 @@ public class StartUp : MonoBehaviour
 			var fun = luaTable.GetInPath<XLua.LuaFunction>("OnInitOK");
 			fun.Call();
 			Log.Info("OnLoaded 2");
+
+
+			var ret = luaMgr.CallMethod("Game.New", "TestLuaScript");
+			// ref to luatable
+			luaTable = ret[0] as XLua.LuaTable;
+
+			/*var luaTable = luaMgr.GetTable("Game");
+			var fun = luaTable.GetInPath<LuaFunction>("OnInitOK");
+			fun.Call();*/
+
+			var func = luaTable.GetInPath<XLua.LuaFunction>("Start");
+			func.Call();
+
+			func = luaTable.GetInPath<XLua.LuaFunction>("Update");
+			func.Call();
 		}
 		catch (Exception e)
 		{
