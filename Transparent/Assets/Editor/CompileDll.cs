@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+using System.IO;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 using System.Text;
@@ -12,27 +14,53 @@ public class CompileDll
 	[System.Serializable]
 	class CompileConfig
 	{
+		public string OutputPath;
 		public string[] SourcePath;
 		public string[] Dlls;
-		public string[] LibPath;
-		public string OutputPath;
 	}
 
-	static string runtimeConfigPath = System.Environment.CurrentDirectory + "Assets/Editor/CompileConfig.json";
-	static string editorConfigPath = System.Environment.CurrentDirectory + "Assets/Editor/CompileConfig.json";
+	static string runtimeConfigPath = System.Environment.CurrentDirectory + "/Assets/Editor/CompileConfig.json";
+	static string editorConfigPath = System.Environment.CurrentDirectory + "/Assets/Editor/CompileConfig.json";
 
 	[MenuItem(AppDefine.AppName + "/Runtime Dll", false, 3)]
 	static void CompileRuntimeDll()
 	{
-		CompileConfig cfg = JsonConvert.DeserializeObject<CompileConfig>(runtimeConfigPath);
-		Compile(cfg.Dlls, cfg.SourcePath, cfg.OutputPath);
+		string cfgText = File.ReadAllText(runtimeConfigPath);
+		CompileConfig cfg = JsonConvert.DeserializeObject<CompileConfig>(cfgText);
+		List<string> sourceFiles = new List<string>();
+		for (int i = 0; i < cfg.SourcePath.Length; ++i)
+		{
+			string path = System.Environment.CurrentDirectory + "/" + cfg.SourcePath[i];
+			if (Directory.Exists(path))
+				GetSourceFiles(sourceFiles, path);
+			else
+				Debug.LogError(path + " not exist...");
+		}
+		string[] sources = sourceFiles.ToArray();
+		Compile(cfg.Dlls, sources, cfg.OutputPath);
 	}
 
 	[MenuItem(AppDefine.AppName + "/Editor Dll", false, 3)]
 	static void CompileEditorDll()
 	{
-		CompileConfig cfg = JsonConvert.DeserializeObject<CompileConfig>(editorConfigPath);
+		string cfgText = File.ReadAllText(editorConfigPath);
+		CompileConfig cfg = JsonConvert.DeserializeObject<CompileConfig>(cfgText);
 		Compile(cfg.Dlls, cfg.SourcePath, cfg.OutputPath);
+	}
+
+	static void GetSourceFiles(List<string> sourceFiles, string directory)
+	{
+		string[] files = Directory.GetFiles(directory);
+		for (int i = 0; i < files.Length; ++i)
+		{
+			if (!files[i].Contains(".meta") && files[i].Contains(".cs"))
+				sourceFiles.Add(files[i]);
+		}
+		string[] dirs = Directory.GetDirectories(directory);
+		for (int i = 0; i < dirs.Length; ++i)
+		{
+			GetSourceFiles(sourceFiles, dirs[i]);
+		}
 	}
 
 

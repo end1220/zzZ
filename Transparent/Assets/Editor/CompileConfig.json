@@ -1,42 +1,20 @@
-{
-  "exe": "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\csc.exe",
-  "asset_path": [
-    "..\\..\\Assets\\Scripts\\*.cs",
-    "..\\..\\Assets\\Editor\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\EasyTouchBundle\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\EasyTouchControls\\Plugins\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\XLua\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\Spine\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTweenPro\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\AstarPathfindingProject\\*.cs",
-	"..\\..\\Assets\\ThirdParty\\PostProcessing\\*.cs"
+﻿{
+  "OutputPath": "Float-Runtime.dll",
+  "SourcePath": [
+    "Assets\\Scripts\\",
+    "Assets\\Editor\\"
    ],
-  "dll_paths": [
+  "Dlls": [
     "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\mscorlib.dll",
     "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.dll",
     "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.Core.dll",
     "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.xml.dll",
     "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.xml.linq.dll",
-    "..\\..\\Assets\\ThirdParty\\Demigiant\\DOTween\\DOTween.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTween\\DOTween43.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTween\\DOTween46.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTween\\DOTween50.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTween\\Editor\\DOTweenEditor.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTweenPro\\DOTweenPro.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DOTweenPro\\Editor\\DOTweenProEditor.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DemiLib\\Core\\DemiLib.dll",
-	"..\\..\\Assets\\ThirdParty\\Demigiant\\DemiLib\\Core\\Editor\\DemiEditor.dll",
-    "..\\..\\Library\\UnityAssemblies\\UnityEditor.dll",
-    "..\\..\\Library\\UnityAssemblies\\UnityEngine.dll",
-    "..\\..\\Library\\UnityAssemblies\\UnityEngine.UI.dll",
-    "..\\..\\Library\\UnityAssemblies\\UnityEditor.UI.dll",
-	"..\\..\\Assets\\ThirdParty\\TextMesh Pro\\Plugins\\TextMeshPro-1.0.55.56.0b11.dll",
-	"..\\..\\Assets\\ThirdParty\\AstarPathfindingProject\\Plugins\\Clipper\\Pathfinding.ClipperLib.dll",
-	"..\\..\\Assets\\ThirdParty\\AstarPathfindingProject\\Plugins\\DotNetZip\\Pathfinding.Ionic.Zip.Reduced.dll",
-	"..\\..\\Assets\\ThirdParty\\AstarPathfindingProject\\Plugins\\Poly2Tri\\Pathfinding.Poly2Tri.dll",
-	"..\\..\\Assets\\Scripts\\Protobuf\\protobuf-net.dll",
-	"..\\..\\Assets\\Scripts\\Protobuf\\pbmessage.dll",
-	"..\\..\\Assets\\Scripts\\Protobuf\\PBMessageSerializer.dll"
-  ],
-  "lib_path": "..\\..\\Assets\\Plugins\\x86_64"
+    "Library\\UnityAssemblies\\UnityEditor.dll",
+    "Library\\UnityAssemblies\\UnityEngine.dll",
+    "Library\\UnityAssemblies\\UnityEngine.UI.dll",
+    "Library\\UnityAssemblies\\UnityEditor.UI.dll",
+	"Assets\\Plugins\\x86_64\\xlua.dll",
+	"Assets\\Plugins\\protobuf-net.dll"
+  ]
 }
