@@ -30,14 +30,14 @@ public class CompileDll
 		List<string> sourceFiles = new List<string>();
 		for (int i = 0; i < cfg.SourcePath.Length; ++i)
 		{
-			string path = System.Environment.CurrentDirectory + "/" + cfg.SourcePath[i];
+			string path = System.Environment.CurrentDirectory + "\\" + cfg.SourcePath[i];
 			if (Directory.Exists(path))
 				GetSourceFiles(sourceFiles, path);
 			else
 				Debug.LogError(path + " not exist...");
 		}
 		string[] sources = sourceFiles.ToArray();
-		Compile(cfg.Dlls, sources, cfg.OutputPath);
+		Compile(cfg.Dlls, sources, System.Environment.CurrentDirectory + "\\" + cfg.OutputPath);
 	}
 
 	[MenuItem(AppDefine.AppName + "/Editor Dll", false, 3)]
