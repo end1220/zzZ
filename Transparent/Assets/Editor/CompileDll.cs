@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 using System.Text;
@@ -19,14 +20,40 @@ public class CompileDll
 		public string[] Dlls;
 	}
 
-	static string runtimeConfigPath = System.Environment.CurrentDirectory + "/Assets/Editor/CompileConfig.json";
-	static string editorConfigPath = System.Environment.CurrentDirectory + "/Assets/Editor/CompileConfig.json";
+	static CompileConfig runtimeCfg = new CompileConfig()
+	{
+		OutputPath = "Float-Runtime.dll",
+		SourcePath = new string[]
+		{
+			"Assets\\Scripts\\",
+			"Assets\\Editor\\"
+		},
+		Dlls = new string[]
+		{
+			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\mscorlib.dll",
+			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.dll",
+			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.Core.dll",
+			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.xml.dll",
+			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.xml.linq.dll",
+			"Library\\UnityAssemblies\\UnityEditor.dll",
+			"Library\\UnityAssemblies\\UnityEngine.dll",
+			"Library\\UnityAssemblies\\UnityEngine.UI.dll",
+			"Library\\UnityAssemblies\\UnityEditor.UI.dll",
+			//"Assets\\Plugins\\x86_64\\xlua.dll",
+			"Assets\\Plugins\\protobuf-net.dll"
+		}
+	};
 
 	[MenuItem(AppDefine.AppName + "/Runtime Dll", false, 3)]
+	static void CompileRuntimeDllCmd()
+	{
+		RunCmd("help");
+	}
+
+	//[MenuItem(AppDefine.AppName + "/Runtime Dll", false, 3)]
 	static void CompileRuntimeDll()
 	{
-		string cfgText = File.ReadAllText(runtimeConfigPath);
-		CompileConfig cfg = JsonConvert.DeserializeObject<CompileConfig>(cfgText);
+		CompileConfig cfg = runtimeCfg;
 		List<string> sourceFiles = new List<string>();
 		for (int i = 0; i < cfg.SourcePath.Length; ++i)
 		{
@@ -34,17 +61,16 @@ public class CompileDll
 			if (Directory.Exists(path))
 				GetSourceFiles(sourceFiles, path);
 			else
-				Debug.LogError(path + " not exist...");
+				UnityEngine.Debug.LogError(path + " not exist...");
 		}
 		string[] sources = sourceFiles.ToArray();
 		Compile(cfg.Dlls, sources, System.Environment.CurrentDirectory + "\\" + cfg.OutputPath);
 	}
 
-	[MenuItem(AppDefine.AppName + "/Editor Dll", false, 3)]
+	//[MenuItem(AppDefine.AppName + "/Editor Dll", false, 3)]
 	static void CompileEditorDll()
 	{
-		string cfgText = File.ReadAllText(editorConfigPath);
-		CompileConfig cfg = JsonConvert.DeserializeObject<CompileConfig>(cfgText);
+		CompileConfig cfg = runtimeCfg;
 		Compile(cfg.Dlls, cfg.SourcePath, cfg.OutputPath);
 	}
 
@@ -76,14 +102,36 @@ public class CompileDll
 		CSharpCodeProvider provider = new CSharpCodeProvider();
 		CompilerResults result = provider.CompileAssemblyFromFile(param, sources);
 
-		StringBuilder sb = new StringBuilder();
-		foreach (CompilerError error in result.Errors)
+		if (result.Errors.Count > 0)
 		{
-			sb.Remove(0, sb.Length);
-			sb.Append(error.IsWarning ? "Warning" : "Error");
-			sb.Append("(" + error.ErrorNumber + ") - " + error.ErrorText + "\t\tLine:" + error.Line.ToString() + ", Column:" + error.Column.ToString());
-			Debug.Log(sb.ToString());
+			StringBuilder sb = new StringBuilder();
+			foreach (CompilerError error in result.Errors)
+			{
+				sb.Remove(0, sb.Length);
+				sb.Append(error.IsWarning ? "Warning" : "Error");
+				sb.Append("(" + error.ErrorNumber + ") - " + error.ErrorText + "\t\tLine:" + error.Line.ToString() + ", Column:" + error.Column.ToString());
+				UnityEngine.Debug.LogError(sb.ToString());
+			}
 		}
+		else
+		{
+			UnityEngine.Debug.Log("Build successfully");
+		}
+	}
+
+	static string RunCmd(string command)
+	{
+		//例Process  
+		Process p = new Process();
+		p.StartInfo.FileName = "C:/Windows/Microsoft.NET/Framework/v3.5/csc.exe";         //确定程序名  
+		p.StartInfo.Arguments = command;   //确定程式命令行  
+		p.StartInfo.UseShellExecute = false;      //Shell的使用  
+		p.StartInfo.RedirectStandardInput = true;  //重定向输入  
+		p.StartInfo.RedirectStandardOutput = true; //重定向输出  
+		p.StartInfo.RedirectStandardError = true;  //重定向输出错误  
+		p.StartInfo.CreateNoWindow = false;        //设置置不显示窗口  
+		p.Start();
+		return p.StandardOutput.ReadToEnd();      //输出出流取得命令行结果果  
 	}
 
 }
