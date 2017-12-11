@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{682FF692-61D2-4523-B15D-E91C80741216}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UnityToDll</RootNamespace>
+    <AssemblyName>UnityToDll</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_3;UNITY_5_6;UNITY_5;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_3;UNITY_5_6;UNITY_5;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VR">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\Transparent\Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\Transparent\Assets\Plugins\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Transparent\Assets\Plugins\JsonNet-Lite\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Transparent\Assets\Scripts\App\App.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\App\IManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\App\LuaManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\App\Singleton.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\App\StartUp.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Control\KeyboardMouse.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Control\LuaScript.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Control\ModelScene.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Control\SpinCamera.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Data\AssetBundleLoadOperation.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Data\DataManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Data\MyAssetBundleManifest.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Data\ResourceManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Data\SubAssetBundleManifest.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Effect\BreathLoop.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Effect\RotateSelf.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\ByteBuffer.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\CommandHandler.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\Converter.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\NetClient.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\NetworkManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\Packet.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\TCPClient.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Network\UDPClient.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Util\AppDefine.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Util\AppUtils.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Util\FileUtils.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Util\Log.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Util\ProtobufUtil.cs" />
+    <Compile Include="..\..\Transparent\Assets\Scripts\Window\TransparentWindow.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\Knight\scripts\rotator.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\SapphiArt\SapphiArtchan\Scripts\AnimationManagerUI.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\SapphiArt\SapphiArtchan\Scripts\SapphiArtChan_AnimManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\CameraController.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\FaceUpdate.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\IdleChanger.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\SceneLoader.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\ThirdPersonCamera.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\UnityChanControlScriptWithRgidBody.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\01_Helloworld\Helloworld.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\02_U3DScripting\LuaBehaviour.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\04_LuaObjectOrented\InvokeLua.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\05_NoGc\NoGc.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\06_Coroutine\Coroutine.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\06_Coroutine\Coroutine_Runner.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\07_AsyncTest\AsyncTest.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\07_AsyncTest\MessageBox.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\08_Hotfix\HotfixTest.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\08_Hotfix\HotfixTest2.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\08_Hotfix\StatefullTest.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\09_GenericMethod\Foo.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\09_GenericMethod\GenericMethodExample.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\10_SignatureLoader\SignatureLoaderTest.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\11_RawObject\RawObjectTest.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\12_ReImplementInLua\ReImplementInLua.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\ExampleGenConfig.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\CSCallLuaItfDBridge.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\Coroutine_RunnerWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\DelegatesGensBridge.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\EnumWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\Foo1ChildWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\Foo1ParentWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\Foo2ChildWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\Foo2ParentWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\FooExtensionWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\FooWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\InvokeLuaICalcBridge.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\LuaBehaviourWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\PackUnpack.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\SystemCollectionsGenericList1SystemInt32Wrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\SystemCollectionsIEnumeratorBridge.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\SystemDateTimeWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\SystemObjectWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\TutorialBaseClassWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\TutorialCalcWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\TutorialDrivenClassExtensionsWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\TutorialDrivenClassWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineAnimationClipWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineAnimationCurveWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineBehaviourWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineBoundsWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineColorWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineComponentWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineDebugWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineGameObjectWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineKeyframeWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineMonoBehaviourWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineObjectWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineParticleSystemWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineQuaternionWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineRay2DWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineRayWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineRendererWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineResourcesWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineSkinnedMeshRendererWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineTextAssetWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineTimeWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineTransformWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineVector2Wrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineVector3Wrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineVector4Wrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineWWWWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\UnityEngineWaitForSecondsWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\WrapPusher.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\XLuaGenAutoRegister.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\XLuaTestIExchangerBridge.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\XLuaTestMyStructWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\XLuaTestNoGcWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Gen\XLuaTestPeddingWrap.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\CodeEmit.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\CopyByValue.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\DelegateBridge.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\GenAttributes.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\GenConfig.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\InternalGlobals.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaBase.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaDLL.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaEnv.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaException.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaFunction.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaLoader.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\LuaTable.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\MethodWarpsCache.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\ObjectCasters.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\ObjectPool.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\ObjectTranslator.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\ObjectTranslatorPool.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\RawObject.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\SignatureLoader.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\StaticLuaCallbacks.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\StringBuiderCache.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\TemplateEngine\TemplateEngine.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\TypeExtensions.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Src\Utils.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Tutorial\CSharpCallLua\CSCallLua.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Tutorial\LoadLuaScript\ByFile\ByFile.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Tutorial\LoadLuaScript\ByString\ByString.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Tutorial\LoadLuaScript\Loader\CustomLoader.cs" />
+    <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Tutorial\LuaCallCSharp\LuaCallCs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

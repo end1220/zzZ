@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Globalization;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -222,4 +223,4 @@ namespace CompilerParametersExample
 
 		}
 	}
-}
+}*/
