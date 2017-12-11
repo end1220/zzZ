@@ -110,7 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UnityToDll\UnityRuntimeDll.csproj">
+    <ProjectReference Include="..\UnityRuntimeDll\UnityRuntimeDll.csproj">
       <Project>{682FF692-61D2-4523-B15D-E91C80741216}</Project>
       <Name>UnityRuntimeDll</Name>
     </ProjectReference>

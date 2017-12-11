@@ -7,8 +7,8 @@
     <ProjectGuid>{682FF692-61D2-4523-B15D-E91C80741216}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnityToDll</RootNamespace>
-    <AssemblyName>UnityToDll</AssemblyName>
+    <RootNamespace>UnityRuntimeDll</RootNamespace>
+    <AssemblyName>UnityRuntimeDll</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>

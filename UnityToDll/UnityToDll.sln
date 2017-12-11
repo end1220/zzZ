@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityRuntimeDll", "UnityToDll\UnityRuntimeDll.csproj", "{682FF692-61D2-4523-B15D-E91C80741216}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityRuntimeDll", "UnityRuntimeDll\UnityRuntimeDll.csproj", "{682FF692-61D2-4523-B15D-E91C80741216}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityEditorDll", "UnityEditorDll\UnityEditorDll.csproj", "{8A84A30E-A093-4402-86D7-05E96AC3B2E5}"
 EndProject
