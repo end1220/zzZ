@@ -1,17 +1,19 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 using System.Text;
-using UnityEngine;
 using UnityEditor;
 using Newtonsoft.Json;
 
 
 public class CompileDll
 {
+	static string workingDirectory = Environment.CurrentDirectory + "/";
+
 	[System.Serializable]
 	class CompileConfig
 	{
@@ -25,46 +27,68 @@ public class CompileDll
 		OutputPath = "Float-Runtime.dll",
 		SourcePath = new string[]
 		{
-			"Assets\\Scripts\\",
-			"Assets\\Editor\\"
+			"Assets/Scripts/*.cs"/*,
+			"Assets/Editor/ *.cs"*/
 		},
 		Dlls = new string[]
 		{
-			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\mscorlib.dll",
-			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.dll",
-			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.Core.dll",
-			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.xml.dll",
-			"C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v3.5\\Profile\\Unity Subset v3.5\\System.xml.linq.dll",
-			"Library\\UnityAssemblies\\UnityEditor.dll",
-			"Library\\UnityAssemblies\\UnityEngine.dll",
-			"Library\\UnityAssemblies\\UnityEngine.UI.dll",
-			"Library\\UnityAssemblies\\UnityEditor.UI.dll",
-			//"Assets\\Plugins\\x86_64\\xlua.dll",
-			"Assets\\Plugins\\protobuf-net.dll"
+			"UnitySubsetV3.5/mscorlib.dll",
+			"UnitySubsetV3.5/System.dll",
+			"UnitySubsetV3.5/System.Core.dll",
+			"UnitySubsetV3.5/System.xml.dll",
+			"UnitySubsetV3.5/System.xml.linq.dll",
+			"Library/UnityAssemblies/UnityEditor.dll",
+			"Library/UnityAssemblies/UnityEngine.dll",
+			"Library/UnityAssemblies/UnityEngine.UI.dll",
+			"Library/UnityAssemblies/UnityEditor.UI.dll",
+			//"Assets/Plugins/x86_64/xlua.dll",
+			"Assets/Plugins/protobuf-net.dll"
 		}
 	};
 
-	[MenuItem(AppDefine.AppName + "/Runtime Dll", false, 3)]
+
+	[MenuItem(AppDefine.AppName + "/Build Runtime Dll", false, 3)]
 	static void CompileRuntimeDllCmd()
 	{
-		RunCmd("help");
+		string cscPath = "C:/Windows/Microsoft.NET/Framework/v4.0.30319/csc.exe";
+		StringBuilder sb = new StringBuilder();
+		sb.Append(" /noconfig");
+		sb.Append(" /nowarn:1701,1702");
+		sb.Append(" /nostdlib");
+		sb.Append(" /errorreport:prompt");
+		sb.Append(" /warn:4");
+		sb.Append(" /define:trace");
+		sb.Append(" /define:UNITY_5");
+		sb.Append(" /define:UNITY_EDITOR");
+		sb.Append(" /debug:pdbonly");
+		sb.Append(" /filealign:512");
+		sb.Append(" /optimize");
+		sb.Append(" /target:library");
+		sb.Append(" /out:" + workingDirectory + runtimeCfg.OutputPath);
+		sb.Append(" /reference:");
+		for (int i = 0; i < runtimeCfg.Dlls.Length; ++i)
+			sb.Append(runtimeCfg.Dlls[i] + ((i == runtimeCfg.Dlls.Length - 1) ? "" : ";"));
+		for (int i = 0; i < runtimeCfg.SourcePath.Length; ++i)
+			sb.Append(" /recurse:" + runtimeCfg.SourcePath[i]);
+
+		RunProcess(cscPath, sb.ToString());
 	}
 
 	//[MenuItem(AppDefine.AppName + "/Runtime Dll", false, 3)]
-	static void CompileRuntimeDll()
+	/*static void CompileRuntimeDll()
 	{
 		CompileConfig cfg = runtimeCfg;
 		List<string> sourceFiles = new List<string>();
 		for (int i = 0; i < cfg.SourcePath.Length; ++i)
 		{
-			string path = System.Environment.CurrentDirectory + "\\" + cfg.SourcePath[i];
+			string path = workingDirectory + "/" + cfg.SourcePath[i];
 			if (Directory.Exists(path))
 				GetSourceFiles(sourceFiles, path);
 			else
 				UnityEngine.Debug.LogError(path + " not exist...");
 		}
 		string[] sources = sourceFiles.ToArray();
-		Compile(cfg.Dlls, sources, System.Environment.CurrentDirectory + "\\" + cfg.OutputPath);
+		Compile(cfg.Dlls, sources, workingDirectory + "/" + cfg.OutputPath);
 	}
 
 	//[MenuItem(AppDefine.AppName + "/Editor Dll", false, 3)]
@@ -72,7 +96,7 @@ public class CompileDll
 	{
 		CompileConfig cfg = runtimeCfg;
 		Compile(cfg.Dlls, cfg.SourcePath, cfg.OutputPath);
-	}
+	}*/
 
 	static void GetSourceFiles(List<string> sourceFiles, string directory)
 	{
@@ -90,7 +114,7 @@ public class CompileDll
 	}
 
 
-	static void Compile(string[] references, string[] sources, string outputfile)
+	/*static void Compile(string[] references, string[] sources, string outputfile)
 	{
 		CompilerParameters param = new CompilerParameters(references, outputfile, true);
 		param.TreatWarningsAsErrors = false;
@@ -117,21 +141,32 @@ public class CompileDll
 		{
 			UnityEngine.Debug.Log("Build successfully");
 		}
+	}*/
+
+	static void RunProcess(string exePath, string args)
+	{
+		Process p = new Process();
+		p.StartInfo.FileName = exePath;
+		p.StartInfo.Arguments = args;
+		p.StartInfo.UseShellExecute = false;
+		p.StartInfo.RedirectStandardInput = true; 
+		p.StartInfo.RedirectStandardOutput = true;
+		p.StartInfo.RedirectStandardError = true;
+		p.StartInfo.CreateNoWindow = true;
+		p.StartInfo.StandardOutputEncoding = Encoding.GetEncoding("GB2312");
+		p.StartInfo.StandardErrorEncoding = Encoding.GetEncoding("GB2312");
+		p.Start();
+		p.WaitForExit(5000);
+		string output = p.StandardOutput.ReadToEnd();
+		UnityEngine.Debug.Log(output);
 	}
 
-	static string RunCmd(string command)
+	/*public static string get_uft8(string unicodeString)
 	{
-		//例Process  
-		Process p = new Process();
-		p.StartInfo.FileName = "C:/Windows/Microsoft.NET/Framework/v3.5/csc.exe";         //确定程序名  
-		p.StartInfo.Arguments = command;   //确定程式命令行  
-		p.StartInfo.UseShellExecute = false;      //Shell的使用  
-		p.StartInfo.RedirectStandardInput = true;  //重定向输入  
-		p.StartInfo.RedirectStandardOutput = true; //重定向输出  
-		p.StartInfo.RedirectStandardError = true;  //重定向输出错误  
-		p.StartInfo.CreateNoWindow = false;        //设置置不显示窗口  
-		p.Start();
-		return p.StandardOutput.ReadToEnd();      //输出出流取得命令行结果果  
-	}
+		UTF8Encoding utf8 = new UTF8Encoding();
+		Byte[] encodedBytes = utf8.GetBytes(unicodeString);
+		String decodedString = utf8.GetString(encodedBytes);
+		return decodedString;
+	}*/
 
 }
