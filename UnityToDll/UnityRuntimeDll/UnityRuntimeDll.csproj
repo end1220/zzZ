@@ -104,6 +104,15 @@
     <Compile Include="..\..\Transparent\Assets\Scripts\Util\Log.cs" />
     <Compile Include="..\..\Transparent\Assets\Scripts\Util\ProtobufUtil.cs" />
     <Compile Include="..\..\Transparent\Assets\Scripts\Window\TransparentWindow.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\Knight\scripts\rotator.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\SapphiArt\SapphiArtchan\Scripts\AnimationManagerUI.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\SapphiArt\SapphiArtchan\Scripts\SapphiArtChan_AnimManager.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\CameraController.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\FaceUpdate.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\IdleChanger.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\SceneLoader.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\ThirdPersonCamera.cs" />
+    <Compile Include="..\..\Transparent\Assets\StoreAssets\UnityChan\Scripts\UnityChanControlScriptWithRgidBody.cs" />
     <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\01_Helloworld\Helloworld.cs" />
     <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\02_U3DScripting\LuaBehaviour.cs" />
     <Compile Include="..\..\Transparent\Assets\ThirdParty\XLua\Examples\04_LuaObjectOrented\InvokeLua.cs" />

@@ -120,8 +120,10 @@
     <Compile Include="..\..\Transparent\Assets\Editor\Build\BuildMenuItems.cs" />
     <Compile Include="..\..\Transparent\Assets\Editor\Build\BuildModelWindow.cs" />
     <Compile Include="..\..\Transparent\Assets\Editor\Build\UtilsForEdit.cs" />
-    <Compile Include="..\..\Transparent\Assets\Editor\CompileDll.cs" />
-    <Compile Include="..\..\Transparent\Assets\Editor\CompilerExample.cs" />
+    <Compile Include="..\..\Transparent\Assets\Editor\FixScriptRef\FileIdUtil.cs" />
+    <Compile Include="..\..\Transparent\Assets\Editor\FixScriptRef\FixScriptRef.cs" />
+    <Compile Include="..\..\Transparent\Assets\Editor\FixScriptRef\MD4.cs" />
+    <Compile Include="..\..\Transparent\Assets\Editor\FixScriptRef\ScriptMetaInfo.cs" />
     <Compile Include="..\..\Transparent\Assets\Editor\ModelMenu.cs" />
     <Compile Include="..\..\Transparent\Assets\Scripts\SPRT\Sample\Editor\AssetBundleSampleDataWindow.cs" />
     <Compile Include="..\..\Transparent\Assets\Scripts\SPRT\SeparatedAssetBundleBuild\Editor\AllAssetBundleInformation.cs" />
