@@ -21,8 +21,8 @@ public class BuildModelWindow : EditorWindow
 	string modelPath;
 	string outputPath;
 	string prefabPath;
-	string titleDesc = "";
-	string author = "";
+	string titleDesc = "your title";
+	string author = "your name";
 	string imageName = "";
 
 	void OnEnable()
