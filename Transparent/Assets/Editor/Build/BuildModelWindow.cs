@@ -220,7 +220,7 @@ public class BuildModelWindow : EditorWindow
 		// root dir
 		string[] files = Directory.GetFiles(sourceDir);
 		for (int i = 0; i < files.Length; ++i)
-			if (!files[i].EndsWith(".meta") && !files[i].EndsWith(".cs"))
+			if (!files[i].EndsWith(".meta") && !files[i].EndsWith(".cs") && !files[i].EndsWith(".unity"))
 				assetNames.Add(files[i].Substring(files[i].IndexOf("Assets")).Replace("\\", "/"));
 		
 		// sub dir
@@ -243,7 +243,7 @@ public class BuildModelWindow : EditorWindow
 		string[] files = Directory.GetFiles(source);
 		for (int i = 0; i < files.Length; ++i)
 		{
-			if (!files[i].EndsWith(".meta") && !files[i].EndsWith(".cs"))
+			if (!files[i].EndsWith(".meta") && !files[i].EndsWith(".cs") && !files[i].EndsWith(".unity"))
 				assetNames.Add(files[i].Substring(files[i].IndexOf("Assets")).Replace("\\", "/"));
 		}
 

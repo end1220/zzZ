@@ -53,7 +53,7 @@ public class CommandHandler
 	{
 		handles.Add(CommandId.ShowWindow, OnShowWindow);
 		handles.Add(CommandId.HideWindow, OnHideWindow);
-		handles.Add(CommandId.PlayThisOne, PlayThis);
+		handles.Add(CommandId.PlayThisOne, OnPlayThis);
 	}
 
 	public static void Handle(Packet packet)
@@ -75,10 +75,10 @@ public class CommandHandler
 		Log.Error("hide window");
 	}
 
-	static void PlayThis(Command cmd)
+	static void OnPlayThis(Command cmd)
 	{
 		Log.Error("play this");
 		int id = cmd.number1;
-		ModelScene.Instance.LoadModel(5488790688738896725);
+		ModelScene.Instance.LoadModel(5139483679854042868);
 	}
 }
