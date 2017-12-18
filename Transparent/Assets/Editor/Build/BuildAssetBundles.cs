@@ -73,50 +73,6 @@ public class BuildAssetBundles
 		}
 	}
 
-	/*public static void Build_Config()
-	{
-		string category = "config";
-		string subDir = "/Config";
-		string outputPath = CreateNewOutputPath(false);
-		if (Directory.Exists(outputPath + "/" + category))
-			Directory.Delete(outputPath + "/" + category, true);
-		RefreshAssetBundleNames();
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(Application.dataPath + subDir, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build template done.");
-	}
-
-	public static void Build_Lua()
-	{
-		string category = "lua";
-		string subDir = "/Lua";
-		string outputPath = CreateNewOutputPath(false);
-		if (Directory.Exists(outputPath + "/" + category))
-			Directory.Delete(outputPath + "/" + category, true);
-		MakeLuaTempDir();
-		RefreshAssetBundleNames();
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(luaTempDir + subDir, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		DeleteLuaTempDir();
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build lua done.");
-	}
-
-	public static void Build_Template()
-	{
-		string category = "template";
-		string subDir = "/Templates";
-		string outputPath = CreateNewOutputPath(false);
-		if (Directory.Exists(outputPath + "/" + category))
-			Directory.Delete(outputPath + "/" + category, true);
-		RefreshAssetBundleNames();
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(Application.dataPath + subDir, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build template done.");
-	}*/
-
 	public static void Build_Character()
 	{
 		string category = "character";
@@ -131,61 +87,7 @@ public class BuildAssetBundles
 		Debug.Log("Build character done.");
 	}
 
-	/*public static void Build_UI()
-	{
-		string category = "ui";
-		string subDir = "/Ui/Ui";
-		string outputPath = CreateNewOutputPath(false);
-		//             if (Directory.Exists(outputPath + "/" + category))
-		//                 Directory.Delete(outputPath + "/" + category, true);
-		RefreshAssetBundleNames();
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(Application.dataPath + subDir, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build ui done.");
-	}
-
-	public static void Build_Scene()
-	{
-		string category = "scene";
-		string subDir = "/Scenes";
-		string outputPath = CreateNewOutputPath(false);
-		// 			if (Directory.Exists(outputPath + "/" + category))
-		// 				Directory.Delete(outputPath + "/" + category, true);
-		RefreshAssetBundleNames();
-		//List<AssetBundleBuild> mapbuild = CollectBuildListRecur(Application.dataPath + subDir, category);
-
-		List<AssetBundleBuild> mapbuild = new List<AssetBundleBuild>();
-		List<string> assetNames = new List<string>();
-		{
-			assetNames.Add("Assets/Scenes/SLDSSD_8.unity");
-			AssetBundleBuild abb0 = new AssetBundleBuild();
-			abb0.assetBundleName = "scene/sldssd_8";
-			abb0.assetNames = assetNames.ToArray();
-			mapbuild.Add(abb0);
-		}
-
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build ui done.");
-	}
-
-
-
-	public static void Build_Effect()
-	{
-		string category = "effect";
-		string subDir = "/Effects";
-		string outputPath = CreateNewOutputPath(false);
-		if (Directory.Exists(outputPath + "/" + category))
-			Directory.Delete(outputPath + "/" + category, true);
-		RefreshAssetBundleNames();
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(Application.dataPath + subDir, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build effect done.");
-	}*/
-
+	
 	private static List<AssetBundleBuild> CollectBuildListRecur(string sourceDir, string category)
 	{
 		List<AssetBundleBuild> builds = new List<AssetBundleBuild>();

@@ -8,7 +8,8 @@ public class ModelScene : MonoBehaviour
 	public static ModelScene Instance { get; private set; }
 
 	private Transform modelRoot;
-	
+
+	public int TestId;
 
 
 	void Awake()
@@ -52,7 +53,7 @@ public class ModelScene : MonoBehaviour
 		int count = 0;
 		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "play"))
 		{
-			var cmd = new Command(1087141166);
+			var cmd = new Command(TestId);
 			NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
 		}
 		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "hide"))
