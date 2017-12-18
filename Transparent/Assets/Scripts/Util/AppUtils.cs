@@ -18,6 +18,16 @@ static public class AppUtils
 		return System.BitConverter.ToInt64(buffer, 0);
 	}
 
+	public static void SetRandomSeed(int seed)
+	{
+		UnityEngine.Random.InitState(seed);
+	}
+
+	public static int RandomInt(int min, int max)
+	{
+		return UnityEngine.Random.Range(min, max);
+	}
+
 	/// <summary>
 	/// 计算字符串的MD5值
 	/// </summary>

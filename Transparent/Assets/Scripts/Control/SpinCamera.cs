@@ -73,7 +73,7 @@ public class SpinCamera : MonoBehaviour
         if (null == target)
             return;
 		
-		Vector3 targetPosition = target.position + Vector3.up * 4;
+		Vector3 targetPosition = target.position + Vector3.up * 1;
 
 		if (force)
 		{

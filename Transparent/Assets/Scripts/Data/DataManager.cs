@@ -8,10 +8,11 @@ using System.Collections.Generic;
 [Serializable]
 public class ModelData
 {
-	public long id;
+	public int id;
 	public string name;
 	public string bundleName;
 	public string assetName;
+	public float scale;
 	public string title;
 	public string author;
 	public string preview;
@@ -27,7 +28,7 @@ public class DataManager : IManager
 {
 	public static DataManager Instance { private set; get; }
 
-	Dictionary<long, ModelData> modelDic = new Dictionary<long, ModelData>();
+	Dictionary<int, ModelData> modelDic = new Dictionary<int, ModelData>();
 
 
 	public override void Init()
@@ -100,7 +101,7 @@ public class DataManager : IManager
 			modelDic.Add(modelArray.models[i].id, modelArray.models[i]);
 	}
 
-	public ModelData GetModelData(long id)
+	public ModelData GetModelData(int id)
 	{
 		ModelData data;
 		modelDic.TryGetValue(id, out data);

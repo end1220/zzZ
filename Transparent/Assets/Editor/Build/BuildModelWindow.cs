@@ -22,14 +22,15 @@ public class BuildModelWindow : EditorWindow
 	string outputPath;
 	string prefabPath;
 	UnityEngine.Object prefab;
-	string titleDesc = "your title";
-	string author = "your name";
-	string imageName = "";
-
+	string titleDesc = "Input your title";
+	string author = "Input your name";
+	string preview = "";
+	float scale = 1;
 	
 
 	void OnEnable()
 	{
+		AppUtils.SetRandomSeed(DateTime.Now.Millisecond * DateTime.Now.Second);
 		modelPath = Application.dataPath + "/Models/Test/";
 		outputPath = "Output/" + AppDefine.AppName; //Application.streamingAssetsPath + "/" + AppDefine.AppName;
 		prefabPath = "D:/Locke/git/zzZ/Transparent/Assets/Models/Test/Directional Light.prefab";
@@ -50,6 +51,13 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.Space(spaceSize);
 
 		GUILayout.BeginHorizontal();
+		GUILayout.Space(spaceSize);
+		GUILayout.Label("Output Path", EditorStyles.label, GUILayout.Width(titleLen));
+		GUILayout.TextField(Environment.CurrentDirectory.Replace("\\", "/") + "/" + outputPath, GUILayout.Width(textLen));
+		GUILayout.EndHorizontal();
+		GUILayout.Space(leftSpace);
+
+		GUILayout.BeginHorizontal();
 		GUILayout.Space(leftSpace);
 		GUILayout.Label("Model Path", EditorStyles.label, GUILayout.Width(titleLen));
 		modelPath = GUILayout.TextField(modelPath, GUILayout.Width(textLen));
@@ -60,22 +68,17 @@ public class BuildModelWindow : EditorWindow
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
-		GUILayout.Label("Output Path", EditorStyles.label, GUILayout.Width(titleLen));
-		/*outputPath = */GUILayout.TextField(Environment.CurrentDirectory.Replace("\\", "/") + "/" + outputPath, GUILayout.Width(textLen));
-		/*if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
-			outputPath = EditorUtility.OpenFolderPanel("Select Output Folder", String.Empty, "");*/
+		GUILayout.Label("Prefab Path", EditorStyles.label, GUILayout.Width(titleLen));
+		prefab = EditorGUILayout.ObjectField(prefab, typeof(GameObject), false, GUILayout.Width(textLen));
+		if (prefab != null)
+			prefabPath = AssetDatabase.GetAssetPath(prefab);
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
-		GUILayout.Label("Prefab Path", EditorStyles.label, GUILayout.Width(titleLen));
-		prefab = EditorGUILayout.ObjectField(prefab, typeof(GameObject), false, GUILayout.Width(textLen));
-		if (prefab != null)
-			prefabPath = AssetDatabase.GetAssetPath(prefab);
-		/*prefabPath = GUILayout.TextField(prefabPath, GUILayout.Width(textLen));
-		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
-			prefabPath = EditorUtility.OpenFilePanel("Select Prefab", String.Empty, "");*/
+		GUILayout.Label("Scale", EditorStyles.label, GUILayout.Width(titleLen));
+		scale = EditorGUILayout.FloatField(scale, GUILayout.Width(50));
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
@@ -96,7 +99,7 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
 		GUILayout.Label("Preview", EditorStyles.label, GUILayout.Width(titleLen));
-		imageName = GUILayout.TextField(imageName, GUILayout.Width(textLen));
+		preview = GUILayout.TextField(preview, GUILayout.Width(textLen));
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
@@ -115,19 +118,13 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 	}
-	
-	/*static void UpdateProgress(int progress, int progressMax, string desc)
-	{
-		string title = "Processing...[" + progress + " / " + progressMax + "]";
-		float value = (float)progress / (float)progressMax;
-		EditorUtility.DisplayProgressBar(title, desc, value);
-	}*/
 
 	public void BuildSingleAB(string sourcePath, string outputPath, string assetName)
 	{
 		try
 		{
-			long uid = AppUtils.GenUniqueGUIDLong();
+			//long uid = AppUtils.GenUniqueGUIDLong();
+			int uid = AppUtils.RandomInt(0, int.MaxValue);
 			string subfolderName = uid.ToString();
 			string abName = subfolderName + "/" + subfolderName;
 			CreateNewOutputPath(outputPath, false);
@@ -147,9 +144,10 @@ public class BuildModelWindow : EditorWindow
 			modelData.name = abName;
 			modelData.bundleName = abName;
 			modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
+			modelData.scale = scale;
 			modelData.title = titleDesc;
 			modelData.author = author;
-			modelData.preview = imageName;
+			modelData.preview = preview;
 			jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
 			string subfolderPath = outputPath + "/" + subfolderName;
 			File.WriteAllText(subfolderPath + "/" + AppDefine.subModelDataName, jsonStr, Encoding.UTF8);

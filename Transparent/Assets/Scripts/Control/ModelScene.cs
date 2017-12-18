@@ -17,7 +17,7 @@ public class ModelScene : MonoBehaviour
 		modelRoot = transform;
 	}
 
-	public void LoadModel(long id)
+	public void LoadModel(int id)
 	{
 		ModelData data = DataManager.Instance.GetModelData(id);
 		if (data != null)
@@ -27,7 +27,7 @@ public class ModelScene : MonoBehaviour
 			Transform model = go.transform;
 			model.parent = modelRoot;
 			model.localPosition = Vector3.zero;
-			model.localScale = Vector3.one;
+			model.localScale = Vector3.one * data.scale;
 			model.localRotation = Quaternion.identity;
 
 			SpinCamera.Instance.target = modelRoot;
@@ -50,12 +50,12 @@ public class ModelScene : MonoBehaviour
 	private void OnGUI()
 	{
 		int count = 0;
-		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "m1"))
+		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "play"))
 		{
-			var cmd = new Command(333);
+			var cmd = new Command(1087141166);
 			NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
 		}
-		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "m2"))
+		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "hide"))
 		{
 			var cmd = new Command(1);
 			NetworkManager.Instance.SendBytes((ushort)CommandId.HideWindow, ProtobufUtil.Serialize(cmd));
