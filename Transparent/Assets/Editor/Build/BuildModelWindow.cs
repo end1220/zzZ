@@ -21,9 +21,12 @@ public class BuildModelWindow : EditorWindow
 	string modelPath;
 	string outputPath;
 	string prefabPath;
+	UnityEngine.Object prefab;
 	string titleDesc = "your title";
 	string author = "your name";
 	string imageName = "";
+
+	
 
 	void OnEnable()
 	{
@@ -43,7 +46,7 @@ public class BuildModelWindow : EditorWindow
 		float buttonLen2 = 50;
 		float buttonHeight = 40;
 
-		GUILayout.Label("Make your model", EditorStyles.helpBox);
+		GUILayout.Label("Build your model", EditorStyles.helpBox);
 		GUILayout.Space(spaceSize);
 
 		GUILayout.BeginHorizontal();
@@ -58,18 +61,21 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
 		GUILayout.Label("Output Path", EditorStyles.label, GUILayout.Width(titleLen));
-		outputPath = GUILayout.TextField(outputPath, GUILayout.Width(textLen));
-		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
-			outputPath = EditorUtility.OpenFolderPanel("Select Output Folder", String.Empty, "");
+		/*outputPath = */GUILayout.TextField(Environment.CurrentDirectory.Replace("\\", "/") + "/" + outputPath, GUILayout.Width(textLen));
+		/*if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
+			outputPath = EditorUtility.OpenFolderPanel("Select Output Folder", String.Empty, "");*/
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
 		GUILayout.Label("Prefab Path", EditorStyles.label, GUILayout.Width(titleLen));
-		prefabPath = GUILayout.TextField(prefabPath, GUILayout.Width(textLen));
+		prefab = EditorGUILayout.ObjectField(prefab, typeof(GameObject), false, GUILayout.Width(textLen));
+		if (prefab != null)
+			prefabPath = AssetDatabase.GetAssetPath(prefab);
+		/*prefabPath = GUILayout.TextField(prefabPath, GUILayout.Width(textLen));
 		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
-			prefabPath = EditorUtility.OpenFilePanel("Select Prefab", String.Empty, "");
+			prefabPath = EditorUtility.OpenFilePanel("Select Prefab", String.Empty, "");*/
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
@@ -89,7 +95,7 @@ public class BuildModelWindow : EditorWindow
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
-		GUILayout.Label("Thumb", EditorStyles.label, GUILayout.Width(titleLen));
+		GUILayout.Label("Preview", EditorStyles.label, GUILayout.Width(titleLen));
 		imageName = GUILayout.TextField(imageName, GUILayout.Width(textLen));
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
@@ -97,19 +103,25 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(leftSpace);
 		if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
-			BuildSingleAB(modelPath, outputPath, prefabPath);
+		{
+			if (prefab != null)
+			{
+				prefabPath = AssetDatabase.GetAssetPath(prefab);
+				BuildSingleAB(modelPath, outputPath, prefabPath);
+			}
+		}
 		if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			RebuildModelList(outputPath, outputPath + "/" + AppDefine.manifestName);
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 	}
 	
-	static void UpdateProgress(int progress, int progressMax, string desc)
+	/*static void UpdateProgress(int progress, int progressMax, string desc)
 	{
 		string title = "Processing...[" + progress + " / " + progressMax + "]";
 		float value = (float)progress / (float)progressMax;
 		EditorUtility.DisplayProgressBar(title, desc, value);
-	}
+	}*/
 
 	public void BuildSingleAB(string sourcePath, string outputPath, string assetName)
 	{
@@ -137,12 +149,13 @@ public class BuildModelWindow : EditorWindow
 			modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
 			modelData.title = titleDesc;
 			modelData.author = author;
-			modelData.image = imageName;
+			modelData.preview = imageName;
 			jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
-			File.WriteAllText(outputPath + "/" + subfolderName + "/" + AppDefine.subModelDataName, jsonStr, Encoding.UTF8);
+			string subfolderPath = outputPath + "/" + subfolderName;
+			File.WriteAllText(subfolderPath + "/" + AppDefine.subModelDataName, jsonStr, Encoding.UTF8);
 
 			AssetDatabase.Refresh();
-			EditorUtility.DisplayDialog("Floating", "Make model success!", "OK");
+			EditorUtility.DisplayDialog("Floating", "Done! Output: " + subfolderPath, "OK");
 		}
 		catch (Exception e)
 		{

@@ -14,7 +14,7 @@ public class ModelData
 	public string assetName;
 	public string title;
 	public string author;
-	public string image;
+	public string preview;
 }
 
 [Serializable]
