@@ -50,7 +50,7 @@ public class BuildMenuItems
 		}
 	}
 
-	[MenuItem(AppDefine.AppName + "/AssetBundle/Build Sbms", false, 4)]
+	/*[MenuItem(AppDefine.AppName + "/AssetBundle/Build Sbms", false, 4)]
 	static public void BuildSbms()
 	{
 		try
@@ -61,7 +61,7 @@ public class BuildMenuItems
 		{
 			Debug.LogError(e.ToString());
 		}
-	}
+	}*/
 
 }
 

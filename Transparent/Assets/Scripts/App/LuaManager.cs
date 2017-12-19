@@ -146,6 +146,7 @@ public class LuaManager : IManager
 	{
 		if (loader.beBundle)
 		{
+			loader.AddBundle("lua/common");
 			loader.AddBundle("lua/lua");
 			loader.AddBundle("lua/xlua");
 		}

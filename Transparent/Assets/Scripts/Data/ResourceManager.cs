@@ -71,13 +71,13 @@ public class ResourceManager : IManager
 
 	public void Initialize()
 	{
-		m_BaseDownloadingURL = "file://" + AppDefine.PersistentDataPath;// = "http://www.MyWebsite/MyAssetBundles";
+		m_BaseDownloadingURL = "file://" + AppDefine.PersistentDataPath + "/";// = "http://www.MyWebsite/MyAssetBundles";
 
 #if UNITY_EDITOR
 		if (SimulateAssetBundleInEditor)
 			return;
 #endif
-		string txt = File.ReadAllText(AppDefine.modelListPath);
+		string txt = File.ReadAllText(AppDefine.manifestPath);
 		manifest = JsonConvert.DeserializeObject<MyAssetBundleManifest>(txt);
 	}
 

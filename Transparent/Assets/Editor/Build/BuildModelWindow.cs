@@ -169,6 +169,7 @@ public class BuildModelWindow : EditorWindow
 	public static void RebuildMyManifest(string rootPath, string modelManifestPath)
 	{
 		MyAssetBundleManifest manifest = new MyAssetBundleManifest();
+		rootPath = rootPath.Replace("\\", "/");
 		WriteDefaultResRecur(manifest, rootPath);
 
 		string mainJsonStr = JsonConvert.SerializeObject(manifest, Formatting.Indented);
@@ -177,11 +178,10 @@ public class BuildModelWindow : EditorWindow
 
 	private static void WriteDefaultResRecur(MyAssetBundleManifest manifest, string path)
 	{
-		path.Replace("\\", "/");
 		string[] files = Directory.GetFiles(path);
 		for (int i = 0; i < files.Length; ++i)
 		{
-			string fileName = files[i];
+			string fileName = files[i].Replace("\\", "/");
 			if (fileName.EndsWith(".sbm"))
 			{
 				string jsonStr = File.ReadAllText(fileName);
@@ -192,7 +192,7 @@ public class BuildModelWindow : EditorWindow
 		string[] dirs = Directory.GetDirectories(path);
 		for (int i = 0; i < dirs.Length; ++i)
 		{
-			string dir = dirs[i];
+			string dir = dirs[i].Replace("\\", "/");
 			WriteDefaultResRecur(manifest, dir);
 		}
 	}

@@ -77,36 +77,35 @@ public class BuildAssetBundles
 		}
 	}
 
-	public static void BuildSubmanifests()
+	private static void BuildSubmanifests()
 	{
-		string outputPath = tmpOutputPath;
-		BuildSubmanifestRecur(outputPath);
+		string outputPath = tmpOutputPath.Replace("\\", "/");
+		BuildSubmanifestRecur(outputPath, outputPath);
 	}
 
-	private static void BuildSubmanifestRecur(string path)
+	private static void BuildSubmanifestRecur(string rootPath, string path)
 	{
-		path.Replace("\\", "/");
 		string[] files = Directory.GetFiles(path);
 		for (int i = 0; i < files.Length; ++i)
 		{
-			string fileName = files[i];
+			string fileName = files[i].Replace("\\", "/");
 			if (fileName.EndsWith(".manifest"))
 			{
-				int beginIndex = fileName.LastIndexOf("\\");
+				int beginIndex = rootPath.Length + 1;
 				int endIndex = fileName.LastIndexOf(".manifest");
-				string abName = fileName.Substring(beginIndex + 1, endIndex - beginIndex - 1);
+				string abName = fileName.Substring(beginIndex, endIndex - beginIndex);
 				string subManifestName = abName + ".sbm";
 				SubAssetBundleManifest subManifest = new SubAssetBundleManifest(subManifestName, abName);
-				subManifest.SetUnityManifest(path + "/" + abName + ".manifest");
+				subManifest.SetUnityManifest(rootPath + "/" + abName + ".manifest");
 				string jsonStr = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
-				File.WriteAllText(path + "/" + subManifestName, jsonStr, Encoding.UTF8);
+				File.WriteAllText(rootPath + "/" + subManifestName, jsonStr, Encoding.UTF8);
 			}
 		}
 		string[] dirs = Directory.GetDirectories(path);
 		for (int i = 0; i < dirs.Length; ++i)
 		{
-			string dir = dirs[i];
-			BuildSubmanifestRecur(dir);
+			string dir = dirs[i].Replace("\\", "/");
+			BuildSubmanifestRecur(rootPath, dir);
 		}
 	}
 	

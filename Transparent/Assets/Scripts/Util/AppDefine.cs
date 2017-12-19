@@ -17,7 +17,7 @@ public class AppDefine
 	{
 		get
 		{
-			return Application.streamingAssetsPath + "/" + AppName;
+			return Application.streamingAssetsPath + "/" + AppName + "/";
 		}
 	}
 
@@ -25,6 +25,7 @@ public class AppDefine
 	public const string subModelDataName = "modeldata.json";
 	public const string manifestName = AppName + ".abm";
 	public const string subMetaName = "info.sbm";
+	public static string manifestPath = PersistentDataPath + "/" + manifestName;
 	public static string modelListPath = PersistentDataPath + "/" + modelListName;
 	public static string modelPath = PersistentDataPath;
 	
