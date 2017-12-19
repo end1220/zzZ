@@ -1,7 +1,8 @@
 ﻿
 using System;
 using System.IO;
-using System.Collections;
+using System.Text;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -73,7 +74,7 @@ public class BuildAssetBundles
 		}
 	}
 
-	public static void Build_Character()
+	/*public static void Build_Character()
 	{
 		string category = "character";
 		string subDir = "/Characters";
@@ -85,8 +86,42 @@ public class BuildAssetBundles
 		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
 		Debug.Log("Build character done.");
+	}*/
+
+	public static void BuildSubmanifests()
+	{
+		string outputPath = Path.Combine(tmpOutputPath, UtilsForEdit.GetPlatformName());
+		outputPath = Path.Combine(outputPath, AppDefine.AppName);
+		BuildSubmanifestRecur(outputPath);
+		EditorUtility.DisplayDialog("Floating", "Build submanifests Done!", "OK");
 	}
 
+	private static void BuildSubmanifestRecur(string path)
+	{
+		path.Replace("\\", "/");
+		string[] files = Directory.GetFiles(path);
+		for (int i = 0; i < files.Length; ++i)
+		{
+			string fileName = files[i];
+			if (fileName.EndsWith(".manifest"))
+			{
+				int beginIndex = fileName.LastIndexOf("\\");
+				int endIndex = fileName.LastIndexOf(".manifest");
+				string abName = fileName.Substring(beginIndex + 1, endIndex - beginIndex - 1);
+				string subManifestName = abName + ".sbm";
+				SubAssetBundleManifest subManifest = new SubAssetBundleManifest(subManifestName, abName);
+				subManifest.SetUnityManifest(path + "/" + abName + ".manifest");
+				string jsonStr = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
+				File.WriteAllText(path + "/" + subManifestName, jsonStr, Encoding.UTF8);
+			}
+		}
+		string[] dirs = Directory.GetDirectories(path);
+		for (int i = 0; i < dirs.Length; ++i)
+		{
+			string dir = dirs[i];
+			BuildSubmanifestRecur(dir);
+		}
+	}
 	
 	private static List<AssetBundleBuild> CollectBuildListRecur(string sourceDir, string category)
 	{
@@ -161,23 +196,6 @@ public class BuildAssetBundles
 			Debug.LogError(e.ToString());
 			EditorUtility.ClearProgressBar();
 		}
-	}
-
-
-	public static void ClearAssetBundleNames()
-	{
-		string[] oldABNames = AssetDatabase.GetAllAssetBundleNames();
-
-		for (int i = 0; i < oldABNames.Length; i++)
-		{
-			AssetDatabase.RemoveAssetBundleName(oldABNames[i], true);
-			UpdateProgress(i + 1, oldABNames.Length, "Clear Names");
-		}
-
-		EditorUtility.ClearProgressBar();
-
-
-		Debug.Log(string.Format("Clear Asset Bundle Names done. Before {0}, Now {1}", oldABNames.Length, AssetDatabase.GetAllAssetBundleNames().Length));
 	}
 
 	private static void AssignAssetBundleNames(string source, BuildConfig cfg)

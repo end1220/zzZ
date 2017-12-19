@@ -37,15 +37,25 @@ public class BuildMenuItems
 		}
 	}
 
-
-	//===============================Build Asset Bundle=========================
-
 	[MenuItem(AppDefine.AppName + "/AssetBundle/Build AB", false, 4)]
 	static public void BuildAB()
 	{
 		try
 		{
 			BuildAssetBundles.Build_All();
+		}
+		catch (System.Exception e)
+		{
+			Debug.LogError(e.ToString());
+		}
+	}
+
+	[MenuItem(AppDefine.AppName + "/AssetBundle/Build Sbms", false, 4)]
+	static public void BuildSbms()
+	{
+		try
+		{
+			BuildAssetBundles.BuildSubmanifests();
 		}
 		catch (System.Exception e)
 		{
