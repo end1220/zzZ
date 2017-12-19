@@ -12,7 +12,7 @@ using UnityEditor;
 public class BuildAssetBundles
 {
 
-	static string tmpOutputPath = "AssetBundles";
+	static string tmpOutputPath = "Output" + "/" + AppDefine.AppName;
 	static string copyTargetPath = "Assets/StreamingAssets";
 
 	static string LuaSrcPath = Application.dataPath + "/Lua";
@@ -53,19 +53,22 @@ public class BuildAssetBundles
 	{
 		try
 		{
-			string outputPath = CreateNewOutputPath(true);
+			string outputPath = CreateNewOutputPath(false);
 
 			MakeLuaTempDir();
 			RefreshAssetBundleNames();
 			BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-			BuildFileIndex(outputPath);
+			//BuildFileIndex(outputPath);
 			DeleteLuaTempDir();
-			Debug.Log("Bulid done.");
 
-			CopyAssetBundles(outputPath, copyTargetPath);
-			Debug.Log("Copy done.");
+			BuildSubmanifests();
 
-			AssetDatabase.Refresh();
+			EditorUtility.DisplayDialog("Floating", "Build Done!", "OK");
+
+			//CopyAssetBundles(outputPath, copyTargetPath);
+			//Debug.Log("Copy done.");
+
+			//AssetDatabase.Refresh();
 		}
 		catch (Exception e)
 		{
@@ -74,26 +77,10 @@ public class BuildAssetBundles
 		}
 	}
 
-	/*public static void Build_Character()
-	{
-		string category = "character";
-		string subDir = "/Characters";
-		string outputPath = CreateNewOutputPath(false);
-		if (Directory.Exists(outputPath + "/" + category))
-			Directory.Delete(outputPath + "/" + category, true);
-		RefreshAssetBundleNames();
-		List<AssetBundleBuild> mapbuild = CollectBuildListRecur(Application.dataPath + subDir, category);
-		BuildPipeline.BuildAssetBundles(outputPath, mapbuild.ToArray(), BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
-		CopyAssetBundles(outputPath + "/" + category, copyTargetPath + "/" + category);
-		Debug.Log("Build character done.");
-	}*/
-
 	public static void BuildSubmanifests()
 	{
-		string outputPath = Path.Combine(tmpOutputPath, UtilsForEdit.GetPlatformName());
-		outputPath = Path.Combine(outputPath, AppDefine.AppName);
+		string outputPath = tmpOutputPath;
 		BuildSubmanifestRecur(outputPath);
-		EditorUtility.DisplayDialog("Floating", "Build submanifests Done!", "OK");
 	}
 
 	private static void BuildSubmanifestRecur(string path)
@@ -160,8 +147,7 @@ public class BuildAssetBundles
 
 	private static string CreateNewOutputPath(bool deleteOld)
 	{
-		string outputPath = Path.Combine(tmpOutputPath, UtilsForEdit.GetPlatformName());
-		outputPath = Path.Combine(outputPath, AppDefine.AppName);
+		string outputPath = tmpOutputPath;
 		if (Directory.Exists(outputPath))
 		{
 			if (deleteOld)
