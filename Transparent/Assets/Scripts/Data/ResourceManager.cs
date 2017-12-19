@@ -71,7 +71,7 @@ public class ResourceManager : IManager
 
 	public void Initialize()
 	{
-		m_BaseDownloadingURL = "file://" + AppDefine.PersistentDataPath + "/";// = "http://www.MyWebsite/MyAssetBundles";
+		m_BaseDownloadingURL = "file://" + AppDefine.PersistentDataPath;// = "http://www.MyWebsite/MyAssetBundles";
 
 #if UNITY_EDITOR
 		if (SimulateAssetBundleInEditor)
