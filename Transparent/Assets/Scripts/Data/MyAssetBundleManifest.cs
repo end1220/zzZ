@@ -51,4 +51,9 @@ public class MyAssetBundleManifest
 		//allHash.Add(manifest.AssetBundleName, null);
 	}
 
+	public bool Contains(SubAssetBundleManifest manifest)
+	{
+		return allAssetBundles.Contains(manifest.AssetBundleName);
+	}
+
 }

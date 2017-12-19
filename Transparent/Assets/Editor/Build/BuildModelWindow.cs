@@ -114,7 +114,10 @@ public class BuildModelWindow : EditorWindow
 			}
 		}
 		if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
+		{
 			RebuildModelList(outputPath, outputPath + "/" + AppDefine.manifestName);
+			RebuildMyManifest(outputPath, outputPath + "/" + AppDefine.manifestName);
+		}
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 	}
@@ -167,9 +170,9 @@ public class BuildModelWindow : EditorWindow
 		try
 		{
 			// gen .sbm files
-			MyAssetBundleManifest manifest = new MyAssetBundleManifest();
+			/*MyAssetBundleManifest manifest = new MyAssetBundleManifest();*/
 			string[] subDirs = Directory.GetDirectories(modelPath);
-			for (int i = 0; i < subDirs.Length; ++i)
+			/*for (int i = 0; i < subDirs.Length; ++i)
 			{
 				string subDir = subDirs[i].Replace('\\', '/');
 				string dirName = subDir.Substring(subDir.LastIndexOf("/") + 1);
@@ -179,15 +182,19 @@ public class BuildModelWindow : EditorWindow
 				manifest.AddSubManifest(sub);
 			}
 			string mainJsonStr = JsonConvert.SerializeObject(manifest, Formatting.Indented);
-			File.WriteAllText(modelManifestPath, mainJsonStr, Encoding.UTF8);
+			File.WriteAllText(modelManifestPath, mainJsonStr, Encoding.UTF8);*/
 
 			// gen model list
 			ModelDataArray modelArray = new ModelDataArray();
 			modelArray.models = new ModelData[subDirs.Length];
 			for (int i = 0; i < subDirs.Length; ++i)
 			{
-				string txt = File.ReadAllText(subDirs[i] + "/" + AppDefine.subModelDataName);
-				modelArray.models[i] = JsonConvert.DeserializeObject<ModelData>(txt);
+				string filePath = subDirs[i] + "/" + AppDefine.subModelDataName;
+				if (File.Exists(filePath))
+				{
+					string txt = File.ReadAllText(filePath);
+					modelArray.models[i] = JsonConvert.DeserializeObject<ModelData>(txt);
+				}
 			}
 			string arrayStr = JsonConvert.SerializeObject(modelArray, Formatting.Indented);
 			File.WriteAllText(modelPath + "/" + AppDefine.modelListName, arrayStr, Encoding.UTF8);
@@ -202,6 +209,52 @@ public class BuildModelWindow : EditorWindow
 		{
 			AssetDatabase.Refresh();
 			Log.Error(e.ToString());
+		}
+	}
+
+	public static void RebuildMyManifest(string rootPath, string modelManifestPath)
+	{
+		MyAssetBundleManifest manifest = new MyAssetBundleManifest();
+
+		// write default resources
+		WriteDefaultResRecur(manifest, rootPath);
+
+		// user models
+		/*string[] subDirs = Directory.GetDirectories(rootPath);
+		for (int i = 0; i < subDirs.Length; ++i)
+		{
+			string subDir = subDirs[i].Replace('\\', '/');
+			string dirName = subDir.Substring(subDir.LastIndexOf("/") + 1);
+			string sbmPath = subDir + "/" + dirName + ".sbm";
+			string jsonStr = File.ReadAllText(sbmPath);
+			SubAssetBundleManifest sub = JsonConvert.DeserializeObject<SubAssetBundleManifest>(jsonStr);
+			manifest.AddSubManifest(sub);
+		}*/
+		string mainJsonStr = JsonConvert.SerializeObject(manifest, Formatting.Indented);
+		File.WriteAllText(modelManifestPath, mainJsonStr, Encoding.UTF8);
+
+		EditorUtility.DisplayDialog("Floating", "Build Manifest success!", "OK");
+	}
+
+	private static void WriteDefaultResRecur(MyAssetBundleManifest manifest, string path)
+	{
+		path.Replace("\\", "/");
+		string[] files = Directory.GetFiles(path);
+		for (int i = 0; i < files.Length; ++i)
+		{
+			string fileName = files[i];
+			if (fileName.EndsWith(".sbm"))
+			{
+				string jsonStr = File.ReadAllText(fileName);
+				SubAssetBundleManifest sub = JsonConvert.DeserializeObject<SubAssetBundleManifest>(jsonStr);
+				manifest.AddSubManifest(sub);
+			}
+		}
+		string[] dirs = Directory.GetDirectories(path);
+		for (int i = 0; i < dirs.Length; ++i)
+		{
+			string dir = dirs[i];
+			WriteDefaultResRecur(manifest, dir);
 		}
 	}
 
