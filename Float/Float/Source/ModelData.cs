@@ -44,6 +44,16 @@ public partial class ModelData : INotifyPropertyChanged
 		}
 	}
 
+	public string PreviewImage
+	{
+		get { return AppDefine.PersistentDataPath + id + "/" + preview; }
+		set
+		{
+			preview = value;
+			NotifyPropertyChanged("PreviewImage");
+		}
+	}
+
 	public event PropertyChangedEventHandler PropertyChanged;
 
 	public void NotifyPropertyChanged(string propertyName)

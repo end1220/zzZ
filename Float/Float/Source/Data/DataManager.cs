@@ -14,6 +14,7 @@ public partial class ModelData
 	public string assetName;
 	public string title;
 	public string author;
+	public string preview;
 }
 
 public class ModelDataArray

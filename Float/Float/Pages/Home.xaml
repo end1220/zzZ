@@ -21,7 +21,7 @@
 							<RowDefinition Height="100"></RowDefinition>
 							<RowDefinition Height="40"></RowDefinition>
 						</Grid.RowDefinitions>
-						<Image Source="{Binding Image}" Grid.Row="1" Width="118" Height="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+						<Image Source="{Binding PreviewImage}" Grid.Row="1" Width="118" Height="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 						<TextBlock Text="{Binding Name}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="8pt" TextWrapping="Wrap" />
 					</Grid>
 				</DataTemplate>
