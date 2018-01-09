@@ -28,8 +28,11 @@ public class TransparentWindow : MonoBehaviour
 	[DllImport("user32.dll")]
 	private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
+	/*[DllImport("user32.dll")]
+	private static extern int ModifyStyleEx(uint nIndex, uint dwNewLong);
+
 	[DllImport("user32.dll")]
-	static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+	static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);*/
 
 	[DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
 	static extern int SetLayeredWindowAttributes(IntPtr hwnd, int crKey, byte bAlpha, int dwFlags);
@@ -41,14 +44,23 @@ public class TransparentWindow : MonoBehaviour
 	private static extern uint DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS margins);
 
 	const int GWL_STYLE = -16;
+	const int GWL_EXSTYLE = -20;
 	const uint WS_POPUP = 0x80000000;
 	const uint WS_VISIBLE = 0x10000000;
+	//const uint WS_EX_APPWINDOW = 0x00040000;
+	const uint WS_EX_LAYERED = 0x00080000;
+	const uint WS_EX_TRANSPARENT = 0x00000020;
+	const uint WS_EX_TOOLWINDOW = 0x00000080;
 	const int HWND_TOPMOST = -1;
+	const uint SWP_FRAMECHANGED = 0x0020;
+	const uint SWP_SHOWWINDOW = 0x0040;
+	const uint SWP_HIDEWINDOW = 0x0080;
 
 	int fWidth;
 	int fHeight;
 	IntPtr hwnd;
 	MARGINS margins;
+
 
 	void Start()
 	{
@@ -62,8 +74,6 @@ public class TransparentWindow : MonoBehaviour
 
 	void Update()
 	{
-		//int layer = LayerMask.NameToLayer("Default");
-
 		bool hoverModel = true;
 		Vector3 mousePosition = Input.mousePosition;
 		if (mousePosition != lastMousePosition)
@@ -84,10 +94,10 @@ public class TransparentWindow : MonoBehaviour
 
 	}
 
-	void OnRenderImage(RenderTexture from, RenderTexture to)
+	/*void OnRenderImage(RenderTexture from, RenderTexture to)
 	{
 		Graphics.Blit(from, to, m_Material);
-	}
+	}*/
 
 	private void InitWnd()
 	{
@@ -96,8 +106,8 @@ public class TransparentWindow : MonoBehaviour
 		margins = new MARGINS() { cxLeftWidth = -1 };
 		hwnd = GetActiveWindow();
 
-		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
-		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP/* | WS_VISIBLE*/);
+		SetWindowPos(hwnd, HWND_TOPMOST, -fWidth * 2, -fHeight * 2, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
 		DwmExtendFrameIntoClientArea(hwnd, ref margins);
 	}
 
@@ -106,14 +116,29 @@ public class TransparentWindow : MonoBehaviour
 		if (transparent)
 		{
 			SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
-			SetWindowLong(hwnd, -20, (uint)524288 | (uint)32);//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
+			SetWindowLong(hwnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TRANSPARENT/* | WS_EX_TOOLWINDOW*/);
 			SetLayeredWindowAttributes(hwnd, 0, 255, 2);// Transparency=51=20%, LWA_ALPHA=2
-			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
 		}
 		else
 		{
-			SetWindowLong(hwnd, -20, ~(((uint)524288) | ((uint)32)));//GWL_EXSTYLE=-20; WS_EX_LAYERED=524288=&h80000, WS_EX_TRANSPARENT=32=0x00000020L
-			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, 32 | 64); //SWP_FRAMECHANGED = 0x0020 (32); //SWP_SHOWWINDOW = 0x0040 (64)
+			SetWindowLong(hwnd, GWL_EXSTYLE, ~(WS_EX_LAYERED | WS_EX_TRANSPARENT));
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
 		}
 	}
+
+	public void SetWindowVisible(bool visible)
+	{
+		if (visible)
+		{
+			Application.runInBackground = true;
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
+		}
+		else
+		{
+			Application.runInBackground = false;
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_HIDEWINDOW));
+		}
+	}
+
 }

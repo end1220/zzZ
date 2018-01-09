@@ -18,6 +18,12 @@ public class ModelScene : MonoBehaviour
 		modelRoot = transform;
 	}
 
+	private void Start()
+	{
+		var cmd = new Command(TestId);
+		NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
+	}
+
 	public void LoadModel(int id)
 	{
 		ModelData data = DataManager.Instance.GetModelData(id);

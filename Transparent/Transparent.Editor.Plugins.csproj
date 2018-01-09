@@ -138,6 +138,9 @@
   <ItemGroup>
     <None Include="Assets\Materials\MakeTransparent.shader" />
     <None Include="Assets\Models\Range\SkillHintBg.shader" />
+    <None Include="Assets\Scripts\Window\Enums.txt" />
+    <None Include="Assets\Scripts\Window\Structs.txt" />
+    <None Include="Assets\Scripts\Window\Win32API.txt" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />

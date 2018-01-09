@@ -18,9 +18,9 @@ public class App : MonoBehaviour
 		{
 			Instance = this;
 			Application.runInBackground = true;
-			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			Application.targetFrameRate = AppDefine.FPS;
-			Screen.SetResolution(1024, 768, false);
+			Screen.sleepTimeout = SleepTimeout.NeverSleep;
+			Screen.SetResolution(800, 600, false);
 
 			AddManager<ResourceManager>();
 			AddManager<LuaManager>();
