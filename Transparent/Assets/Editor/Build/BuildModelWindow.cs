@@ -18,23 +18,19 @@ public class BuildModelWindow : EditorWindow
 		window.Show();
 	}
 
-	string modelPath;
-	string outputPath;
-	string prefabPath;
-	UnityEngine.Object prefab;
-	string titleDesc = "Input your title";
-	string author = "Input your name";
+	string modelPath = "";
+	string outputPath = "Output/" + AppDefine.AppName;
+	string prefabPath = "";
+	ModelPrefab prefab;
+	string titleDesc = "No title";
+	string author = "No author";
 	string preview = "";
 	
 
 	void OnEnable()
 	{
 		AppUtils.SetRandomSeed(DateTime.Now.Millisecond * DateTime.Now.Second);
-		modelPath = Application.dataPath + "/Models/Test/";
-		outputPath = "Output/" + AppDefine.AppName; //Application.streamingAssetsPath + "/" + AppDefine.AppName;
-		prefabPath = "D:/Locke/git/zzZ/Transparent/Assets/Models/Test/Directional Light.prefab";
 	}
-
 
 	void OnGUI()
 	{
@@ -59,18 +55,24 @@ public class BuildModelWindow : EditorWindow
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(leftSpace);
 		GUILayout.Label("Model Path", EditorStyles.label, GUILayout.Width(titleLen));
+		string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
+		modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
 		modelPath = GUILayout.TextField(modelPath, GUILayout.Width(textLen));
 		if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
+		{
 			modelPath = EditorUtility.OpenFolderPanel("Select Model Folder", String.Empty, "");
+			if (!string.IsNullOrEmpty(modelPath))
+				EditorPrefs.SetString("BMW_ModelPath", modelPath);
+		}
 		GUILayout.EndHorizontal();
 		GUILayout.Space(spaceSize);
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(spaceSize);
 		GUILayout.Label("Prefab Path", EditorStyles.label, GUILayout.Width(titleLen));
-		prefab = EditorGUILayout.ObjectField(prefab, typeof(GameObject), false, GUILayout.Width(textLen));
+		prefab = EditorGUILayout.ObjectField(prefab, typeof(ModelPrefab), false, GUILayout.Width(textLen)) as ModelPrefab;
 		if (prefab != null)
-			prefabPath = AssetDatabase.GetAssetPath(prefab);
+			prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
@@ -101,7 +103,7 @@ public class BuildModelWindow : EditorWindow
 		{
 			if (prefab != null)
 			{
-				prefabPath = AssetDatabase.GetAssetPath(prefab);
+				prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
 				BuildSingleAB(modelPath, outputPath, prefabPath);
 			}
 		}

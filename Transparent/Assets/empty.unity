@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732dbd15bf543d44eb3ef54d76fe7de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestId: 1165413330
+  TestId: 724040460
 --- !u!1 &1502407561
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,8 +255,8 @@ GameObject:
   - component: {fileID: 1871378516}
   - component: {fileID: 1871378515}
   - component: {fileID: 1871378520}
-  - component: {fileID: 1871378514}
   - component: {fileID: 1871378513}
+  - component: {fileID: 1871378514}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -279,8 +279,7 @@ MonoBehaviour:
 --- !u!114 &1871378514
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114821249547685558, guid: 6c45b70e0c330624286b4604a0e05d18,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1871378512}
   m_Enabled: 1
@@ -288,13 +287,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442244f88bf3cd48abbed7ef399d135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Distance: 12
-  angelX: 60
+  distance: 12
+  minDistance: 5
+  maxDistance: 40
+  angelX: 0
   angelY: 0
-  ZoomSpeed: 5
-  EnableDamping: 1
-  Damping: 5
-  target: {fileID: 0}
+  minAngelX: -80
+  maxAngelX: 80
+  zoomSpeed: 5
+  enableDamping: 1
+  damping: 50
+  target: {x: 0, y: 0, z: 0}
 --- !u!81 &1871378515
 AudioListener:
   m_ObjectHideFlags: 0
