@@ -61,7 +61,7 @@ public class ModelScene : MonoBehaviour
 	}
 
 
-	private void OnGUI()
+	/*private void OnGUI()
 	{
 		int count = 0;
 		if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "play"))
@@ -74,5 +74,5 @@ public class ModelScene : MonoBehaviour
 			var cmd = new Command(1);
 			NetworkManager.Instance.SendBytes((ushort)CommandId.HideWindow, ProtobufUtil.Serialize(cmd));
 		}
-	}
+	}*/
 }

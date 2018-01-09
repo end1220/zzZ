@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine;
+
 
 [RequireComponent(typeof(Camera))]
 public class TransparentWindow : MonoBehaviour
 {
-	[SerializeField]
+	/*[SerializeField]
 	private Material m_Material;
 
-	[SerializeField]
+	[SerializeField]*/
 	private Camera mainCamera;
 
 	private Vector3 lastMousePosition;
@@ -28,11 +30,11 @@ public class TransparentWindow : MonoBehaviour
 	[DllImport("user32.dll")]
 	private static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
-	/*[DllImport("user32.dll")]
+	[DllImport("user32.dll")]
 	private static extern int ModifyStyleEx(uint nIndex, uint dwNewLong);
 
 	[DllImport("user32.dll")]
-	static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);*/
+	static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
 	[DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
 	static extern int SetLayeredWindowAttributes(IntPtr hwnd, int crKey, byte bAlpha, int dwFlags);
@@ -56,42 +58,65 @@ public class TransparentWindow : MonoBehaviour
 	const uint SWP_SHOWWINDOW = 0x0040;
 	const uint SWP_HIDEWINDOW = 0x0080;
 
-	int fWidth;
-	int fHeight;
+	int wndWidth;
+	int wndHeight;
 	IntPtr hwnd;
 	MARGINS margins;
+	Texture2D textureClick;
 
 
 	void Start()
 	{
 		mainCamera = GetComponent<Camera>();
+		textureClick = new Texture2D(1, 1, TextureFormat.RGBA32, false);
 		lastMousePosition = Input.mousePosition;
+
+		wndWidth = Screen.width;
+		wndHeight = Screen.height;
+		margins = new MARGINS() { cxLeftWidth = -1 };
 
 #if !UNITY_EDITOR
 		InitWnd();
 #endif
+		StartCoroutine(TestMouseCollision());
 	}
 
-	void Update()
+	WaitForEndOfFrame endofframe = new WaitForEndOfFrame();
+	IEnumerator TestMouseCollision()
 	{
-		bool hoverModel = true;
-		Vector3 mousePosition = Input.mousePosition;
-		if (mousePosition != lastMousePosition)
+		while (true)
 		{
-			Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-			RaycastHit hit = new RaycastHit();
-			hoverModel = Physics.Raycast(ray, out hit, 100);
-			lastMousePosition = mousePosition;
-
-			if (hoverModel != lastHoverModel)
+			bool hoverModel = true;
+			Vector3 mousePosition = Input.mousePosition;
+			if (mousePosition != lastMousePosition)
 			{
+				if (mousePosition.x >= 0 && mousePosition.x < wndWidth && mousePosition.y >= 0 && mousePosition.y < wndHeight)
+				{
+					textureClick.ReadPixels(new Rect(mousePosition.x, mousePosition.y, 1, 1), 0, 0);
+					Color color = textureClick.GetPixel(0, 0);
+					hoverModel = color != Color.clear;
+				}
+				else
+				{
+					hoverModel = false;
+				}
+				/*Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+				RaycastHit hit = new RaycastHit();
+				hoverModel = Physics.Raycast(ray, out hit, 100);*/
+				lastMousePosition = mousePosition;
+
+				if (hoverModel != lastHoverModel)
+				{
 #if !UNITY_EDITOR
 				SetTransparent(!hoverModel);
+#else
+					//Debug.Log(hoverModel ? "enter" : "leave");
 #endif
-				lastHoverModel = hoverModel;
+					lastHoverModel = hoverModel;
+				}
 			}
+			yield return endofframe;// return new WaitForEndOfFrame();
 		}
-
 	}
 
 	/*void OnRenderImage(RenderTexture from, RenderTexture to)
@@ -101,13 +126,11 @@ public class TransparentWindow : MonoBehaviour
 
 	private void InitWnd()
 	{
-		fWidth = Screen.width;
-		fHeight = Screen.height;
-		margins = new MARGINS() { cxLeftWidth = -1 };
 		hwnd = GetActiveWindow();
 
-		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP/* | WS_VISIBLE*/);
-		SetWindowPos(hwnd, HWND_TOPMOST, -fWidth * 2, -fHeight * 2, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
+		SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
+		SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndWidth, wndHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
+		OnResize(wndWidth, wndHeight);
 		DwmExtendFrameIntoClientArea(hwnd, ref margins);
 	}
 
@@ -118,12 +141,12 @@ public class TransparentWindow : MonoBehaviour
 			SetWindowLong(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
 			SetWindowLong(hwnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TRANSPARENT/* | WS_EX_TOOLWINDOW*/);
 			SetLayeredWindowAttributes(hwnd, 0, 255, 2);// Transparency=51=20%, LWA_ALPHA=2
-			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndWidth, wndHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
 		}
 		else
 		{
 			SetWindowLong(hwnd, GWL_EXSTYLE, ~(WS_EX_LAYERED | WS_EX_TRANSPARENT));
-			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndWidth, wndHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
 		}
 	}
 
@@ -132,13 +155,23 @@ public class TransparentWindow : MonoBehaviour
 		if (visible)
 		{
 			Application.runInBackground = true;
-			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndWidth, wndHeight, (int)(SWP_FRAMECHANGED | SWP_SHOWWINDOW));
 		}
 		else
 		{
 			Application.runInBackground = false;
-			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, fWidth, fHeight, (int)(SWP_HIDEWINDOW));
+			SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndWidth, wndHeight, (int)(SWP_HIDEWINDOW));
 		}
+	}
+
+	public void SetWindowSize(int width, int height)
+	{
+		//OnResize(width, height);
+	}
+
+	protected void OnResize(int newWidth, int newHeight)
+	{
+		
 	}
 
 }
