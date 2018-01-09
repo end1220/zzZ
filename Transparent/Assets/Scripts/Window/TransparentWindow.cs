@@ -73,8 +73,8 @@ public class TransparentWindow : MonoBehaviour
 		textureClick = new Texture2D(1, 1, TextureFormat.RGBA32, false);
 		lastMousePosition = Input.mousePosition;
 
-		PlayerPrefs.SetFloat("WindowPosX", 0);
-		PlayerPrefs.SetFloat("WindowPosY", 0);
+		//PlayerPrefs.SetFloat("WindowPosX", 0);
+		//PlayerPrefs.SetFloat("WindowPosY", 0);
 
 		wndPosX = PlayerPrefs.GetFloat("WindowPosX");
 		wndPosY = PlayerPrefs.GetFloat("WindowPosY");
