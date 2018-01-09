@@ -6,26 +6,23 @@ public class SpinCamera : MonoBehaviour
 {
 	public static SpinCamera Instance { get; private set; }
 
-	// camera positon
-	public float Distance = 12;
+	public float distance = 12;
+	public float minDistance = 5f;
+	public float maxDistance = 40;
+
 	public float angelX = 60;
 	public float angelY = 0;
-	private float SpeedX = 120;
-	private float SpeedY = 240;
-	private float minAngelX = 5;
-	private float maxAngelX = 80;
-	//鼠标缩放距离最值
-	private float MaxDistance = 40;
-	private float MinDistance = 5f;
-	//鼠标缩放速率
-	public float ZoomSpeed = 5f;
+	private float speedX = 120;
+	private float speedY = 240;
+	public float minAngelX = 5;
+	public float maxAngelX = 80;
+	
+	public float zoomSpeed = 5f;
 
-	//是否启用差值
-	public bool EnableDamping = true;
-	//速度
-	public float Damping = 5f;
+	public bool enableDamping = true;
+	public float damping = 5f;
 
-	public Transform target;
+	public Vector3 target;
 
 	void Awake()
 	{
@@ -46,15 +43,15 @@ public class SpinCamera : MonoBehaviour
 
 	public void Scroll(float scrollValue)
 	{
-		Distance -= scrollValue * ZoomSpeed;
-		Distance = Mathf.Clamp(Distance, MinDistance, MaxDistance);
+		distance -= scrollValue * zoomSpeed;
+		distance = Mathf.Clamp(distance, minDistance, maxDistance);
 	}
 
 	public void Rotate(float x, float y)
 	{
-		angelX += x * SpeedX * Time.deltaTime;
+		angelX += x * speedX * Time.deltaTime;
 		angelX = ClampAngle(angelX, minAngelX, maxAngelX);
-		angelY += y * SpeedY * Time.deltaTime;
+		angelY += y * speedY * Time.deltaTime;
 		angelY = ClampAngle(angelY, -360, 360);
 	}
 
@@ -73,12 +70,12 @@ public class SpinCamera : MonoBehaviour
         if (null == target)
             return;
 		
-		Vector3 targetPosition = target.position + Vector3.up * 1;
+		Vector3 targetPosition = target/*.position + Vector3.up * 1*/;
 
 		if (force)
 		{
 			Quaternion rotation = Quaternion.Euler(angelX, angelY, 0);
-			Vector3 position = rotation * new Vector3(0, 0, -Distance) + targetPosition;
+			Vector3 position = rotation * new Vector3(0, 0, -distance) + targetPosition;
 			transform.rotation = rotation;
 			transform.position = position;
 			force = false;
@@ -86,15 +83,15 @@ public class SpinCamera : MonoBehaviour
 		else
 		{
 			Quaternion rotation = Quaternion.Euler(angelX, angelY, 0);
-			if (EnableDamping)
+			if (enableDamping)
 			{
-				transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * Damping);
-				Vector3 position = transform.rotation * new Vector3(0, 0, -Distance) + targetPosition;
+				transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * damping);
+				Vector3 position = transform.rotation * new Vector3(0, 0, -distance) + targetPosition;
 				transform.position = position;
 			}
 			else
 			{
-				Vector3 position = rotation * new Vector3(0, 0, -Distance) + targetPosition;
+				Vector3 position = rotation * new Vector3(0, 0, -distance) + targetPosition;
 				transform.rotation = rotation;
 				transform.position = position;
 			}

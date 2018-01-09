@@ -31,7 +31,7 @@ public class ModelScene : MonoBehaviour
 			model.localScale = Vector3.one * data.scale;
 			model.localRotation = Quaternion.identity;
 
-			SpinCamera.Instance.target = modelRoot;
+			SpinCamera.Instance.target = model.position;
 		}
 		else
 		{
