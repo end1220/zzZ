@@ -29,9 +29,19 @@ public class KeyboardMouse : MonoBehaviour
 			float rotX = Input.GetAxis("Mouse Y");
 			SpinCamera.Instance.Rotate(-rotX, rotY);
 		}
+		if (Input.GetMouseButton(2))
+		{
+			float movy = Input.GetAxis("Mouse X");
+			float movx = Input.GetAxis("Mouse Y");
+			SpinCamera.Instance.Drag(movy, movx);
+		}
+		else
+		{
+			SpinCamera.Instance.ResetDrag();
+		}
 
 		// keyboard
-		int x = 0;
+		/*int x = 0;
 		int z = 0;
 		z += Input.GetKey(KeyCode.W) ? 1 : 0;
 		z -= Input.GetKey(KeyCode.S) ? 1 : 0;
@@ -41,7 +51,7 @@ public class KeyboardMouse : MonoBehaviour
 		if (x != 0 || z != 0)
 		{
 
-		}
+		}*/
 
 	}
 

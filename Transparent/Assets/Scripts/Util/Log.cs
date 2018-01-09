@@ -78,7 +78,7 @@ public class Log
 
 			if (EnableLogFile)
 			{
-				string path = "D:/Float/log/";
+				string path = Environment.CurrentDirectory + "/log/";
 				if (!Directory.Exists(path))
 					Directory.CreateDirectory(path);
 

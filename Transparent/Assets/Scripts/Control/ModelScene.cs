@@ -25,12 +25,14 @@ public class ModelScene : MonoBehaviour
 		{
 			GameObject prefab = ResourceManager.Instance.LoadAsset<GameObject>(data.bundleName, data.assetName);
 			GameObject go = GameObject.Instantiate(prefab);
+			go.SetActive(true);
 			Transform model = go.transform;
 			model.parent = modelRoot;
 			model.localPosition = Vector3.zero;
-			model.localScale = Vector3.one * data.scale;
-			model.localRotation = Quaternion.identity;
+			//model.localScale = Vector3.one * data.scale;
+			//model.localRotation = Quaternion.identity;
 
+			SpinCamera.Instance.Reset();
 			SpinCamera.Instance.target = model.position;
 		}
 		else

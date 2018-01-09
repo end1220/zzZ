@@ -10,23 +10,33 @@ public class SpinCamera : MonoBehaviour
 	public float minDistance = 5f;
 	public float maxDistance = 40;
 
-	public float angelX = 60;
+	public float angelX = 0;
 	public float angelY = 0;
-	private float speedX = 120;
-	private float speedY = 240;
-	public float minAngelX = 5;
+	private float angelSpeedX = 360;
+	private float angelSpeedY = 720;
+	public float minAngelX = -80;
 	public float maxAngelX = 80;
 	
 	public float zoomSpeed = 5f;
 
+	private float dragSpeed = 1;
+	private Vector3 dragOffset = Vector3.zero;
+
 	public bool enableDamping = true;
-	public float damping = 5f;
+	public float damping = 50f;
 
 	public Vector3 target;
+	
+
+	// Original values
+	private float oriAngelX;
+	private float oriAngelY;
 
 	void Awake()
 	{
 		Instance = this;
+		oriAngelX = angelX;
+		oriAngelY = angelY;
 	}
 
 	void LateUpdate()
@@ -41,6 +51,13 @@ public class SpinCamera : MonoBehaviour
         }
 	}
 
+	public void Reset()
+	{
+		angelX = oriAngelX;
+		angelY = oriAngelY;
+		dragOffset = Vector3.zero;
+	}
+
 	public void Scroll(float scrollValue)
 	{
 		distance -= scrollValue * zoomSpeed;
@@ -49,9 +66,9 @@ public class SpinCamera : MonoBehaviour
 
 	public void Rotate(float x, float y)
 	{
-		angelX += x * speedX * Time.deltaTime;
+		angelX += x * angelSpeedX * Time.deltaTime;
 		angelX = ClampAngle(angelX, minAngelX, maxAngelX);
-		angelY += y * speedY * Time.deltaTime;
+		angelY += y * angelSpeedY * Time.deltaTime;
 		angelY = ClampAngle(angelY, -360, 360);
 	}
 
@@ -62,6 +79,19 @@ public class SpinCamera : MonoBehaviour
 		if (angle > 360)
 			angle -= 360;
 		return Mathf.Clamp(angle, min, max);
+	}
+
+	public void Drag(float x, float y)
+	{
+		dragSpeed = distance * 2f;
+		Vector3 rightOffset = x * Vector3.right * dragSpeed * Time.deltaTime;
+		Vector3 upOffset = y * Vector3.up * dragSpeed * Time.deltaTime;
+		dragOffset += rightOffset + upOffset;
+	}
+
+	public void ResetDrag()
+	{
+		dragOffset = Vector3.zero;
 	}
 
 	bool force = true;
@@ -95,6 +125,7 @@ public class SpinCamera : MonoBehaviour
 				transform.rotation = rotation;
 				transform.position = position;
 			}
+			transform.position += transform.rotation * dragOffset;
 		}
 
 	}

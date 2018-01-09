@@ -25,7 +25,6 @@ public class BuildModelWindow : EditorWindow
 	string titleDesc = "Input your title";
 	string author = "Input your name";
 	string preview = "";
-	float scale = 1;
 	
 
 	void OnEnable()
@@ -72,13 +71,6 @@ public class BuildModelWindow : EditorWindow
 		prefab = EditorGUILayout.ObjectField(prefab, typeof(GameObject), false, GUILayout.Width(textLen));
 		if (prefab != null)
 			prefabPath = AssetDatabase.GetAssetPath(prefab);
-		GUILayout.EndHorizontal();
-		GUILayout.Space(leftSpace);
-
-		GUILayout.BeginHorizontal();
-		GUILayout.Space(spaceSize);
-		GUILayout.Label("Scale", EditorStyles.label, GUILayout.Width(titleLen));
-		scale = EditorGUILayout.FloatField(scale, GUILayout.Width(50));
 		GUILayout.EndHorizontal();
 		GUILayout.Space(leftSpace);
 
@@ -148,7 +140,6 @@ public class BuildModelWindow : EditorWindow
 			modelData.name = abName;
 			modelData.bundleName = abName;
 			modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
-			modelData.scale = scale;
 			modelData.title = titleDesc;
 			modelData.author = author;
 			modelData.preview = preview;

@@ -26,11 +26,13 @@ public class ModelSceneSimulator : MonoBehaviour
 
 		GameObject prefab = modelPrefab.gameObject;
 		GameObject go = GameObject.Instantiate(prefab);
+		prefab.SetActive(false);
+		go.SetActive(true);
 		Transform model = go.transform;
 		model.parent = transform;
 		model.localPosition = Vector3.zero;
-		model.localScale = modelPrefab.scale;
-		model.localRotation = Quaternion.identity;
+		//model.localScale = modelPrefab.scale;
+		//model.localRotation = Quaternion.identity;
 
 		SpinCamera spin = cam.GetComponent<SpinCamera>();
 		if (spin == null)
