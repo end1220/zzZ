@@ -84,25 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\AbstractTargetFollower.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\AutoCam.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\FreeLookCam.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\HandHeldCam.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\LookatTarget.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\PivotBasedCameraRig.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\ProtectCameraFromWallClip.cs" />
-    <Compile Include="Assets\Standard Assets\Cameras\Scripts\TargetFieldOfView.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\Joystick.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
-    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
     <Compile Include="Assets\Standard Assets\ParticleSystems\Scripts\AfterburnerPhysicsForce.cs" />
     <Compile Include="Assets\Standard Assets\ParticleSystems\Scripts\ExplosionFireAndDebris.cs" />
     <Compile Include="Assets\Standard Assets\ParticleSystems\Scripts\ExplosionPhysicsForce.cs" />
@@ -125,13 +106,11 @@
     <Compile Include="Assets\Standard Assets\Utility\FOVKick.cs" />
     <Compile Include="Assets\Standard Assets\Utility\FPSCounter.cs" />
     <Compile Include="Assets\Standard Assets\Utility\FollowTarget.cs" />
-    <Compile Include="Assets\Standard Assets\Utility\ForcedReset.cs" />
     <Compile Include="Assets\Standard Assets\Utility\LerpControlledBob.cs" />
     <Compile Include="Assets\Standard Assets\Utility\ObjectResetter.cs" />
     <Compile Include="Assets\Standard Assets\Utility\ParticleSystemDestroyer.cs" />
     <Compile Include="Assets\Standard Assets\Utility\PlatformSpecificContent.cs" />
     <Compile Include="Assets\Standard Assets\Utility\SimpleActivatorMenu.cs" />
-    <Compile Include="Assets\Standard Assets\Utility\SimpleMouseRotator.cs" />
     <Compile Include="Assets\Standard Assets\Utility\SmoothFollow.cs" />
     <Compile Include="Assets\Standard Assets\Utility\TimedObjectActivator.cs" />
     <Compile Include="Assets\Standard Assets\Utility\TimedObjectDestructor.cs" />
@@ -139,13 +118,11 @@
     <Compile Include="Assets\Standard Assets\Utility\WaypointProgressTracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Materials\MakeTransparent.shader" />
-    <None Include="Assets\Models\Range\SkillHintBg.shader" />
+    <None Include="Assets\Resources\Materials\MakeTransparent.shader" />
+    <None Include="Assets\Resources\Range\SkillHintBg.shader" />
     <None Include="Assets\Scripts\Window\Enums.txt" />
     <None Include="Assets\Scripts\Window\Structs.txt" />
     <None Include="Assets\Scripts\Window\Win32API.txt" />
-    <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
-    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Readme.txt" />
     <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
