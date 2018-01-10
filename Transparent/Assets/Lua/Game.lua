@@ -16,9 +16,9 @@ function Game.OnInitOK()
 	print("this is lua")
 end
 
-function Game.New(scriptPath)
-	print(scriptPath)
+function Game.New(scriptPath, gameObject)
+	--print(scriptPath)
 	local cls = require (""..scriptPath)
-	print(cls)
-	return cls.new()
+	--print(cls)
+	return cls.new({go = gameObject})
 end

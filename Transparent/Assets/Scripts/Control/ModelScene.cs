@@ -11,19 +11,15 @@ namespace Lite
 
 		private Transform modelRoot;
 
-		public int TestId;
+		public ModelPrefab CurrentModelPrefab { private set; get; }
+
+		public LuaScript CurrentLuaScript { private get; set; }
 
 
 		void Awake()
 		{
 			Instance = this;
 			modelRoot = transform;
-		}
-
-		private void Start()
-		{
-			//var cmd = new Command(TestId);
-			//NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
 		}
 
 		public void LoadModel(int id)
@@ -35,6 +31,7 @@ namespace Lite
 				GameObject go = GameObject.Instantiate(prefab);
 				go.SetActive(true);
 				ModelPrefab modelPrefab = go.GetComponent<ModelPrefab>();
+				CurrentModelPrefab = modelPrefab;
 				Transform model = go.transform;
 				model.parent = modelRoot;
 				model.localPosition = Vector3.zero;
@@ -62,21 +59,6 @@ namespace Lite
 			}
 		}
 
-
-		/*private void OnGUI()
-		{
-			int count = 0;
-			if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "play"))
-			{
-				var cmd = new Command(TestId);
-				NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
-			}
-			if (GUI.Button(new Rect(10, 40 * count++, 60, 30), "hide"))
-			{
-				var cmd = new Command(1);
-				NetworkManager.Instance.SendBytes((ushort)CommandId.HideWindow, ProtobufUtil.Serialize(cmd));
-			}
-		}*/
 	}
 
 }

@@ -13,7 +13,7 @@ namespace Lite
 	{
 		public static LuaManager Instance { private set; get; }
 
-		private LuaEnv luaEnv;
+		public LuaEnv luaEnv { get; private set; }
 		private LuaLoader loader;
 		private float updateTime = 0;
 
@@ -71,7 +71,7 @@ namespace Lite
 			return buffer;
 		}
 
-		public object[] DoFile(string fileName)
+		public object[] DoFile(string fileName, LuaTable table = null)
 		{
 			try
 			{
@@ -85,13 +85,11 @@ namespace Lite
 					return null;
 				}
 
-				/*if (AppDefine.openZbsDebugger)
-				{
-					fileName = FileUtils.Instance.FindFile(fileName);
-				}*/
-
 				string strBuffer = Encoding.UTF8.GetString(buffer);
-				return luaEnv.DoString(strBuffer, fileName);
+				if (table != null)
+					return luaEnv.DoString(strBuffer, fileName, table);
+				else
+					return luaEnv.DoString(strBuffer, fileName);
 			}
 			catch (System.Exception e)
 			{

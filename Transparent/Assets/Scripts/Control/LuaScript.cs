@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using XLua;
 
@@ -8,46 +9,72 @@ namespace Lite
 
 	public class LuaScript : MonoBehaviour
 	{
-		public string luaPath;
+		public string ModuleName;
+
+		private LuaFunction luaStart;
+		private LuaFunction luaUpdate;
+		private LuaFunction luaOnDestroy;
 
 		private LuaTable luaTable;
 
 
-		private void Awake()
+		void Awake()
 		{
-			var ret = LuaManager.Instance.CallMethod("Game.New", luaPath);
-			if (ret != null)
+			LuaEnv luaEnv = LuaManager.Instance.luaEnv;
+
+			luaTable = luaEnv.NewTable();
+
+			LuaTable meta = luaEnv.NewTable();
+			meta.Set("__index", luaEnv.Global);
+			luaTable.SetMetaTable(meta);
+			meta.Dispose();
+
+			luaTable.Set("self", this);
+
+			LuaManager.Instance.DoFile(ModuleName, luaTable);
+
+			LuaFunction luaAwake = luaTable.Get<LuaFunction>("Awake");
+			luaTable.Get("Start", out luaStart);
+			luaTable.Get("Update", out luaUpdate);
+			luaTable.Get("OnDestroy", out luaOnDestroy);
+
+			luaAwake = luaTable.GetInPath<LuaFunction>("Awake");
+			luaStart = luaTable.GetInPath<LuaFunction>("Start");
+			luaUpdate = luaTable.GetInPath<LuaFunction>("Update");
+
+			if (luaAwake != null)
 			{
-				luaTable = ret[0] as LuaTable;
-			}
-			else
-			{
-				Log.Error("LuaScript.Awake: Cannot load lua " + luaPath);
+				luaAwake.Call();
 			}
 		}
 
-		private void Start()
+		void Start()
 		{
-			if (luaTable != null)
+			if (luaStart != null)
 			{
-				var func = luaTable.GetInPath<LuaFunction>("Start");
-				if (func != null)
-					func.Call();
-				else
-					Log.Error("LuaScript.Start: Cannot find function with name Start in " + luaPath);
+				luaStart.Call();
 			}
 		}
 
-		private void Update()
+		void Update()
 		{
-			if (luaTable != null)
+			if (luaUpdate != null)
 			{
-				var func = luaTable.GetInPath<LuaFunction>("Update");
-				if (func != null)
-					func.Call();
-				else
-					Log.Error("LuaScript.Start: Cannot find function with name Update in " + luaPath);
+				luaUpdate.Call();
 			}
+		}
+
+		void OnDestroy()
+		{
+			if (luaOnDestroy != null)
+			{
+				luaOnDestroy.Call();
+			}
+			luaOnDestroy = null;
+			luaUpdate = null;
+			luaStart = null;
+			luaTable.Dispose();
+			//injections = null;
 		}
 
 	}
