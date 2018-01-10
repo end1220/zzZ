@@ -14,7 +14,7 @@ namespace Lite
 		public float maxDistance = 40;
 
 		public float angelX = 0;
-		public float angelY = 0;
+		public float angelY = 180;
 		private float angelSpeedX = 360;
 		private float angelSpeedY = 720;
 		public float minAngelX = -80;

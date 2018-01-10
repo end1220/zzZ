@@ -16,7 +16,7 @@ namespace Lite
 
 		//public Vector3 scale;
 
-		private void OnDrawGizmos()
+		private void OnDrawGizmosSelected()
 		{
 			/*Matrix4x4 defaultMatrix = Gizmos.matrix;
 			Gizmos.matrix = transform.localToWorldMatrix;*/
