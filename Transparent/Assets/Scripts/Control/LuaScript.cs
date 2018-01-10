@@ -11,9 +11,9 @@ namespace Lite
 	{
 		public string ModuleName;
 
-		private LuaFunction luaStart;
-		private LuaFunction luaUpdate;
-		private LuaFunction luaOnDestroy;
+		private Action luaStart;
+		private Action luaUpdate;
+		private Action luaOnDestroy;
 
 		private LuaTable luaTable;
 
@@ -33,18 +33,14 @@ namespace Lite
 
 			LuaManager.Instance.DoFile(ModuleName, luaTable);
 
-			LuaFunction luaAwake = luaTable.Get<LuaFunction>("Awake");
+			Action luaAwake = luaTable.Get<Action>("Awake");
 			luaTable.Get("Start", out luaStart);
 			luaTable.Get("Update", out luaUpdate);
 			luaTable.Get("OnDestroy", out luaOnDestroy);
 
-			luaAwake = luaTable.GetInPath<LuaFunction>("Awake");
-			luaStart = luaTable.GetInPath<LuaFunction>("Start");
-			luaUpdate = luaTable.GetInPath<LuaFunction>("Update");
-
 			if (luaAwake != null)
 			{
-				luaAwake.Call();
+				luaAwake();
 			}
 		}
 
@@ -52,7 +48,7 @@ namespace Lite
 		{
 			if (luaStart != null)
 			{
-				luaStart.Call();
+				luaStart();
 			}
 		}
 
@@ -60,7 +56,7 @@ namespace Lite
 		{
 			if (luaUpdate != null)
 			{
-				luaUpdate.Call();
+				luaUpdate();
 			}
 		}
 
@@ -68,7 +64,7 @@ namespace Lite
 		{
 			if (luaOnDestroy != null)
 			{
-				luaOnDestroy.Call();
+				luaOnDestroy();
 			}
 			luaOnDestroy = null;
 			luaUpdate = null;
