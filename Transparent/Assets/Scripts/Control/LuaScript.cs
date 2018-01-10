@@ -3,42 +3,47 @@ using UnityEngine;
 using XLua;
 
 
-public class LuaScript : MonoBehaviour
+namespace Lite
 {
-	public string luaPath;
-	public LuaTable luaTable;
-	private LuaManager luaMgr;
 
-	private void Awake()
+	public class LuaScript : MonoBehaviour
 	{
-		
-	}
+		public string luaPath;
+		public LuaTable luaTable;
+		private LuaManager luaMgr;
 
-	private void Start()
-	{
-		luaMgr = LuaManager.Instance;
+		private void Awake()
+		{
 
-		var ret = CallMethod("Game.New", luaPath);
-		// ref to luatable
-		luaTable = ret[0] as LuaTable;
+		}
 
-		/*var luaTable = luaMgr.GetTable("Game");
-		var fun = luaTable.GetInPath<LuaFunction>("OnInitOK");
-		fun.Call();*/
+		private void Start()
+		{
+			luaMgr = LuaManager.Instance;
 
-		var func = luaTable.GetInPath<LuaFunction>("Start");
-		func.Call();
-	}
+			var ret = CallMethod("Game.New", luaPath);
+			// ref to luatable
+			luaTable = ret[0] as LuaTable;
 
-	private void Update()
-	{
-		var func = luaTable.GetInPath<LuaFunction>("Update");
-		func.Call();
-	}
+			/*var luaTable = luaMgr.GetTable("Game");
+			var fun = luaTable.GetInPath<LuaFunction>("OnInitOK");
+			fun.Call();*/
 
-	public static object[] CallMethod(string func, params object[] args)
-	{
-		return LuaManager.Instance.CallMethod(func, args);
+			var func = luaTable.GetInPath<LuaFunction>("Start");
+			func.Call();
+		}
+
+		private void Update()
+		{
+			var func = luaTable.GetInPath<LuaFunction>("Update");
+			func.Call();
+		}
+
+		public static object[] CallMethod(string func, params object[] args)
+		{
+			return LuaManager.Instance.CallMethod(func, args);
+		}
+
 	}
 
 }

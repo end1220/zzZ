@@ -4,86 +4,90 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-public class App : MonoBehaviour
+namespace Lite
 {
-	public static App Instance { private set; get; }
 
-	private Dictionary<Type, IManager> mManagerDic = new Dictionary<Type, IManager>();
-
-
-	void Awake()
+	public class App : MonoBehaviour
 	{
-		try
+		public static App Instance { private set; get; }
+
+		private Dictionary<Type, IManager> mManagerDic = new Dictionary<Type, IManager>();
+
+
+		void Awake()
 		{
-			Instance = this;
-			Application.runInBackground = true;
-			Application.targetFrameRate = AppDefine.FPS;
-			Screen.sleepTimeout = SleepTimeout.NeverSleep;
-			Screen.SetResolution(800, 600, false);
+			try
+			{
+				Instance = this;
+				Application.runInBackground = true;
+				Application.targetFrameRate = AppDefine.FPS;
+				Screen.sleepTimeout = SleepTimeout.NeverSleep;
+				Screen.SetResolution(800, 600, false);
 
-			AddManager<ResourceManager>();
-			AddManager<LuaManager>();
-			AddManager<NetworkManager>();
-			AddManager<DataManager>();
+				AddManager<ResourceManager>();
+				AddManager<LuaManager>();
+				AddManager<NetworkManager>();
+				AddManager<DataManager>();
 
-			foreach (var item in mManagerDic)
-				item.Value.Init();
+				foreach (var item in mManagerDic)
+					item.Value.Init();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
-		catch (Exception e)
+
+
+		void OnDestroy()
 		{
-			Log.Error(e.ToString());
+			try
+			{
+				foreach (var item in mManagerDic)
+					item.Value.Destroy();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
-	}
 
 
-	void OnDestroy()
-	{
-		try
+		void Update()
 		{
-			foreach (var item in mManagerDic)
-				item.Value.Destroy();
+			try
+			{
+				foreach (var item in mManagerDic)
+					item.Value.Tick();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
-		catch (Exception e)
+
+
+		private T AddManager<T>() where T : IManager, new()
 		{
-			Log.Error(e.ToString());
+			T mgr = null;
+			Type name = typeof(T);
+			if (!mManagerDic.ContainsKey(name))
+			{
+				mgr = new T();
+				mManagerDic.Add(name, mgr);
+			}
+			return mgr;
 		}
-	}
 
 
-	void Update()
-	{
-		try
+		public T GetManager<T>() where T : IManager
 		{
-			foreach (var item in mManagerDic)
-				item.Value.Tick();
+			Type name = typeof(T);
+			IManager mgr = null;
+			mManagerDic.TryGetValue(name, out mgr);
+			return mgr as T;
 		}
-		catch (Exception e)
-		{
-			Log.Error(e.ToString());
-		}
-	}
 
-
-	private T AddManager<T>() where T : IManager, new()
-	{
-		T mgr = null;
-		Type name = typeof(T);
-		if (!mManagerDic.ContainsKey(name))
-		{
-			mgr = new T();
-			mManagerDic.Add(name, mgr);
-		}
-		return mgr;
-	}
-
-
-	public T GetManager<T>() where T : IManager
-	{
-		Type name = typeof(T);
-		IManager mgr = null;
-		mManagerDic.TryGetValue(name, out mgr);
-		return mgr as T;
 	}
 
 }

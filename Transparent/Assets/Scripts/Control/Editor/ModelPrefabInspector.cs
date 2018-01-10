@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
 
-namespace TwGame
+namespace Lite
 {
 	[CustomEditor(typeof(ModelPrefab))]
 	public class ModelPrefabInspector : Editor

@@ -1,12 +1,16 @@
 
 
-
-public class IManager
+namespace Lite
 {
-	public virtual void Init() { }
 
-	public virtual void Destroy() { }
+	public class IManager
+	{
+		public virtual void Init() { }
 
-	public virtual void Tick() { }
+		public virtual void Destroy() { }
+
+		public virtual void Tick() { }
+
+	}
 
 }

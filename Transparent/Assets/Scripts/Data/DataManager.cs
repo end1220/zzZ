@@ -5,105 +5,110 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 
 
-[Serializable]
-public class ModelData
+namespace Lite
 {
-	public int id;
-	public string name;
-	public string bundleName;
-	public string assetName;
-	public string title;
-	public string author;
-	public string preview;
-}
 
-[Serializable]
-public class ModelDataArray
-{
-	public ModelData[] models;
-}
-
-public class DataManager : IManager
-{
-	public static DataManager Instance { private set; get; }
-
-	Dictionary<int, ModelData> modelDic = new Dictionary<int, ModelData>();
-
-
-	public override void Init()
+	[Serializable]
+	public class ModelData
 	{
-		Instance = this;
-		ReloadModelData();
+		public int id;
+		public string name;
+		public string bundleName;
+		public string assetName;
+		public string title;
+		public string author;
+		public string preview;
 	}
 
-	public override void Tick()
+	[Serializable]
+	public class ModelDataArray
 	{
-		
+		public ModelData[] models;
 	}
 
-	public override void Destroy()
+	public class DataManager : IManager
 	{
-		
-	}
+		public static DataManager Instance { private set; get; }
 
-	public static void RefreshModelList()
-	{
-		string modelPath = AppDefine.modelPath;
-		if (!Directory.Exists(modelPath))
+		Dictionary<int, ModelData> modelDic = new Dictionary<int, ModelData>();
+
+
+		public override void Init()
 		{
-			Log.Error("RefreshModelList: Directory Not Exists: " + modelPath);
-			return;
+			Instance = this;
+			ReloadModelData();
 		}
-		
-		string[] directories = Directory.GetDirectories(modelPath);
-		string[] files = Directory.GetFiles(modelPath);
-		if (directories.Length + files.Length == 0)
-			return;
 
-		List<ModelData> models = new List<ModelData>();
-		foreach (string subdir in directories)
+		public override void Tick()
 		{
-			string dirName = subdir.Substring(subdir.LastIndexOf("/") + 1);
-			string infoPath = subdir + "/" + dirName + ".sbm";
-			if (File.Exists(infoPath))
+
+		}
+
+		public override void Destroy()
+		{
+
+		}
+
+		/*public static void RefreshModelList()
+		{
+			string modelPath = AppDefine.modelPath;
+			if (!Directory.Exists(modelPath))
 			{
-				string text = File.ReadAllText(infoPath);
-				ModelData data = JsonUtility.FromJson<ModelData>(text);
-				models.Add(data);
+				Log.Error("RefreshModelList: Directory Not Exists: " + modelPath);
+				return;
 			}
-			else
-				Log.Error("RefreshModelList: file not exists: " + infoPath);
-		}
 
-		ModelDataArray modelArray = new ModelDataArray();
-		modelArray.models = models.ToArray();
-		string jsonStr = JsonUtility.ToJson(modelArray);
-		FileStream fs = File.Open(AppDefine.modelListPath, FileMode.Create);
-		StreamWriter sw = new StreamWriter(fs);
-		sw.Write(jsonStr);
-		sw.Flush();
-		fs.Close();
-	}
+			string[] directories = Directory.GetDirectories(modelPath);
+			string[] files = Directory.GetFiles(modelPath);
+			if (directories.Length + files.Length == 0)
+				return;
 
-	public void ReloadModelData()
-	{
-		string jsonStr = File.ReadAllText(AppDefine.modelListPath);
-		if (string.IsNullOrEmpty(jsonStr))
+			List<ModelData> models = new List<ModelData>();
+			foreach (string subdir in directories)
+			{
+				string dirName = subdir.Substring(subdir.LastIndexOf("/") + 1);
+				string infoPath = subdir + "/" + dirName + ".sbm";
+				if (File.Exists(infoPath))
+				{
+					string text = File.ReadAllText(infoPath);
+					ModelData data = JsonUtility.FromJson<ModelData>(text);
+					models.Add(data);
+				}
+				else
+					Log.Error("RefreshModelList: file not exists: " + infoPath);
+			}
+
+			ModelDataArray modelArray = new ModelDataArray();
+			modelArray.models = models.ToArray();
+			string jsonStr = JsonUtility.ToJson(modelArray);
+			FileStream fs = File.Open(AppDefine.modelListPath, FileMode.Create);
+			StreamWriter sw = new StreamWriter(fs);
+			sw.Write(jsonStr);
+			sw.Flush();
+			fs.Close();
+		}*/
+
+		public void ReloadModelData()
 		{
-			Log.Error("Cannot load model data !");
-			return;
+			string jsonStr = File.ReadAllText(AppDefine.modelListPath);
+			if (string.IsNullOrEmpty(jsonStr))
+			{
+				Log.Error("Cannot load model data !");
+				return;
+			}
+
+			ModelDataArray modelArray = JsonUtility.FromJson<ModelDataArray>(jsonStr);
+			modelDic.Clear();
+			for (int i = 0; i < modelArray.models.Length; ++i)
+				modelDic.Add(modelArray.models[i].id, modelArray.models[i]);
 		}
 
-		ModelDataArray modelArray = JsonUtility.FromJson<ModelDataArray>(jsonStr);
-		modelDic.Clear();
-		for (int i = 0; i < modelArray.models.Length; ++i)
-			modelDic.Add(modelArray.models[i].id, modelArray.models[i]);
+		public ModelData GetModelData(int id)
+		{
+			ModelData data;
+			modelDic.TryGetValue(id, out data);
+			return data;
+		}
 	}
 
-	public ModelData GetModelData(int id)
-	{
-		ModelData data;
-		modelDic.TryGetValue(id, out data);
-		return data;
-	}
 }

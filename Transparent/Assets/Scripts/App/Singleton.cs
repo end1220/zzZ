@@ -2,67 +2,72 @@
 using UnityEngine;
 
 
-public class Singleton<T> where T : new()
+namespace Lite
 {
-	private static T _instance;
-	static object _lock = new object();
 
-	public static T Instance
+	public class Singleton<T> where T : new()
 	{
-		get
+		private static T _instance;
+		static object _lock = new object();
+
+		public static T Instance
 		{
-			if (_instance == null)
+			get
 			{
-				lock (_lock)
-				{
-					if (_instance == null)
-					{
-						_instance = new T();
-					}
-				}
-			}
-			return _instance;
-
-		}
-	}
-}
-
-
-public class SingletonMono<T> : MonoBehaviour
-	where T : Component
-{
-	private static T _instance;
-
-	public static T Instance
-	{
-		get
-		{
-			if (_instance == null)
-			{
-				_instance = FindObjectOfType(typeof(T)) as T;
 				if (_instance == null)
 				{
-					var go = new GameObject();
-					go.name = typeof(T).Name;
-					//go.hideFlags = HideFlags.HideAndDontSave;
-					_instance = go.AddComponent<T>();
+					lock (_lock)
+					{
+						if (_instance == null)
+						{
+							_instance = new T();
+						}
+					}
 				}
+				return _instance;
+
 			}
-			return _instance;
 		}
 	}
 
-	void Awake()
+
+	public class SingletonMono<T> : MonoBehaviour
+		where T : Component
 	{
-		DontDestroyOnLoad(gameObject);
-		if (_instance == null)
+		private static T _instance;
+
+		public static T Instance
 		{
-			_instance = this as T;
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = FindObjectOfType(typeof(T)) as T;
+					if (_instance == null)
+					{
+						var go = new GameObject();
+						go.name = typeof(T).Name;
+						//go.hideFlags = HideFlags.HideAndDontSave;
+						_instance = go.AddComponent<T>();
+					}
+				}
+				return _instance;
+			}
 		}
-		else
+
+		void Awake()
 		{
-			Destroy(gameObject);
+			DontDestroyOnLoad(gameObject);
+			if (_instance == null)
+			{
+				_instance = this as T;
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
 		}
+
 	}
 
 }
