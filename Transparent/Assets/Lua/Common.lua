@@ -634,17 +634,6 @@ function string.formatnumberthousands(num)
     return formatted
 end
 
-function TransformMailTime(time)
-    local oneDay = 86400
-    if time > oneDay then
-        return math.floor(time/oneDay).."天前"
-    else
-        local h = math.floor(time / 3600)
-        local m = math.floor(time % 60)
-        return string.format("%02d小时%02d分钟前",h,m)
-    end
-end
-
 function ForEachCsList(...)
     local list_count = select('#', ...) - 1
 	local callback = select(list_count + 1, ...)

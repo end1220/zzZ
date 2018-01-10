@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732dbd15bf543d44eb3ef54d76fe7de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestId: 724040460
+  TestId: 1900725526
 --- !u!1 &1502407561
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +257,6 @@ GameObject:
   - component: {fileID: 1871378520}
   - component: {fileID: 1871378513}
   - component: {fileID: 1871378514}
-  - component: {fileID: 1871378521}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -292,7 +291,7 @@ MonoBehaviour:
   minDistance: 5
   maxDistance: 40
   angelX: 0
-  angelY: 0
+  angelY: 180
   minAngelX: -80
   maxAngelX: 80
   zoomSpeed: 5
@@ -368,7 +367,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1871378512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -385,18 +384,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b27d0eb2edf43740b4114705ad53c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1871378521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1871378512}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: a605e8a4fe0a4b047afe21747701353e, type: 2}
-  m_Camera: {fileID: 0}
-  m_PreviousProfile: {fileID: 0}
-  m_RenderingInSceneView: 0
