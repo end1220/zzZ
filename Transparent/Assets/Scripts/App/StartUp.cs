@@ -34,7 +34,6 @@ namespace Lite
 
 		private void OnLoaded()
 		{
-			Log.Info("OnLoaded");
 			try
 			{
 				LuaManager luaMgr = App.Instance.GetManager<LuaManager>();
@@ -44,22 +43,15 @@ namespace Lite
 				var luaTable = luaMgr.GetTable("Game");
 				var fun = luaTable.GetInPath<XLua.LuaFunction>("OnInitOK");
 				fun.Call();
-				Log.Info("OnLoaded 2");
 
-
-				var ret = luaMgr.CallMethod("Game.New", "TestLuaScript");
-				// ref to luatable
+				/*var ret = luaMgr.CallMethod("Game.New", "TestLuaScript");
 				luaTable = ret[0] as XLua.LuaTable;
-
-				/*var luaTable = luaMgr.GetTable("Game");
-				var fun = luaTable.GetInPath<LuaFunction>("OnInitOK");
-				fun.Call();*/
 
 				var func = luaTable.GetInPath<XLua.LuaFunction>("Start");
 				func.Call();
 
 				func = luaTable.GetInPath<XLua.LuaFunction>("Update");
-				func.Call();
+				func.Call();*/
 			}
 			catch (Exception e)
 			{

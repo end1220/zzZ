@@ -1,4 +1,5 @@
-local TestLuaScript = class("TestLuaScript")
+local TestLuaScript = class("TestLuaScript", MonoBehaviour)
+
 function TestLuaScript:Start()
 	print("start")
 end

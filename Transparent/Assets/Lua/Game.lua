@@ -7,7 +7,7 @@ Vector2 = CS.UnityEngine.Vector2;
 Color = CS.UnityEngine.Color;
 Quaternion = CS.UnityEngine.Quaternion;
 
-require "Common/functions"
+require "Common"
 
 
 Game = {}

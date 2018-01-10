@@ -9,39 +9,45 @@ namespace Lite
 	public class LuaScript : MonoBehaviour
 	{
 		public string luaPath;
-		public LuaTable luaTable;
-		private LuaManager luaMgr;
+
+		private LuaTable luaTable;
+
 
 		private void Awake()
 		{
-
+			var ret = LuaManager.Instance.CallMethod("Game.New", luaPath);
+			if (ret != null)
+			{
+				luaTable = ret[0] as LuaTable;
+			}
+			else
+			{
+				Log.Error("LuaScript.Awake: Cannot load lua " + luaPath);
+			}
 		}
 
 		private void Start()
 		{
-			luaMgr = LuaManager.Instance;
-
-			var ret = CallMethod("Game.New", luaPath);
-			// ref to luatable
-			luaTable = ret[0] as LuaTable;
-
-			/*var luaTable = luaMgr.GetTable("Game");
-			var fun = luaTable.GetInPath<LuaFunction>("OnInitOK");
-			fun.Call();*/
-
-			var func = luaTable.GetInPath<LuaFunction>("Start");
-			func.Call();
+			if (luaTable != null)
+			{
+				var func = luaTable.GetInPath<LuaFunction>("Start");
+				if (func != null)
+					func.Call();
+				else
+					Log.Error("LuaScript.Start: Cannot find function with name Start in " + luaPath);
+			}
 		}
 
 		private void Update()
 		{
-			var func = luaTable.GetInPath<LuaFunction>("Update");
-			func.Call();
-		}
-
-		public static object[] CallMethod(string func, params object[] args)
-		{
-			return LuaManager.Instance.CallMethod(func, args);
+			if (luaTable != null)
+			{
+				var func = luaTable.GetInPath<LuaFunction>("Update");
+				if (func != null)
+					func.Call();
+				else
+					Log.Error("LuaScript.Start: Cannot find function with name Update in " + luaPath);
+			}
 		}
 
 	}

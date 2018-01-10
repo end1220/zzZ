@@ -22,8 +22,8 @@ namespace Lite
 
 		private void Start()
 		{
-			var cmd = new Command(TestId);
-			NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
+			//var cmd = new Command(TestId);
+			//NetworkManager.Instance.SendBytes((ushort)CommandId.PlayThisOne, ProtobufUtil.Serialize(cmd));
 		}
 
 		public void LoadModel(int id)
