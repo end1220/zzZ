@@ -10,7 +10,7 @@ namespace Lite
 
 		public void CrossFade()
 		{
-			animator.CrossFade();
+			//animator.CrossFade();
 		}
 
 		public void SetBool(string name, bool value)
