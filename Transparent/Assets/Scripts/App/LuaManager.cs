@@ -17,12 +17,7 @@ namespace Lite
 		private LuaLoader loader;
 		private float updateTime = 0;
 
-		Action tickFunc;
-
-		[CSharpCallLua]
-		public delegate object[] LuaFuncCall(params object[] args);
-
-		private Dictionary<string, LuaFuncCall> funcList = new Dictionary<string, LuaFuncCall>();
+		LuaFunction tickFunc;
 
 		public override void Init()
 		{
@@ -36,7 +31,7 @@ namespace Lite
 		{
 			if (tickFunc != null)
 			{
-				tickFunc();
+				tickFunc.Call();
 			}
 
 			if (Time.timeSinceLevelLoad - updateTime > 60)
@@ -62,7 +57,11 @@ namespace Lite
 		{
 			DoFile("Game");
 
-			luaEnv.Global.Get("Window_OnTick", out tickFunc);
+			var luaTable = GetTable("Game");
+			var fun = luaTable.GetInPath<LuaFunction>("OnInit");
+			fun.Call();
+
+			tickFunc = luaTable.GetInPath<LuaFunction>("OnUpdate");
 		}
 
 		byte[] CustomLoad(ref string fileName)
@@ -160,18 +159,10 @@ namespace Lite
 
 		public object[] CallMethod(string funcName, params object[] args)
 		{
-			if (funcList.ContainsKey(funcName))
+			LuaFunction func = luaEnv.Global.GetInPath<LuaFunction>(funcName);
+			if (func != null)
 			{
-				var call = funcList[funcName];
-				return call(args);
-			}
-			else
-			{
-				LuaFunction func = luaEnv.Global.GetInPath<LuaFunction>(funcName);
-				if (func != null)
-				{
-					return func.Call(args);
-				}
+				return func.Call(args);
 			}
 			return null;
 		}

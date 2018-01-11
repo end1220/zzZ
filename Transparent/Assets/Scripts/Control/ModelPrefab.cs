@@ -16,6 +16,8 @@ namespace Lite
 
 		//public Vector3 scale;
 
+		public string LuaModulePath;
+
 		private void OnDrawGizmosSelected()
 		{
 			/*Matrix4x4 defaultMatrix = Gizmos.matrix;

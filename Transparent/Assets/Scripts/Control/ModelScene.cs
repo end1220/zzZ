@@ -44,6 +44,10 @@ namespace Lite
 				spin.minDistance = modelPrefab.minCameraDistance;
 				spin.maxDistance = modelPrefab.maxCameraDistance;
 				spin.target = model.position + modelPrefab.lookAtOffset;
+
+				var luaTable = LuaManager.Instance.GetTable("Game");
+				var fun = luaTable.GetInPath<XLua.LuaFunction>("OnLoadModel");
+				fun.Call(go, modelPrefab.LuaModulePath);
 			}
 			else
 			{

@@ -62,22 +62,22 @@ public class CommandHandler
 		HandleMethod func;
 		if (handles.TryGetValue(id, out func))
 			func(ProtobufUtil.DeSerialize<Command>(packet.data));
-		Log.Error("Handle id : " + id);
+		//Log.Info("Handle id : " + id);
 	}
 
 	static void OnShowWindow(Command cmd)
 	{
-		Log.Error("show window");
+		//Log.Info("show window");
 	}
 
 	static void OnHideWindow(Command cmd)
 	{
-		Log.Error("hide window");
+		//Log.Info("hide window");
 	}
 
 	static void OnPlayThis(Command cmd)
 	{
-		Log.Error("play this");
+		//Log.Info("play this");
 		int id = cmd.number1;
 		ModelScene.Instance.LoadModel(id);
 	}

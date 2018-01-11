@@ -1,24 +1,35 @@
 
---unityengine
-WWW = CS.UnityEngine.WWW;
-GameObject = CS.UnityEngine.GameObject;
-Vector3 = CS.UnityEngine.Vector3;
-Vector2 = CS.UnityEngine.Vector2;
-Color = CS.UnityEngine.Color;
-Quaternion = CS.UnityEngine.Quaternion;
+Type = CS.System.Type
+GameObject = CS.UnityEngine.GameObject
+Vector3 = CS.UnityEngine.Vector3
+Vector2 = CS.UnityEngine.Vector2
+Quaternion = CS.UnityEngine.Quaternion
+Color = CS.UnityEngine.Color
 
 require "Common"
+ModelBehaviour = require("ModelBehaviour")
 
+Game = 
+{
+	currentModel = nil,
+}
 
-Game = {}
-
-function Game.OnInitOK()
-	print("this is lua")
+function Game.OnInit()
+	
 end
 
-function Game.New(scriptPath, gameObject)
-	--print(scriptPath)
-	local cls = require (""..scriptPath)
-	--print(cls)
-	return cls.new({go = gameObject})
+function Game.OnUpdate()
+	if currentModel ~= nil then
+		currentModel:Update()
+	end
+end
+
+function Game.OnLoadModel(gameObject, moduleName)
+	local mod = require(''..moduleName)
+	currentModel = mod.new()
+	currentModel:Init(gameObject)
+end
+
+function Game.OnUnloadModel(gameObject, moduleName)
+	currentModel = nil
 end

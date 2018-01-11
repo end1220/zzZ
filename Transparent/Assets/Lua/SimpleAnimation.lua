@@ -1,9 +1,13 @@
-local SimpleAnimation = class("SimpleAnimation", MonoBehaviour)
+local SimpleAnimation = class("SimpleAnimation", ModelBehaviour)
 
-function SimpleAnimation:Start()
-	print(self)
-	self.animator = self.gameObject:GetComponent("UnityEngine.Animator")
+function SimpleAnimation:OnInit()
+	--print('simple oninit')
+	self.animator = self.gameObject:GetComponent("Animator")
 	print(self.animator)
+end
+
+function SimpleAnimation:OnUpdate()
+	--print('simple onupdate')
 end
 
 return SimpleAnimation

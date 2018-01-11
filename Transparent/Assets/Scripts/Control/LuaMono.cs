@@ -6,7 +6,7 @@ using XLua;
 namespace Lite
 {
 
-	public class LuaScript2 : MonoBehaviour
+	public class LuaMono : MonoBehaviour
 	{
 		public string ModuleName;
 
