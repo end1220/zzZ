@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;STEAMWORKS_WIN</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -43,6 +43,9 @@
     <Reference Include="protobuf-net">
       <HintPath>Reference\protobuf-net.dll</HintPath>
     </Reference>
+    <Reference Include="Steamworks.NET">
+      <HintPath>Reference\Steamworks.NET.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System" />
@@ -66,7 +69,7 @@
     <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
     <Compile Include="Source\Data\SubAssetBundleManifest.cs" />
     <Compile Include="Source\Data\ZipHelper.cs" />
-    <Compile Include="Source\FloatDecade.cs" />
+    <Compile Include="Source\FloatFacade.cs" />
     <Compile Include="Source\IManager.cs" />
     <Compile Include="Source\Network\ByteBuffer.cs" />
     <Compile Include="Source\Network\CommandHandler.cs" />

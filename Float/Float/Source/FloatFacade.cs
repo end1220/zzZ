@@ -5,10 +5,10 @@ using System.Collections.Generic;
 namespace Float
 {
 
-	public class FloatDecade
+	public class FloatFacade
 	{
-		private static FloatDecade _inst;
-		public static FloatDecade Instance { get { if (_inst == null) _inst = new FloatDecade(); return _inst; } }
+		private static FloatFacade _inst;
+		public static FloatFacade Instance { get { if (_inst == null) _inst = new FloatFacade(); return _inst; } }
 		private Dictionary<Type, IManager> mManagerDic = new Dictionary<Type, IManager>();
 
 		public void Init()
@@ -21,6 +21,8 @@ namespace Float
 
 				foreach (var item in mManagerDic)
 					item.Value.Init();
+
+				Steamworks.SteamAPI.Init();
 			}
 			catch (Exception e)
 			{
