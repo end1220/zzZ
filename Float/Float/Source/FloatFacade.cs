@@ -22,7 +22,7 @@ namespace Float
 				foreach (var item in mManagerDic)
 					item.Value.Init();
 
-				Steamworks.SteamAPI.Init();
+				SteamManager.Instance.Init();
 			}
 			catch (Exception e)
 			{
@@ -36,6 +36,8 @@ namespace Float
 			{
 				foreach (var item in mManagerDic)
 					item.Value.Tick();
+
+				SteamManager.Instance.Update();
 			}
 			catch (Exception e)
 			{
@@ -50,6 +52,8 @@ namespace Float
 				CustomSettings.Save();
 				foreach (var item in mManagerDic)
 					item.Value.Destroy();
+
+				SteamManager.Instance.Destroy();
 			}
 			catch (Exception e)
 			{

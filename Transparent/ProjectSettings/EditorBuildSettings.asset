@@ -12,5 +12,5 @@ EditorBuildSettings:
     path: Assets/test.unity
     guid: 62440407db55e8f4b988f2ecb710e33c
   - enabled: 0
-    path: Assets/Scene.unity
+    path: 
     guid: 8987dd7b9ffd10044ba550d57ae2743a

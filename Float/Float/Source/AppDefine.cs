@@ -10,7 +10,7 @@ public class AppDefine
 	{
 		get
 		{
-			return System.Environment.CurrentDirectory + "/ff_data/StreamingAssets/" + AppName + "/";
+			return System.Environment.CurrentDirectory + "/ww_data/StreamingAssets/" + AppName + "/";
 		}
 	}
 
