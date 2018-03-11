@@ -3,21 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300" Background="#FFFFFFFF">
-	<Grid x:Name="LayoutRoot"  Margin="1,1,1,1" ShowGridLines="True" Style="{StaticResource ContentRoot}" Background="#FF0000FF">
-		<ListBox Name="listBox1" Width="768" Height="620" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
-				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White" Background="#FFFF0000">
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="677" Background="#FFFFFFFF">
+	<Grid x:Name="LayoutRoot"  Margin="1,1,1,1" Style="{StaticResource ContentRoot}" Background="#FF252526">
+		<ListBox x:Name="listBoxModels" Width="660" Height="600" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White" Background="#FF898989" MouseDoubleClick="LBMouseDoubleClick" MouseLeftButtonUp="LBMouseLeftButtonUp" MouseRightButtonUp="LBMouseRightButtonUp" SelectionChanged="LBSelectionChanged">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<WrapPanel ItemWidth="128" ItemHeight="128" >
-					</WrapPanel>
+					<WrapPanel ItemWidth="128" ItemHeight="128" />
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid HorizontalAlignment="Center" Background="#FFFFFFFF">
 						<Grid.RowDefinitions>
-							<RowDefinition Height="128"></RowDefinition>
+							<RowDefinition Height="128"/>
 						</Grid.RowDefinitions>
 						<Image Source="{Binding PreviewImage}" Grid.Row="0" Width="128" Height="128" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 						<TextBlock Text="{Binding Name}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="8pt" TextWrapping="Wrap" />
@@ -25,5 +24,15 @@
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
+		<Image x:Name="thumb" HorizontalAlignment="Left" Height="256" Margin="705.5,10,0,0" VerticalAlignment="Top" Width="256" OpacityMask="#FFFD8B8B" Source="thumb23.png"/>
+		<Label x:Name="Title" Content="标题：" HorizontalAlignment="Left" Margin="705.5,299,0,0" VerticalAlignment="Top" FontSize="18" Background="{x:Null}"/>
+		<Label x:Name="Title2" Content="哈哈嘿嘿擦擦擦1" HorizontalAlignment="Left" Margin="764.5,299,0,0" VerticalAlignment="Top" FontSize="18" Width="197.5" HorizontalContentAlignment="Center"/>
+		<Label x:Name="Author" Content="作者：" HorizontalAlignment="Left" Margin="705.5,337.5,0,0" VerticalAlignment="Top" FontSize="18" Background="{x:Null}"/>
+		<Label x:Name="Author2" Content="呵呵哒" HorizontalAlignment="Left" Margin="764,337.5,0,0" VerticalAlignment="Top" FontSize="18" Width="197.5" HorizontalContentAlignment="Center"/>
+		<Label x:Name="Label" Content="标签：" HorizontalAlignment="Left" Margin="706,375.5,0,0" VerticalAlignment="Top" FontSize="18" Background="{x:Null}"/>
+		<Label x:Name="Label2" Content="少儿不宜" HorizontalAlignment="Left" Margin="764.5,375.5,0,0" VerticalAlignment="Top" FontSize="18" Width="197.5" HorizontalContentAlignment="Center"/>
+		<Button x:Name="okbutton" Content="确  定" HorizontalAlignment="Left" Margin="737.5,618.76,0,0" VerticalAlignment="Top" Width="100" Background="#FF818181" Foreground="White" Height="30" FontSize="16"/>
+		<Button x:Name="cancelbutton" Content="取  消" HorizontalAlignment="Left" Margin="850,618.76,0,0" VerticalAlignment="Top" Width="100" Background="#FF818181" Foreground="White" FontSize="16" Height="30"/>
+		<Button x:Name="deletebutton" Content="删 除" HorizontalAlignment="Left" Margin="705.5,431.76,0,0" VerticalAlignment="Top" Width="100.5" Background="#FFFF6565" Foreground="White" Height="24"/>
 	</Grid>
 </UserControl>

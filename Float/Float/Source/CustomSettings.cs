@@ -13,6 +13,8 @@ public class CustomSettings
 	public bool StartEnabled = true;
 	public float scale = 1;
 
+	public int SelectedModelId;
+
 	public static CustomSettings Load()
 	{
 		string path = settingFilePath;

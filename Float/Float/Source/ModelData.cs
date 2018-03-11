@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel;
+using System.Windows.Input;
 
 
 public partial class ModelData : INotifyPropertyChanged
@@ -59,6 +60,12 @@ public partial class ModelData : INotifyPropertyChanged
 	public void NotifyPropertyChanged(string propertyName)
 	{
 		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	}
+
+
+	private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs args)
+	{
+		Log.Error("buton up");
 	}
 
 }
