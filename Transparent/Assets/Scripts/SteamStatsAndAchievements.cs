@@ -48,7 +48,7 @@ class SteamStatsAndAchievements : MonoBehaviour {
 	protected Callback<UserAchievementStored_t> m_UserAchievementStored;
 
 	void OnEnable() {
-		if (!SteamManager.Initialized)
+		if (!SteamManager.Instance.Initialized)
 			return;
 
 		// Cache the GameID for use in the Callbacks
@@ -64,12 +64,12 @@ class SteamStatsAndAchievements : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (!SteamManager.Initialized)
+		if (!SteamManager.Instance.Initialized)
 			return;
 
 		if (!m_bRequestedStats) {
 			// Is Steam Loaded? if no, can't get stats, done
-			if (!SteamManager.Initialized) {
+			if (!SteamManager.Instance.Initialized) {
 				m_bRequestedStats = true;
 				return;
 			}
@@ -204,7 +204,7 @@ class SteamStatsAndAchievements : MonoBehaviour {
 	//			our data with those results now.
 	//-----------------------------------------------------------------------------
 	private void OnUserStatsReceived(UserStatsReceived_t pCallback) {
-		if (!SteamManager.Initialized)
+		if (!SteamManager.Instance.Initialized)
 			return;
 
 		// we may get callbacks for other games' stats arriving, ignore them
@@ -284,7 +284,7 @@ class SteamStatsAndAchievements : MonoBehaviour {
 	// Purpose: Display the user's stats and achievements
 	//-----------------------------------------------------------------------------
 	public void Render() {
-		if (!SteamManager.Initialized) {
+		if (!SteamManager.Instance.Initialized) {
 			GUILayout.Label("Steamworks not Initialized");
 			return;
 		}

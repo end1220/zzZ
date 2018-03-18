@@ -16,9 +16,9 @@ public class SteamManager
 		}
 	}
 
-	private static bool s_EverInialized;
+	private bool s_EverInialized;
 
-	public static bool Initialized { get; private set; }
+	public bool Initialized { get; private set; }
 
 	private SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 	private static void SteamAPIDebugTextHook(int nSeverity, System.Text.StringBuilder pchDebugText)
@@ -74,7 +74,8 @@ public class SteamManager
 		Initialized = SteamAPI.Init();
 		if (!Initialized)
 		{
-			Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.");
+			//Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.");
+			Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Please make sure your steam client is running.");
 			return;
 		}
 
