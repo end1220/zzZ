@@ -40,7 +40,6 @@ namespace Lite
 				float leftSpace = 10;
 				float titleLen = 70;
 				float textLen = 450;
-				float buttonLen1 = 100;
 				float buttonLen2 = 50;
 				float buttonHeight = 40;
 
@@ -87,7 +86,7 @@ namespace Lite
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(leftSpace);
 				agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, "同意", GUILayout.Width(40));
-				if (GUILayout.Button("创意工坊服务条款", EditorStyles.label, GUILayout.Width(100)))
+				if (GUILayout.Button("《创意工坊服务条款》", EditorStyles.label, GUILayout.Width(130)))
 				{
 					Application.OpenURL("http://steamcommunity.com/sharedfiles/workshoplegalagreement");
 				}
@@ -99,23 +98,30 @@ namespace Lite
 				if (GUILayout.Button("提交至创意工坊", GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 				{
 					if (EditorUtility.DisplayDialog("创意工坊法律协议",
-						"提交物品的同时也表示您同意了创意工坊服务条款:http://steamcommunity.com/sharedfiles/workshoplegalagreement",
+						"提交物品的同时也表示您同意了《创意工坊服务条款》:http://steamcommunity.com/sharedfiles/workshoplegalagreement",
 						"确定",
 						"取消"))
 					{
-						//
+						CreateItem();
 					}
 					else
 					{
 
 					}
 				}
+
+				if (GUILayout.Button("提交至创意工坊", GUILayout.Width(200), GUILayout.Height(buttonHeight)))
+				{
+					UpdateItem();
+				}
 				GUILayout.EndHorizontal();
 				GUILayout.Space(spaceSize);
+
+				OnUpdateItemGUI();
 			}
 			else
 			{
-				GUILayout.Label("SteamAPI failed", EditorStyles.label);
+				GUILayout.Label("SteamAPI Initialized failed", EditorStyles.label);
 			}
 		}
 
@@ -161,29 +167,45 @@ namespace Lite
 			m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
 			Debug.Log("SteamUGC.StartItemUpdate(" + SteamUtils.GetAppID() + ", " + m_PublishedFileId + ") : " + m_UGCUpdateHandle);
 
-			if (SteamUGC.SetItemTitle(m_UGCUpdateHandle, "This is a Test"))
-			Debug.Log("SteamUGC.SetItemTitle(" + m_UGCUpdateHandle + ", " + "\"This is a Test\"" + ") : ");
+			if (SteamUGC.SetItemTitle(m_UGCUpdateHandle, itemTitle))
+				Debug.Log("SteamUGC.SetItemTitle(" + m_UGCUpdateHandle + ", " + itemTitle + ")");
+			else
+				Debug.Log("SteamUGC.SetItemTitle failed");
 
 			if ( SteamUGC.SetItemDescription(m_UGCUpdateHandle, "This is the test description."))
-			Debug.Log("SteamUGC.SetItemDescription(" + m_UGCUpdateHandle + ", " + "\"This is the test description.\"" + ") : ");
+				Debug.Log("SteamUGC.SetItemDescription(" + m_UGCUpdateHandle + ", " + "\"This is the test description.\"" + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemDescription failed");
 
 			if ( SteamUGC.SetItemUpdateLanguage(m_UGCUpdateHandle, "english"))
-			Debug.Log("SteamUGC.SetItemUpdateLanguage(" + m_UGCUpdateHandle + ", " + "\"english\"" + ") : ");
+				Debug.Log("SteamUGC.SetItemUpdateLanguage(" + m_UGCUpdateHandle + ", " + "\"english\"" + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemUpdateLanguage failed");
 
 			if ( SteamUGC.SetItemMetadata(m_UGCUpdateHandle, "This is the test metadata."))
-			Debug.Log("SteamUGC.SetItemMetadata(" + m_UGCUpdateHandle + ", " + "\"This is the test metadata.\"" + ") : ");
+				Debug.Log("SteamUGC.SetItemMetadata(" + m_UGCUpdateHandle + ", " + "\"This is the test metadata.\"" + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemMetadata failed");
 
 			if ( SteamUGC.SetItemVisibility(m_UGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic))
-			Debug.Log("SteamUGC.SetItemVisibility(" + m_UGCUpdateHandle + ", " + ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic + ") : ");
+				Debug.Log("SteamUGC.SetItemVisibility(" + m_UGCUpdateHandle + ", " + ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemVisibility failed");
 
 			if ( SteamUGC.SetItemTags(m_UGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" }))
-			Debug.Log("SteamUGC.SetItemTags(" + m_UGCUpdateHandle + ", " + new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" } + ") : ");
+				Debug.Log("SteamUGC.SetItemTags(" + m_UGCUpdateHandle + ", " + new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" } + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemTags failed");
 
 			if ( SteamUGC.SetItemContent(m_UGCUpdateHandle, Application.dataPath + "/Scenes"))
-			Debug.Log("SteamUGC.SetItemContent(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/Scenes" + ") : ");
+				Debug.Log("SteamUGC.SetItemContent(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/Scenes" + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemContent failed");
 
 			if ( SteamUGC.SetItemPreview(m_UGCUpdateHandle, Application.dataPath + "/PreviewImage.jpg"))
-			Debug.Log("SteamUGC.SetItemPreview(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/PreviewImage.jpg" + ") : ");
+				Debug.Log("SteamUGC.SetItemPreview(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/PreviewImage.jpg" + ") : ");
+			else
+				Debug.Log("SteamUGC.SetItemPreview failed");
 
 			/*if ( SteamUGC.RemoveItemKeyValueTags(m_UGCUpdateHandle, "TestKey");
 			Debug.Log("SteamUGC.RemoveItemKeyValueTags(" + m_UGCUpdateHandle + ", " + "\"TestKey\"" + ") : ");
@@ -207,19 +229,17 @@ namespace Lite
 			Debug.Log("SteamUGC.RemoveItemPreview(" + m_UGCUpdateHandle + ", " + 0 + ") : ");*/
 
 
-			if (GUILayout.Button("SubmitItemUpdate(m_UGCUpdateHandle, \"Test Changenote\")"))
-			{
-				SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "Test Changenote");
-				OnSubmitItemUpdateResultCallResult.Set(handle);
-				Debug.Log("SteamUGC.SubmitItemUpdate(" + m_UGCUpdateHandle + ", " + "\"Test Changenote\"" + ") : " + handle);
-			}
+			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "Test Changenote");
+			OnSubmitItemUpdateResultCallResult.Set(handle);
+			Debug.Log("SteamUGC.SubmitItemUpdate(" + m_UGCUpdateHandle + ", " + "\"Test Changenote\"" + ") : " + handle);
+		}
 
-			{
-				ulong BytesProcessed;
-				ulong BytesTotal;
-				EItemUpdateStatus ret = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
-				GUILayout.Label("GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal) : " + " -- " + BytesProcessed + " -- " + BytesTotal);
-			}
+		void OnUpdateItemGUI()
+		{
+			ulong BytesProcessed;
+			ulong BytesTotal;
+			EItemUpdateStatus ret = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
+			GUILayout.Label("GetItemUpdateProgress : ret " + ret + " -- " + BytesProcessed + " -- " + BytesTotal);
 		}
 
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
