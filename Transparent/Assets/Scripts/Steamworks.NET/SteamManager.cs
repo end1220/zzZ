@@ -16,8 +16,6 @@ public class SteamManager
 		}
 	}
 
-	private bool s_EverInialized;
-
 	public bool Initialized { get; private set; }
 
 	private SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
@@ -29,7 +27,7 @@ public class SteamManager
 
 	public void Init()
 	{
-		if (s_EverInialized)
+		if (Initialized)
 			throw new System.Exception("Tried to Initialize the SteamAPI twice in one session!");
 
 		if (!Packsize.Test())
@@ -79,9 +77,6 @@ public class SteamManager
 			return;
 		}
 
-		s_EverInialized = true;
-
-
 		if (m_SteamAPIWarningMessageHook == null)
 		{
 			// You must launch with "-debug_steamapi" in the launch args to recieve warnings.
@@ -96,6 +91,7 @@ public class SteamManager
 		if (!Initialized)
 			return;
 
+		Initialized = false;
 		SteamAPI.Shutdown();
 	}
 

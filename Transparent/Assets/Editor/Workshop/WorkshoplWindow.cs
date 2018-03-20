@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 using Steamworks;
 
 
@@ -12,14 +13,15 @@ namespace Lite
 		[MenuItem(AppDefine.AppName + "/Workshop")]
 		public static void ShowExcelWindow()
 		{
-			Rect wr = new Rect(100, 100, 640, 480);
+			Rect wr = new Rect(100, 100, 960, 640);
 			var window = (WorkshopWindow)EditorWindow.GetWindowWithRect(typeof(WorkshopWindow), wr, true, "Upload");
 			window.Show();
 		}
 
 		string zipFilePath = "";
-		string itemTitle = "No title";
-		string previewFilePath = "";
+		string itemTitle = "Test title";
+		string itemDesc = "This is the test description.";
+		string previewImagePath = "";
 		bool agreeWorkshopPolicy = false;
 
 		void Awake()
@@ -30,6 +32,11 @@ namespace Lite
 		private void OnDestroy()
 		{
 			DestroySteamAPI();
+		}
+
+		private void Update()
+		{
+			SteamManager.Instance.Update();
 		}
 
 		void OnGUI()
@@ -70,18 +77,43 @@ namespace Lite
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
+				GUILayout.Label("Description", EditorStyles.label, GUILayout.Width(titleLen));
+				itemDesc = GUILayout.TextArea(itemDesc, GUILayout.Width(textLen), GUILayout.Height(60));
+				GUILayout.EndHorizontal();
+				GUILayout.Space(leftSpace);
+
+				GUILayout.BeginHorizontal();
+				GUILayout.Space(spaceSize);
 				GUILayout.Label("Preview", EditorStyles.label, GUILayout.Width(titleLen));
 				string savedPreviewPath = EditorPrefs.GetString("BMW_PreviewPath");
-				previewFilePath = string.IsNullOrEmpty(savedPreviewPath) ? previewFilePath : savedPreviewPath;
-				previewFilePath = GUILayout.TextField(previewFilePath, GUILayout.Width(textLen));
+				previewImagePath = string.IsNullOrEmpty(savedPreviewPath) ? previewImagePath : savedPreviewPath;
+				GUILayout.Box(Resources.Load(Path.GetFileNameWithoutExtension(previewImagePath)) as Texture, GUILayout.Width(128), GUILayout.Height(128));
+				/*previewFilePath = GUILayout.TextField(previewFilePath, GUILayout.Width(textLen));*/
 				if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
 				{
-					zipFilePath = EditorUtility.OpenFilePanel("Select Preview File", String.Empty, "*.jpg");
-					if (!string.IsNullOrEmpty(zipFilePath))
-						EditorPrefs.SetString("BMW_PreviewPath", zipFilePath);
+					previewImagePath = EditorUtility.OpenFilePanel("Select Preview File", String.Empty, "jpg,png");
+					if (!string.IsNullOrEmpty(previewImagePath))
+						EditorPrefs.SetString("BMW_PreviewPath", previewImagePath);
+					if (File.Exists(previewImagePath))
+					{
+						File.Copy(previewImagePath, Application.dataPath + "/Editor/Resources/" + Path.GetFileName(previewImagePath));
+						AssetDatabase.Refresh();
+					}
 				}
 				GUILayout.EndHorizontal();
 				GUILayout.Space(leftSpace);
+
+				// steam info begin
+				GUILayout.BeginHorizontal();
+				//SteamUser.GetSteamID(), SteamUtils.GetAppID()
+				GUILayout.Label("SteamID:", EditorStyles.label, GUILayout.Width(titleLen));
+				GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), GUILayout.Width(textLen));
+				GUILayout.EndHorizontal();
+
+				GUILayout.BeginHorizontal();
+				GUILayout.Label("AppID:", EditorStyles.label, GUILayout.Width(titleLen));
+				GUILayout.Label(SteamUtils.GetAppID().ToString(), GUILayout.Width(textLen));
+				GUILayout.EndHorizontal();
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(leftSpace);
@@ -155,58 +187,21 @@ namespace Lite
 			Debug.Log("SteamUGC.CreateItem(" + SteamUtils.GetAppID() + ", " + EWorkshopFileType.k_EWorkshopFileTypeCommunity + ") : " + handle);
 		}
 
-		void OnCreateItemResult(CreateItemResult_t pCallback, bool bIOFailure)
-		{
-			Debug.Log("[" + CreateItemResult_t.k_iCallback + " - CreateItemResult] - " + pCallback.m_eResult + " -- " + pCallback.m_nPublishedFileId + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
-
-			m_PublishedFileId = pCallback.m_nPublishedFileId;
-		}
-
 		private void UpdateItem()
 		{
 			m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
-			Debug.Log("SteamUGC.StartItemUpdate(" + SteamUtils.GetAppID() + ", " + m_PublishedFileId + ") : " + m_UGCUpdateHandle);
+			//Debug.Log("SteamUGC.StartItemUpdate(" + SteamUtils.GetAppID() + ", " + m_PublishedFileId + ") : " + m_UGCUpdateHandle);
 
-			if (SteamUGC.SetItemTitle(m_UGCUpdateHandle, itemTitle))
-				Debug.Log("SteamUGC.SetItemTitle(" + m_UGCUpdateHandle + ", " + itemTitle + ")");
-			else
-				Debug.Log("SteamUGC.SetItemTitle failed");
+			SteamUGC.SetItemTitle(m_UGCUpdateHandle, itemTitle);
+			SteamUGC.SetItemDescription(m_UGCUpdateHandle, itemDesc);
+			SteamUGC.SetItemUpdateLanguage(m_UGCUpdateHandle, "english");
+			SteamUGC.SetItemMetadata(m_UGCUpdateHandle, "This is the test metadata.");
+			SteamUGC.SetItemVisibility(m_UGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic);
+			SteamUGC.SetItemTags(m_UGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
+			//SteamUGC.SetItemContent(m_UGCUpdateHandle, "C:/Users/admin/Desktop/Content");
+			SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.jpg");
 
-			if ( SteamUGC.SetItemDescription(m_UGCUpdateHandle, "This is the test description."))
-				Debug.Log("SteamUGC.SetItemDescription(" + m_UGCUpdateHandle + ", " + "\"This is the test description.\"" + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemDescription failed");
-
-			if ( SteamUGC.SetItemUpdateLanguage(m_UGCUpdateHandle, "english"))
-				Debug.Log("SteamUGC.SetItemUpdateLanguage(" + m_UGCUpdateHandle + ", " + "\"english\"" + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemUpdateLanguage failed");
-
-			if ( SteamUGC.SetItemMetadata(m_UGCUpdateHandle, "This is the test metadata."))
-				Debug.Log("SteamUGC.SetItemMetadata(" + m_UGCUpdateHandle + ", " + "\"This is the test metadata.\"" + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemMetadata failed");
-
-			if ( SteamUGC.SetItemVisibility(m_UGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic))
-				Debug.Log("SteamUGC.SetItemVisibility(" + m_UGCUpdateHandle + ", " + ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemVisibility failed");
-
-			if ( SteamUGC.SetItemTags(m_UGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" }))
-				Debug.Log("SteamUGC.SetItemTags(" + m_UGCUpdateHandle + ", " + new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" } + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemTags failed");
-
-			if ( SteamUGC.SetItemContent(m_UGCUpdateHandle, Application.dataPath + "/Scenes"))
-				Debug.Log("SteamUGC.SetItemContent(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/Scenes" + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemContent failed");
-
-			if ( SteamUGC.SetItemPreview(m_UGCUpdateHandle, Application.dataPath + "/PreviewImage.jpg"))
-				Debug.Log("SteamUGC.SetItemPreview(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/PreviewImage.jpg" + ") : ");
-			else
-				Debug.Log("SteamUGC.SetItemPreview failed");
-
+			#region backup
 			/*if ( SteamUGC.RemoveItemKeyValueTags(m_UGCUpdateHandle, "TestKey");
 			Debug.Log("SteamUGC.RemoveItemKeyValueTags(" + m_UGCUpdateHandle + ", " + "\"TestKey\"" + ") : ");
 
@@ -227,11 +222,10 @@ namespace Lite
 
 			if ( SteamUGC.RemoveItemPreview(m_UGCUpdateHandle, 0);
 			Debug.Log("SteamUGC.RemoveItemPreview(" + m_UGCUpdateHandle + ", " + 0 + ") : ");*/
-
+			#endregion
 
 			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "Test Changenote");
 			OnSubmitItemUpdateResultCallResult.Set(handle);
-			Debug.Log("SteamUGC.SubmitItemUpdate(" + m_UGCUpdateHandle + ", " + "\"Test Changenote\"" + ") : " + handle);
 		}
 
 		void OnUpdateItemGUI()
@@ -242,20 +236,18 @@ namespace Lite
 			GUILayout.Label("GetItemUpdateProgress : ret " + ret + " -- " + BytesProcessed + " -- " + BytesTotal);
 		}
 
+		void OnCreateItemResult(CreateItemResult_t pCallback, bool bIOFailure)
+		{
+			Debug.Log("[" + CreateItemResult_t.k_iCallback + " - CreateItemResult] - " + pCallback.m_eResult + " -- " + pCallback.m_nPublishedFileId + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
+
+			m_PublishedFileId = pCallback.m_nPublishedFileId;
+		}
+
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
 		{
 			Debug.Log("[" + SubmitItemUpdateResult_t.k_iCallback + " - SubmitItemUpdateResult] - " + pCallback.m_eResult + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
 		}
 
-		void OnItemInstalled(ItemInstalled_t pCallback)
-		{
-			Debug.Log("[" + ItemInstalled_t.k_iCallback + " - ItemInstalled] - " + pCallback.m_unAppID + " -- " + pCallback.m_nPublishedFileId);
-		}
-
-		void OnDownloadItemResult(DownloadItemResult_t pCallback)
-		{
-			Debug.Log("[" + DownloadItemResult_t.k_iCallback + " - DownloadItemResult] - " + pCallback.m_unAppID + " -- " + pCallback.m_nPublishedFileId + " -- " + pCallback.m_eResult);
-		}
 
 	}
 
