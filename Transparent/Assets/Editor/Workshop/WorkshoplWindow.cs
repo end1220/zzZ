@@ -184,7 +184,7 @@ namespace Lite
 		{
 			SteamAPICall_t handle = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeCommunity);
 			OnCreateItemResultCallResult.Set(handle);
-			Debug.Log("SteamUGC.CreateItem(" + SteamUtils.GetAppID() + ", " + EWorkshopFileType.k_EWorkshopFileTypeCommunity + ") : " + handle);
+			//Debug.Log("SteamUGC.CreateItem(" + SteamUtils.GetAppID() + ", " + EWorkshopFileType.k_EWorkshopFileTypeCommunity + ") : " + handle);
 		}
 
 		private void UpdateItem()
@@ -198,33 +198,20 @@ namespace Lite
 			SteamUGC.SetItemMetadata(m_UGCUpdateHandle, "This is the test metadata.");
 			SteamUGC.SetItemVisibility(m_UGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic);
 			SteamUGC.SetItemTags(m_UGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
-			//SteamUGC.SetItemContent(m_UGCUpdateHandle, "C:/Users/admin/Desktop/Content");
-			SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.jpg");
+			SteamUGC.SetItemContent(m_UGCUpdateHandle, "C:/Users/admin/Desktop/Content");
+			//SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.png");
 
 			#region backup
-			/*if ( SteamUGC.RemoveItemKeyValueTags(m_UGCUpdateHandle, "TestKey");
-			Debug.Log("SteamUGC.RemoveItemKeyValueTags(" + m_UGCUpdateHandle + ", " + "\"TestKey\"" + ") : ");
-
-			if ( SteamUGC.AddItemKeyValueTag(m_UGCUpdateHandle, "TestKey", "TestValue");
-			Debug.Log("SteamUGC.AddItemKeyValueTag(" + m_UGCUpdateHandle + ", " + "\"TestKey\"" + ", " + "\"TestValue\"" + ") : ");
-
-			if ( SteamUGC.AddItemPreviewFile(m_UGCUpdateHandle, Application.dataPath + "/PreviewImage.jpg", EItemPreviewType.k_EItemPreviewType_Image);
-			Debug.Log("SteamUGC.AddItemPreviewFile(" + m_UGCUpdateHandle + ", " + Application.dataPath + "/PreviewImage.jpg" + ", " + EItemPreviewType.k_EItemPreviewType_Image + ") : ");
-
-			if ( SteamUGC.AddItemPreviewVideo(m_UGCUpdateHandle, "jHgZh4GV9G0");
-			Debug.Log("SteamUGC.AddItemPreviewVideo(" + m_UGCUpdateHandle + ", " + "\"jHgZh4GV9G0\"" + ") : ");
-
-			if ( SteamUGC.UpdateItemPreviewFile(m_UGCUpdateHandle, 0, Application.dataPath + "/PreviewImage.jpg");
-			Debug.Log("SteamUGC.UpdateItemPreviewFile(" + m_UGCUpdateHandle + ", " + 0 + ", " + Application.dataPath + "/PreviewImage.jpg" + ") : ");
-
-			if ( SteamUGC.UpdateItemPreviewVideo(m_UGCUpdateHandle, 0, "jHgZh4GV9G0");
-			Debug.Log("SteamUGC.UpdateItemPreviewVideo(" + m_UGCUpdateHandle + ", " + 0 + ", " + "\"jHgZh4GV9G0\"" + ") : ");
-
-			if ( SteamUGC.RemoveItemPreview(m_UGCUpdateHandle, 0);
-			Debug.Log("SteamUGC.RemoveItemPreview(" + m_UGCUpdateHandle + ", " + 0 + ") : ");*/
+			/*SteamUGC.RemoveItemKeyValueTags(m_UGCUpdateHandle, "TestKey");
+			SteamUGC.AddItemKeyValueTag(m_UGCUpdateHandle, "TestKey", "TestValue");
+			SteamUGC.AddItemPreviewFile(m_UGCUpdateHandle, Application.dataPath + "/PreviewImage.jpg", EItemPreviewType.k_EItemPreviewType_Image);
+			SteamUGC.AddItemPreviewVideo(m_UGCUpdateHandle, "jHgZh4GV9G0");
+			SteamUGC.UpdateItemPreviewFile(m_UGCUpdateHandle, 0, Application.dataPath + "/PreviewImage.jpg");
+			SteamUGC.UpdateItemPreviewVideo(m_UGCUpdateHandle, 0, "jHgZh4GV9G0");
+			SteamUGC.RemoveItemPreview(m_UGCUpdateHandle, 0);*/
 			#endregion
 
-			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "Test Changenote");
+			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "submit content");
 			OnSubmitItemUpdateResultCallResult.Set(handle);
 		}
 
@@ -246,6 +233,12 @@ namespace Lite
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
 		{
 			Debug.Log("[" + SubmitItemUpdateResult_t.k_iCallback + " - SubmitItemUpdateResult] - " + pCallback.m_eResult + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
+
+
+			m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
+			SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.gif");
+			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "submit img");
+			OnSubmitItemUpdateResultCallResult.Set(handle);
 		}
 
 
