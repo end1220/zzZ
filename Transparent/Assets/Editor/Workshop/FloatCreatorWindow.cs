@@ -70,23 +70,24 @@ namespace Lite
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
-				GUILayout.Label("Title", EditorStyles.label, GUILayout.Width(titleLen));
+				GUILayout.Label(Language.GetString(TextID.Title), EditorStyles.label, GUILayout.Width(titleLen));
 				itemTitle = GUILayout.TextField(itemTitle, GUILayout.Width(textLen));
 				GUILayout.EndHorizontal();
 				GUILayout.Space(leftSpace);
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
-				GUILayout.Label("Description", EditorStyles.label, GUILayout.Width(titleLen));
+				GUILayout.Label(Language.GetString(TextID.Desc), EditorStyles.label, GUILayout.Width(titleLen));
 				itemDesc = GUILayout.TextArea(itemDesc, GUILayout.Width(textLen), GUILayout.Height(60));
 				GUILayout.EndHorizontal();
 				GUILayout.Space(leftSpace);
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
-				GUILayout.Label("Preview", EditorStyles.label, GUILayout.Width(titleLen));
+				GUILayout.Label(Language.GetString(TextID.Preview), EditorStyles.label, GUILayout.Width(titleLen));
 				string savedPreviewPath = EditorPrefs.GetString("BMW_PreviewPath");
 				previewImagePath = string.IsNullOrEmpty(savedPreviewPath) ? previewImagePath : savedPreviewPath;
+				previewImagePath = "";
 				GUILayout.Box(Resources.Load(Path.GetFileNameWithoutExtension(previewImagePath)) as Texture, GUILayout.Width(128), GUILayout.Height(128));
 				/*previewFilePath = GUILayout.TextField(previewFilePath, GUILayout.Width(textLen));*/
 				if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
