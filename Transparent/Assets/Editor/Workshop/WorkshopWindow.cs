@@ -220,10 +220,12 @@ namespace Lite
 
 		void OnUpdateItemGUI()
 		{
-			ulong BytesProcessed;
-			ulong BytesTotal;
-			EItemUpdateStatus reti = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
-			GUILayout.Label("GetItemUpdateProgress : ret " + reti + " -- " + BytesProcessed + " -- " + BytesTotal);
+            {
+                ulong BytesProcessed;
+                ulong BytesTotal;
+                EItemUpdateStatus reti = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
+                GUILayout.Label("GetItemUpdateProgress : ret " + reti + " -- " + BytesProcessed + " -- " + BytesTotal);
+            }
 
 			GUILayout.Label("GetNumSubscribedItems() : " + SteamUGC.GetNumSubscribedItems());
 
@@ -232,8 +234,8 @@ namespace Lite
 				PublishedFileId_t[] PublishedFileID = new PublishedFileId_t[1];
 				uint ret = SteamUGC.GetSubscribedItems(PublishedFileID, (uint)PublishedFileID.Length);
 				m_PublishedFileId = PublishedFileID[0];
-				print("SteamUGC.GetSubscribedItems(" + PublishedFileID + ", " + (uint)PublishedFileID.Length + ") : " + ret);
-				print(m_PublishedFileId);
+				Debug.Log("SteamUGC.GetSubscribedItems(" + PublishedFileID + ", " + (uint)PublishedFileID.Length + ") : " + ret);
+				Debug.Log(m_PublishedFileId);
 			}
 
 			GUILayout.Label("GetItemState(PublishedFileID) : " + (EItemState)SteamUGC.GetItemState(m_PublishedFileId));
@@ -251,25 +253,25 @@ namespace Lite
 				ulong BytesDownloaded;
 				ulong BytesTotal;
 				bool ret = SteamUGC.GetItemDownloadInfo(m_PublishedFileId, out BytesDownloaded, out BytesTotal);
-				print("SteamUGC.GetItemDownloadInfo(" + m_PublishedFileId + ", " + "out BytesDownloaded" + ", " + "out BytesTotal" + ") : " + ret + " -- " + BytesDownloaded + " -- " + BytesTotal);
+				Debug.Log("SteamUGC.GetItemDownloadInfo(" + m_PublishedFileId + ", " + "out BytesDownloaded" + ", " + "out BytesTotal" + ") : " + ret + " -- " + BytesDownloaded + " -- " + BytesTotal);
 			}
 
 			if (GUILayout.Button("DownloadItem(m_PublishedFileId, true)"))
 			{
 				bool ret = SteamUGC.DownloadItem(m_PublishedFileId, true);
-				print("SteamUGC.DownloadItem(" + m_PublishedFileId + ", " + true + ") : " + ret);
+				Debug.Log("SteamUGC.DownloadItem(" + m_PublishedFileId + ", " + true + ") : " + ret);
 			}
 
 			if (GUILayout.Button("BInitWorkshopForGameServer((DepotId_t)481, \"C:/UGCTest\")"))
 			{
 				bool ret = SteamUGC.BInitWorkshopForGameServer((DepotId_t)481, "C:/UGCTest");
-				print("SteamUGC.BInitWorkshopForGameServer(" + (DepotId_t)481 + ", " + "\"C:/UGCTest\"" + ") : " + ret);
+				Debug.Log("SteamUGC.BInitWorkshopForGameServer(" + (DepotId_t)481 + ", " + "\"C:/UGCTest\"" + ") : " + ret);
 			}
 
 			if (GUILayout.Button("SuspendDownloads(true)"))
 			{
 				SteamUGC.SuspendDownloads(true);
-				print("SteamUGC.SuspendDownloads(" + true + ")");
+				Debug.Log("SteamUGC.SuspendDownloads(" + true + ")");
 			}
 		}
 
