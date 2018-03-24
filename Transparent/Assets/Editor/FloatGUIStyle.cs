@@ -4,33 +4,38 @@ using UnityEditor;
 public static class FloatGUIStyle
 {
 	private static GUISkin skin;
-	public static GUIStyle label;/* { get { return skin.label; } }*/
+	public static GUIStyle label;
 	public static GUIStyle boldLabel;
-	public static GUIStyle textField;/* { get { return skin.textField; } }*/
-	public static GUIStyle textArea;/* { get { return skin.textArea; } }*/
-	public static GUIStyle toggle;/* { get { return skin.toggle; } }*/
-	public static GUIStyle button;/* { get { return skin.button; } }*/
+	public static GUIStyle textField;
+	public static GUIStyle textArea;
+	public static GUIStyle toggle;
+	public static GUIStyle button;
 	public static GUIStyle helpBox;
-	public static GUIStyle styleLink { get; private set; }
+	public static GUIStyle link { get; private set; }
 
 	public static void Ensure()
 	{
+		int fontSizeNormal = 12;
+		int fontSizeInput = 14;
+
 		skin = Resources.Load<GUISkin>("FloatGUISkin");
-		styleLink = skin.FindStyle("Link");
+		link = skin.FindStyle("Link");
 
 		label = new GUIStyle(EditorStyles.label);
-		label.fontSize = 14;
+		label.fontSize = fontSizeNormal;
 
-		boldLabel = new GUIStyle(EditorStyles.boldLabel);
-		boldLabel.fontSize = 14;
+		boldLabel = new GUIStyle(EditorStyles.label);
+		boldLabel.fontStyle = FontStyle.Bold;
+		boldLabel.fontSize = fontSizeNormal;
 
 		textField = new GUIStyle(EditorStyles.textField);
-		textField.fontSize = 14;
+		textField.fontSize = fontSizeInput;
 
 		textArea = new GUIStyle(EditorStyles.textArea);
-		textArea.fontSize = 14;
+		textArea.fontSize = fontSizeInput;
 
 		helpBox = new GUIStyle(EditorStyles.helpBox);
-		helpBox.fontSize = 12;
+		helpBox.fontSize = fontSizeNormal;
+
 	}
 }
