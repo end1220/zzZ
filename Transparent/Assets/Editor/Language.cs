@@ -10,6 +10,8 @@ public static class TextID
 	public const int Visib = 5;
 
 	public const int Output = 50;
+	public const int model = 51;
+	public const int prefab = 52;
 }
 
 
@@ -46,12 +48,14 @@ public static class Language
 
 	private static LangData[] datas = new LangData[]
 	{
-		new LangData(1, "Title", "±êÌâ"),
-		new LangData(2, "Description", "ÃèÊö"),
-		new LangData(3, "Preview Image", "Ô¤ÀÀÍ¼"),
-		new LangData(4, "Tag", "±êÇ©"),
-		new LangData(5, "Visibility", "¿É¼û¶È"),
-		new LangData(50, "Output Path", "Êä³ö"),
+		new LangData(1, "Title", "æ ‡é¢˜"),
+		new LangData(2, "Description", "æè¿°"),
+		new LangData(3, "Preview Image", "é¢„è§ˆå›¾"),
+		new LangData(4, "Tag", "æ ‡ç­¾"),
+		new LangData(5, "Visibility", "å¯è§åº¦"),
+		new LangData(50, "Output Path", "è¾“å‡ºè·¯å¾„"),
+		new LangData(51, "Model Path", "æ¨¡å‹è·¯å¾„"),
+		new LangData(52, "Prefab Path", "é¢„åˆ¶è·¯å¾„"),
 	};
 
 	private static Dictionary<int, LangData> dataDic = new Dictionary<int, LangData>();

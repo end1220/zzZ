@@ -33,6 +33,7 @@ namespace Lite
 
 		void Awake()
 		{
+			FloatGUIStyle.Ensure();
 			InitSteamAPI();
 		}
 
@@ -61,7 +62,7 @@ namespace Lite
 
 		void OnGUI()
 		{
-			GUILayout.Label("Build your own model and submit to steam workshop", EditorStyles.helpBox);
+			GUILayout.Label("Build your own model and submit to steam workshop", FloatGUIStyle.helpBox);
 			GUILayout.Space(20);
 
 			OnBuildModelGUI();
@@ -70,21 +71,21 @@ namespace Lite
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
-				GUILayout.Label(Language.GetString(TextID.Title), EditorStyles.label, GUILayout.Width(titleLen));
-				itemTitle = GUILayout.TextField(itemTitle, GUILayout.Width(textLen));
+				GUILayout.Label(Language.GetString(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+				itemTitle = GUILayout.TextField(itemTitle, FloatGUIStyle.textField, GUILayout.Width(textLen));
 				GUILayout.EndHorizontal();
 				GUILayout.Space(leftSpace);
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
-				GUILayout.Label(Language.GetString(TextID.Desc), EditorStyles.label, GUILayout.Width(titleLen));
-				itemDesc = GUILayout.TextArea(itemDesc, GUILayout.Width(textLen), GUILayout.Height(60));
+				GUILayout.Label(Language.GetString(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+				itemDesc = GUILayout.TextArea(itemDesc, FloatGUIStyle.textArea, GUILayout.Width(textLen), GUILayout.Height(60));
 				GUILayout.EndHorizontal();
 				GUILayout.Space(leftSpace);
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(spaceSize);
-				GUILayout.Label(Language.GetString(TextID.Preview), EditorStyles.label, GUILayout.Width(titleLen));
+				GUILayout.Label(Language.GetString(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
 				string savedPreviewPath = EditorPrefs.GetString("BMW_PreviewPath");
 				previewImagePath = string.IsNullOrEmpty(savedPreviewPath) ? previewImagePath : savedPreviewPath;
 				previewImagePath = "";
@@ -107,19 +108,19 @@ namespace Lite
 				// steam info begin
 				GUILayout.BeginHorizontal();
 				//SteamUser.GetSteamID(), SteamUtils.GetAppID()
-				GUILayout.Label("SteamID:", EditorStyles.label, GUILayout.Width(titleLen));
-				GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), GUILayout.Width(textLen));
+				GUILayout.Label("SteamID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+				GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
 				GUILayout.EndHorizontal();
 
 				GUILayout.BeginHorizontal();
-				GUILayout.Label("AppID:", EditorStyles.label, GUILayout.Width(titleLen));
-				GUILayout.Label(SteamUtils.GetAppID().ToString(), GUILayout.Width(textLen));
+				GUILayout.Label("AppID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+				GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
 				GUILayout.EndHorizontal();
 
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(leftSpace);
 				agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, "同意", GUILayout.Width(40));
-				if (GUILayout.Button("《创意工坊服务条款》", EditorStyles.label, GUILayout.Width(130)))
+				if (GUILayout.Button("《创意工坊服务条款》", FloatGUIStyle.label, GUILayout.Width(130)))
 				{
 					Application.OpenURL("http://steamcommunity.com/sharedfiles/workshoplegalagreement");
 				}
@@ -154,7 +155,7 @@ namespace Lite
 			}
 			else
 			{
-				GUILayout.Label("SteamAPI Initialized failed", EditorStyles.label);
+				GUILayout.Label("SteamAPI Initialized failed", FloatGUIStyle.label);
 			}
 		}
 
@@ -164,17 +165,17 @@ namespace Lite
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(spaceSize);
-			GUILayout.Label("Output Path", EditorStyles.label, GUILayout.Width(titleLen));
-			GUILayout.TextField(Environment.CurrentDirectory.Replace("\\", "/") + "/" + outputPath, GUILayout.Width(textLen));
+			GUILayout.Label(Language.GetString(TextID.Output), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.TextField(Environment.CurrentDirectory.Replace("\\", "/") + "/" + outputPath, FloatGUIStyle.textField, GUILayout.Width(textLen));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(leftSpace);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
-			GUILayout.Label("Model Path", EditorStyles.label, GUILayout.Width(titleLen));
+			GUILayout.Label(Language.GetString(TextID.model), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
 			string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
 			modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
-			modelPath = GUILayout.TextField(modelPath, GUILayout.Width(textLen));
+			modelPath = GUILayout.TextField(modelPath, FloatGUIStyle.textField, GUILayout.Width(textLen));
 			if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
 			{
 				modelPath = EditorUtility.OpenFolderPanel("Select Model Folder", String.Empty, "");
@@ -186,7 +187,7 @@ namespace Lite
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(spaceSize);
-			GUILayout.Label("Prefab Path", EditorStyles.label, GUILayout.Width(titleLen));
+			GUILayout.Label(Language.GetString(TextID.prefab), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
 			prefab = EditorGUILayout.ObjectField(prefab, typeof(ModelPrefab), false, GUILayout.Width(textLen)) as ModelPrefab;
 			if (prefab != null)
 				prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
