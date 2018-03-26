@@ -50,6 +50,10 @@ public static class TextID
 	public const int cancel = 108;
 	public const int legal = 109;
 	public const int accept = 110;
+	public const int createItem = 111;
+	public const int submitToWorkshop = 112;
+	public const int workshopPolicy = 113;
+	public const int ackWorkshopPolicy = 115;
 }
 
 public static class Language
@@ -79,6 +83,10 @@ public static class Language
 		new LangData(108, "Cancel", "取消"),
 		new LangData(109, "Workshop Legal Agreement", "《创意工坊服务条款》"),
 		new LangData(110, "Accept", "接受"),
+		new LangData(111, "Create Item", "创建物品"),
+		new LangData(112, "Subimit to Workshop", "提交到创意工坊"),
+		new LangData(113, "Workshop Policy", "创意工坊法律协议"),
+		new LangData(114, "Accept the Workshop Legal Agreement?", "提交物品的同时也表示您同意了《创意工坊服务条款》"),
 	};
 
 	private static Dictionary<int, LangData> dataDic = new Dictionary<int, LangData>();
