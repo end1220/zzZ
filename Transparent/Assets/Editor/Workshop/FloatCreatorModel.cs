@@ -27,9 +27,9 @@ namespace Lite
 			string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
 			modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
 			modelPath = GUILayout.TextField(modelPath, FloatGUIStyle.textFieldPath, GUILayout.Width(textLen));
-			if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
+			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(buttonLen2)))
 			{
-				modelPath = EditorUtility.OpenFolderPanel("Select Model Folder", String.Empty, "");
+				modelPath = EditorUtility.OpenFolderPanel(Language.Get(TextID.selectModelFolder), String.Empty, "");
 				if (!string.IsNullOrEmpty(modelPath))
 					EditorPrefs.SetString("BMW_ModelPath", modelPath);
 			}
@@ -47,7 +47,7 @@ namespace Lite
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
-			if (GUILayout.Button("build", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.build), FloatGUIStyle.button, GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			{
 				if (prefab != null)
 				{
@@ -55,7 +55,7 @@ namespace Lite
 					BuildSingleAB(modelPath, outputPath, prefabPath);
 				}
 			}
-			if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.refresh), FloatGUIStyle.button, GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			{
 				RebuildMyManifest(outputPath, outputPath + "/" + AppDefine.manifestName);
 				RebuildModelList(outputPath, outputPath + "/" + AppDefine.manifestName);

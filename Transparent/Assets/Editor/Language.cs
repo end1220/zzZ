@@ -38,6 +38,10 @@ public static class TextID
 	public const int Output = 50;
 	public const int model = 51;
 	public const int prefab = 52;
+	public const int select = 53;
+	public const int build = 54;
+	public const int refresh = 55;
+	public const int selectModelFolder = 56;
 
 	public const int wndTitle = 100;
 	public const int mainHelpBox = 101;
@@ -71,6 +75,10 @@ public static class Language
 		new LangData(50, "Output", "输出路径"),
 		new LangData(51, "Model", "模型路径"),
 		new LangData(52, "Prefab", "预制路径"),
+		new LangData(53, "Select", "选择"),
+		new LangData(54, "Build", "打包"),
+		new LangData(55, "Refresh", "刷新"),
+		new LangData(56, "Select model folder", "选择资源根目录"),
 
 		new LangData(100, "Float Creator", "Float创作与发布"),
 		new LangData(101, "This is where you: \n1. build mods\n 2. submit to steam workshop", "在这里你\n：1.制作mod\n2. 上传到steam创意工坊"),
@@ -78,7 +86,7 @@ public static class Language
 		new LangData(103, "Export Model", "导出生成"),
 		new LangData(104, "Submit", "提交分享"),
 		new LangData(105, "Error", "出错啦"),
-		new LangData(106, "Please make sure your Steam client is runnning before using Float Creator", "请首先开启并登录Steam再使用Float Creator"),
+		new LangData(106, "Please ensure Steam is runnning before using Float Creator", "请首先开启并登录Steam再使用Float Creator"),
 		new LangData(107, "Ok", "确定"),
 		new LangData(108, "Cancel", "取消"),
 		new LangData(109, "Workshop Legal Agreement", "《创意工坊服务条款》"),

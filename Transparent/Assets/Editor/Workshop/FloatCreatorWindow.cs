@@ -33,12 +33,6 @@ namespace Lite
 			FloatGUIStyle.Ensure();
 			InitSteamAPI();
 			AppUtils.SetRandomSeed(DateTime.Now.Millisecond * DateTime.Now.Second);
-
-			if (!SteamManager.Instance.Initialized)
-			{
-				EditorUtility.DisplayDialog(Language.Get(TextID.errorTitle), Language.Get(TextID.steamInitError),
-					Language.Get(TextID.ok), Language.Get(TextID.cancel));
-			}
 		}
 
         private void OnDestroy()
@@ -61,9 +55,6 @@ namespace Lite
 
 		void OnGUI()
 		{
-			if (!SteamManager.Instance.Initialized)
-				return;
-
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Language.Get(TextID.mainHelpBox), FloatGUIStyle.helpBox, GUILayout.Width(400), GUILayout.Height(60));
 			GUILayout.Space(40);
@@ -72,6 +63,15 @@ namespace Lite
 			GUILayout.EndHorizontal();
 			GUILayout.Label("——————————————————————————————————————————————————————");
 			GUILayout.Space(20);
+
+			if (!SteamManager.Instance.Initialized)
+			{
+				GUILayout.BeginVertical();
+				GUILayout.Label(Language.Get(TextID.errorTitle), FloatGUIStyle.largeLabel);
+				GUILayout.Label(Language.Get(TextID.steamInitError), FloatGUIStyle.largeLabel);
+				GUILayout.EndVertical();
+				return;
+			}
 
 			string[] operations = new string[] { Language.Get(TextID.export), Language.Get(TextID.submit) };
 			opreationIndex = GUILayout.SelectionGrid(opreationIndex, operations, operations.Length, GUILayout.Width(600), GUILayout.Height(25));

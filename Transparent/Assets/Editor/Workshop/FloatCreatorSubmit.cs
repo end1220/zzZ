@@ -66,7 +66,7 @@ namespace Lite
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
-			agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, Language.Get(TextID.accept), GUILayout.Width(40));
+			agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, Language.Get(TextID.accept), GUILayout.Width(60));
 			if (GUILayout.Button(Language.Get(TextID.legal), FloatGUIStyle.link, GUILayout.Width(130)))
 			{
 				Application.OpenURL("http://steamcommunity.com/sharedfiles/workshoplegalagreement");
@@ -76,7 +76,7 @@ namespace Lite
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
-			if (GUILayout.Button(Language.Get(TextID.createItem), GUILayout.Width(200), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.createItem), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
 				if (EditorUtility.DisplayDialog(Language.Get(TextID.workshopPolicy),
 					Language.Get(TextID.ackWorkshopPolicy),
@@ -87,7 +87,7 @@ namespace Lite
 				}
 			}
 
-			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), GUILayout.Width(200), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
 				UpdateItem();
 			}
