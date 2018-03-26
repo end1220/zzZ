@@ -7,6 +7,7 @@ public static class FloatGUIStyle
 	public static GUIStyle label;
 	public static GUIStyle boldLabel;
 	public static GUIStyle textField;
+	public static GUIStyle textFieldPath;
 	public static GUIStyle textArea;
 	public static GUIStyle toggle;
 	public static GUIStyle button;
@@ -30,6 +31,9 @@ public static class FloatGUIStyle
 
 		textField = new GUIStyle(EditorStyles.textField);
 		textField.fontSize = fontSizeInput;
+
+		textFieldPath = new GUIStyle(EditorStyles.textField);
+		textFieldPath.fontSize = fontSizeNormal;
 
 		textArea = new GUIStyle(EditorStyles.textArea);
 		textArea.fontSize = fontSizeInput;
