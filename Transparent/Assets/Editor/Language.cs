@@ -81,7 +81,7 @@ public static class Language
 		new LangData(56, "Select model folder", "选择资源根目录"),
 
 		new LangData(100, "Float Creator", "Float创作与发布"),
-		new LangData(101, "This is where you: \n1. build mods\n 2. submit to steam workshop", "在这里你\n：1.制作mod\n2. 上传到steam创意工坊"),
+		new LangData(101, "This is where you: \n1. build mods\n 2. submit to steam workshop", "在这里你：\n1.制作mod\n2. 上传到steam创意工坊"),
 		new LangData(102, "Language", "语言"),
 		new LangData(103, "Export Model", "导出生成"),
 		new LangData(104, "Submit", "提交分享"),

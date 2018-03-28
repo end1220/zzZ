@@ -12,6 +12,11 @@ namespace Lite
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{
+		string modelPath = "";
+		string outputPath = "Output/" + AppDefine.AppName;
+		string prefabPath = "";
+		ModelPrefab prefab;
+
 		void OnBuildGUI()
 		{
 			GUILayout.BeginHorizontal();

@@ -12,6 +12,12 @@ namespace Lite
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{
+		string itemTitle = "Test title";
+		string itemDesc = "This is the test description.";
+		string previewFilePath = "";
+		string contentPath = "E:\\Locke\\GitHub\\zzZ\\Transparent\\Output\\Floating\\1481419443";
+		bool agreeWorkshopPolicy = false;
+
 		private void OnSubmitGUI()
 		{
 			GUILayout.BeginHorizontal();
@@ -52,17 +58,12 @@ namespace Lite
 			GUILayout.EndHorizontal();
 			GUILayout.Space(leftSpace);
 
-			// steam info begin
 			GUILayout.BeginHorizontal();
-			//SteamUser.GetSteamID(), SteamUtils.GetAppID()
-			GUILayout.Label("SteamID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
+			GUILayout.Space(spaceSize);
+			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.Label(contentPath, FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
 			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("AppID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
-			GUILayout.EndHorizontal();
+			GUILayout.Space(leftSpace);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
@@ -74,9 +75,10 @@ namespace Lite
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
 
+			// submit button
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
-			if (GUILayout.Button(Language.Get(TextID.createItem), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
+			/*if (GUILayout.Button(Language.Get(TextID.createItem), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
 				if (EditorUtility.DisplayDialog(Language.Get(TextID.workshopPolicy),
 					Language.Get(TextID.ackWorkshopPolicy),
@@ -85,14 +87,26 @@ namespace Lite
 				{
 					CreateItem();
 				}
-			}
+			}*/
 
 			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
-				UpdateItem();
+				CreateItem();
+				//UpdateItem();
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
+
+			// steam info begin
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("SteamID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
+			GUILayout.EndHorizontal();
+
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("AppID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
+			GUILayout.EndHorizontal();
 
 			OnUpdateItemGUI();
 		}
@@ -140,7 +154,7 @@ namespace Lite
 			SteamUGC.SetItemMetadata(m_UGCUpdateHandle, "This is the test metadata.");
 			SteamUGC.SetItemVisibility(m_UGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic);
 			SteamUGC.SetItemTags(m_UGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
-			SteamUGC.SetItemContent(m_UGCUpdateHandle, "C:/Users/admin/Desktop/Content");
+			SteamUGC.SetItemContent(m_UGCUpdateHandle, contentPath);
 			//SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.png");
 
 			#region backup
@@ -217,19 +231,21 @@ namespace Lite
 		void OnCreateItemResult(CreateItemResult_t pCallback, bool bIOFailure)
 		{
 			Debug.Log("[" + CreateItemResult_t.k_iCallback + " - CreateItemResult] - " + pCallback.m_eResult + " -- " + pCallback.m_nPublishedFileId + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
-
-			m_PublishedFileId = pCallback.m_nPublishedFileId;
+			if (pCallback.m_eResult == EResult.k_EResultOK)
+			{
+				m_PublishedFileId = pCallback.m_nPublishedFileId;
+				UpdateItem();
+			}
 		}
 
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
 		{
 			Debug.Log("[" + SubmitItemUpdateResult_t.k_iCallback + " - SubmitItemUpdateResult] - " + pCallback.m_eResult + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
 
-
-			m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
+			/*m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
 			SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.gif");
 			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "submit img");
-			OnSubmitItemUpdateResultCallResult.Set(handle);
+			OnSubmitItemUpdateResultCallResult.Set(handle);*/
 		}
 
 

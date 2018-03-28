@@ -15,18 +15,8 @@ namespace Lite
 			window.Show();
 		}
 
-        string modelPath = "";
-        string outputPath = "Output/" + AppDefine.AppName;
-        string prefabPath = "";
-        ModelPrefab prefab;
-
-		string itemTitle = "Test title";
-		string itemDesc = "This is the test description.";
-		string previewFilePath = "";
-		bool agreeWorkshopPolicy = false;
 
 		int opreationIndex = 0;
-
 
         void OnEnable()
         {
