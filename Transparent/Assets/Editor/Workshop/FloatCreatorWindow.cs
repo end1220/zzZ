@@ -63,7 +63,7 @@ namespace Lite
 				return;
 			}
 
-			string[] operations = new string[] { Language.Get(TextID.export), Language.Get(TextID.submit) };
+			string[] operations = new string[] { Language.Get(TextID.export), Language.Get(TextID.submit), "Download" };
 			opreationIndex = GUILayout.SelectionGrid(opreationIndex, operations, operations.Length, GUILayout.Width(600), GUILayout.Height(25));
 			GUILayout.Label("——————————————————————————————————————————————————————");
 			GUILayout.Space(10);
@@ -71,6 +71,8 @@ namespace Lite
 				OnBuildGUI();
 			else if (opreationIndex == 1)
 				OnSubmitGUI();
+			else if (opreationIndex == 2)
+				OnDownloadGUI();
 		}
 
 	}
