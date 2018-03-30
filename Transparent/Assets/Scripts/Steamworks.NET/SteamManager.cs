@@ -5,17 +5,6 @@ using Steamworks;
 
 public class SteamManager
 {
-	static SteamManager _inst;
-	public static SteamManager Instance
-	{
-		get
-		{
-			if (_inst == null)
-				_inst = new SteamManager();
-			return _inst;
-		}
-	}
-
 	public bool Initialized { get; private set; }
 
 	private SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;

@@ -69,7 +69,7 @@
     <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
     <Compile Include="Source\Data\SubAssetBundleManifest.cs" />
     <Compile Include="Source\Data\ZipHelper.cs" />
-    <Compile Include="Source\FloatFacade.cs" />
+    <Compile Include="Source\FloatApp.cs" />
     <Compile Include="Source\IManager.cs" />
     <Compile Include="Source\Network\ByteBuffer.cs" />
     <Compile Include="Source\Network\CommandHandler.cs" />

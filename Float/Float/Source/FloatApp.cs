@@ -5,10 +5,10 @@ using System.Collections.Generic;
 namespace Float
 {
 
-	public class FloatFacade
+	public class FloatApp
 	{
-		private static FloatFacade _inst;
-		public static FloatFacade Instance { get { if (_inst == null) _inst = new FloatFacade(); return _inst; } }
+		private static FloatApp _inst;
+		public static FloatApp Instance { get { if (_inst == null) _inst = new FloatApp(); return _inst; } }
 		private Dictionary<Type, IManager> mManagerDic = new Dictionary<Type, IManager>();
 
 		public void Init()
@@ -18,11 +18,10 @@ namespace Float
 				CustomSettings.Load();
 				AddManager<NetworkManager>();
 				AddManager<DataManager>();
+				AddManager<SteamManager>();
 
 				foreach (var item in mManagerDic)
 					item.Value.Init();
-
-				SteamManager.Instance.Init();
 			}
 			catch (Exception e)
 			{
@@ -36,8 +35,6 @@ namespace Float
 			{
 				foreach (var item in mManagerDic)
 					item.Value.Tick();
-
-				SteamManager.Instance.Update();
 			}
 			catch (Exception e)
 			{
@@ -52,8 +49,6 @@ namespace Float
 				CustomSettings.Save();
 				foreach (var item in mManagerDic)
 					item.Value.Destroy();
-
-				SteamManager.Instance.Destroy();
 			}
 			catch (Exception e)
 			{

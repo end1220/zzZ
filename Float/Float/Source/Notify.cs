@@ -45,7 +45,7 @@ namespace Float
 		void OnExit(object sender, EventArgs e)
 		{
 			Destroy();
-			App.Instance.Destory();
+			App.Instance.Quit();
 		}
 
 		void OnOpenMainWindow(object sender, EventArgs e)

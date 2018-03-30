@@ -21,7 +21,7 @@ namespace Float
 
 		private void Init()
 		{
-			FloatFacade.Instance.Init();
+			FloatApp.Instance.Init();
 			dispatcherTimer.Tick += new EventHandler(Tick);
 			dispatcherTimer.Interval = TimeSpan.FromMilliseconds(500);
 			dispatcherTimer.Start();
@@ -29,12 +29,12 @@ namespace Float
 
 		private void Tick(object sender, EventArgs e)
 		{
-			FloatFacade.Instance.Tick();
+			FloatApp.Instance.Tick();
 		}
 
-		public void Destory()
+		public void Quit()
 		{
-			FloatFacade.Instance.Destory();
+			FloatApp.Instance.Destory();
 			dispatcherTimer.Stop();
 			Shutdown();
 			//Environment.Exit(0);

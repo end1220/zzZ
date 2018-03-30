@@ -11,7 +11,7 @@ public class SteamScript
 
 	void Init()
 	{
-		if (SteamManager.Initialized)
+		//if (SteamManager.Initialized)
 		{
 			string name = SteamFriends.GetPersonaName();
 			Log.Info(name);
