@@ -7,17 +7,27 @@ namespace Float
 
 	public class FloatApp
 	{
-		private static FloatApp _inst;
-		public static FloatApp Instance { get { if (_inst == null) _inst = new FloatApp(); return _inst; } }
+		public static FloatApp Instance { get; private set; }
+
 		private Dictionary<Type, IManager> mManagerDic = new Dictionary<Type, IManager>();
+
+		public static MsgSystem MsgSystem { get; private set; }
+
+		public static ModelDataManager DataManager { get; private set; }
+
+		public FloatApp()
+		{
+			Instance = this;
+		}
 
 		public void Init()
 		{
 			try
 			{
 				CustomSettings.Load();
+				MsgSystem = AddManager<MsgSystem>();
 				AddManager<NetworkManager>();
-				AddManager<DataManager>();
+				DataManager = AddManager<ModelDataManager>();
 				AddManager<SteamManager>();
 
 				foreach (var item in mManagerDic)
@@ -68,8 +78,7 @@ namespace Float
 			return mgr;
 		}
 
-
-		public T GetManager<T>() where T : IManager
+		private T GetManager<T>() where T : IManager
 		{
 			Type name = typeof(T);
 			IManager mgr = null;

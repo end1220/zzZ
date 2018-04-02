@@ -65,12 +65,13 @@
   <ItemGroup>
     <Compile Include="Source\AppConst.cs" />
     <Compile Include="Source\CustomSettings.cs" />
-    <Compile Include="Source\Data\DataManager.cs" />
+    <Compile Include="Source\Data\ModelDataManager.cs" />
     <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
     <Compile Include="Source\Data\SubAssetBundleManifest.cs" />
     <Compile Include="Source\Data\ZipHelper.cs" />
     <Compile Include="Source\FloatApp.cs" />
     <Compile Include="Source\IManager.cs" />
+    <Compile Include="Source\Message\MsgSystem.cs" />
     <Compile Include="Source\Network\ByteBuffer.cs" />
     <Compile Include="Source\Network\CommandHandler.cs" />
     <Compile Include="Source\Network\Converter.cs" />
@@ -143,6 +144,7 @@
   <ItemGroup>
     <Content Include="Pages\thumb23.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -40,8 +40,15 @@ namespace Float
 			this.Visibility = Visibility.Hidden;
 		}
 
-		void OnActivated(object sender, EventArgs e) { }
-		void OnDeactivated(object sender, EventArgs e) { }
+		void OnActivated(object sender, EventArgs e)
+		{
+
+		}
+
+		void OnDeactivated(object sender, EventArgs e)
+		{
+
+		}
 
 		void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
@@ -71,16 +78,6 @@ namespace Float
 		public void HideWindow()
 		{
 			Hide();
-		}
-
-		private void OnOKButtonClick(object sender, RoutedEventArgs e)
-		{
-			//Console.WriteLine(this.CurrentModelImage.Name);
-		}
-
-		private void OnCalcelButtonClick(object sender, RoutedEventArgs e)
-		{
-
 		}
 
 	}

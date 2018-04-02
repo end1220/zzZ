@@ -23,6 +23,12 @@ namespace Float
 		public const string subMetaName = "info.sbm";
 		public static string modelListPath = PersistentDataPath + modelListName;
 		public static string modelPath = PersistentDataPath;
+
+		// message id
+		public const int MSG_ITEM_INSTALLED = 100;
+		public const int MSG_ITEM_DOWNLOADED = 101;
+		public const int MSG_MODEL_LIST_READY = 102;
+		public const int MSG_MODEL_LIST_UPDATE = 103;
 	}
 
 }

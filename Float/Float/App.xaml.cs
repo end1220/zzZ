@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Float;
 
 namespace Float
 {
@@ -16,18 +15,19 @@ namespace Float
 	public partial class App : Application
 	{
 		public static App Instance { get { return Current as App; } }
-		private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-		private NetworkManager network = new NetworkManager();
 
+		private DispatcherTimer dispatcherTimer = new DispatcherTimer();
+
+		private FloatApp app = new FloatApp();
 
 		private void Tick(object sender, EventArgs e)
 		{
-			FloatApp.Instance.Tick();
+			app.Tick();
 		}
 
 		public void Quit()
 		{
-			FloatApp.Instance.Destory();
+			app.Destory();
 			dispatcherTimer.Stop();
 			Shutdown();
 			//Environment.Exit(0);
@@ -35,7 +35,7 @@ namespace Float
 
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
-			FloatApp.Instance.Init();
+			app.Init();
 			dispatcherTimer.Tick += new EventHandler(Tick);
 			dispatcherTimer.Interval = TimeSpan.FromMilliseconds(500);
 			dispatcherTimer.Start();

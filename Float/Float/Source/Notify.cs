@@ -74,7 +74,7 @@ namespace Float
 		void OnRebuildModelList(object sender, EventArgs e)
 		{
 			string modelPath = CustomSettings.Current.ModelPath;
-			DataManager.RebuildModelList(modelPath);
+			ModelDataManager.RebuildModelListAsync(modelPath);
 		}
 
 		void OnTest(object sender, EventArgs e)

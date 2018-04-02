@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Float;
+using Steamworks;
 
 namespace Float.Pages
 {
@@ -27,7 +27,37 @@ namespace Float.Pages
 		{
 			InitializeComponent();
 
-			List<ModelData> videos = DataManager.Instance.ModelList;
+			FloatApp.MsgSystem.Register(AppConst.MSG_ITEM_DOWNLOADED, OnItemDownloaded);
+			FloatApp.MsgSystem.Register(AppConst.MSG_ITEM_INSTALLED, OnItemInstalled);
+			FloatApp.MsgSystem.Register(AppConst.MSG_MODEL_LIST_READY, OnModelListReady);
+			FloatApp.MsgSystem.Register(AppConst.MSG_MODEL_LIST_UPDATE, OnModelListUpdate);
+		}
+
+		private void OnItemDownloaded(object[] args)
+		{
+			PublishedFileId_t fileId = (PublishedFileId_t)args[0];
+			Log.Info("Home.OnItemDownloaded fileID " + fileId);
+		}
+
+		private void OnItemInstalled(object[] args)
+		{
+			PublishedFileId_t fileId = (PublishedFileId_t)args[0];
+			Log.Info("Home.OnItemInstalled fileID " + fileId);
+		}
+
+		private void OnModelListReady(object[] args)
+		{
+			RefreshListbox();
+		}
+
+		private void OnModelListUpdate(object[] args)
+		{
+			RefreshListbox();
+		}
+
+		public void RefreshListbox()
+		{
+			List<ModelData> videos = FloatApp.DataManager.ModelList;
 			listBoxModels.ItemsSource = videos;
 		}
 
