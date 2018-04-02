@@ -49,19 +49,25 @@ public class Log
 
 	void Info_(string text)
 	{
+		Console.ForegroundColor = ConsoleColor.Green;
 		Console.WriteLine(text);
+		Console.ForegroundColor = ConsoleColor.White;
 		WriteLog("[Info] " + text);
 	}
 
 	void Warning_(string text)
 	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
 		Console.WriteLine(text);
+		Console.ForegroundColor = ConsoleColor.White;
 		WriteLog("[Warning] " + text);
 	}
 
 	void Error_(string text)
 	{
+		Console.ForegroundColor = ConsoleColor.Red;
 		Console.WriteLine(text);
+		Console.ForegroundColor = ConsoleColor.White;
 		WriteLog("[Error] " + text);
 	}
 

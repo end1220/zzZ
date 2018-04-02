@@ -5,8 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-
-namespace Lite
+namespace Float
 {
 	public class UDPServer
 	{
@@ -24,7 +23,7 @@ namespace Lite
 
 		public void Init()
 		{
-			ipEnd = new IPEndPoint(IPAddress.Any, AppDefine.listenPort);
+			ipEnd = new IPEndPoint(IPAddress.Any, AppConst.listenPort);
 			socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 			socket.Bind(ipEnd);
 

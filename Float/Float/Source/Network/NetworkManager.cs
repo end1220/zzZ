@@ -1,10 +1,10 @@
 
 using System.IO;
 using System.Collections.Generic;
-using Lite;
+using Float;
 
 
-using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Lite.Packet>;
+using PacketPair = System.Collections.Generic.KeyValuePair<ushort, Float.Packet>;
 
 public class NetworkManager : IManager
 {

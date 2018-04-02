@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Lite;
+using Float;
 
 namespace Float
 {
@@ -19,13 +19,6 @@ namespace Float
 		private DispatcherTimer dispatcherTimer = new DispatcherTimer();
 		private NetworkManager network = new NetworkManager();
 
-		private void Init()
-		{
-			FloatApp.Instance.Init();
-			dispatcherTimer.Tick += new EventHandler(Tick);
-			dispatcherTimer.Interval = TimeSpan.FromMilliseconds(500);
-			dispatcherTimer.Start();
-		}
 
 		private void Tick(object sender, EventArgs e)
 		{
@@ -42,7 +35,10 @@ namespace Float
 
 		private void AppStartup(object sender, StartupEventArgs e)
 		{
-			Init();
+			FloatApp.Instance.Init();
+			dispatcherTimer.Tick += new EventHandler(Tick);
+			dispatcherTimer.Interval = TimeSpan.FromMilliseconds(500);
+			dispatcherTimer.Start();
 		}
 
 		private void AppExit(object sender, ExitEventArgs e) { }

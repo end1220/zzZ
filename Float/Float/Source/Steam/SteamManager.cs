@@ -1,5 +1,5 @@
 
-using Lite;
+using Float;
 using Steamworks;
 
 namespace Float
@@ -9,11 +9,8 @@ namespace Float
 		public bool Initialized { get; private set; }
 
 		private SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
-		private static void SteamAPIDebugTextHook(int nSeverity, System.Text.StringBuilder pchDebugText)
-		{
-			Log.Warning(pchDebugText.ToString());
-		}
 
+		public static string WorkshopInstallPath { get; private set; }
 
 		public override void Init()
 		{
@@ -91,10 +88,17 @@ namespace Float
 				return;
 
 			SteamAPI.RunCallbacks();
+
+			if (string.IsNullOrEmpty(WorkshopInstallPath))
+				FindWorkshopInstallPath();
+		}
+
+		private static void SteamAPIDebugTextHook(int nSeverity, System.Text.StringBuilder pchDebugText)
+		{
+			Log.Warning(pchDebugText.ToString());
 		}
 
 		PublishedFileId_t[] publishedItemIDs;
-
 		private void UpdateDownload()
 		{
 			uint totalCount = SteamUGC.GetNumSubscribedItems();
@@ -140,8 +144,11 @@ namespace Float
 			}
 		}
 
-		public string GetRootPath()
+		public string FindWorkshopInstallPath()
 		{
+			if (!string.IsNullOrEmpty(WorkshopInstallPath))
+				return WorkshopInstallPath;
+
 			uint totalCount = SteamUGC.GetNumSubscribedItems();
 			if (publishedItemIDs == null || publishedItemIDs.Length != totalCount)
 				publishedItemIDs = new PublishedFileId_t[totalCount];
@@ -158,12 +165,12 @@ namespace Float
 					if (SteamUGC.GetItemInstallInfo(publishId, out SizeOnDisk, out folder, 1024, out punTimeStamp))
 					{
 						folder = folder.Replace("\\", "/");
-						string path = folder.Substring(0, folder.LastIndexOf("/"));
-						return path;
+						WorkshopInstallPath = folder.Substring(0, folder.LastIndexOf("/"));
+						return WorkshopInstallPath;
 					}
 				}
 			}
-			Log.Error("SteamManager.GetPath: invalid.");
+			Log.Error("SteamManager.GetWorkshopInstallPath: invalid.");
 			return "";
 		}
 

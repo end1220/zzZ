@@ -32,7 +32,9 @@ namespace Float
 			m10.Click += OnSend;
 			MenuItem m11 = new MenuItem("Rebuild");
 			m10.Click += OnRebuildModelList;
-			MenuItem[] menu = new MenuItem[] { m1, m2, m3, m6, m10, m11 };
+			MenuItem m100 = new MenuItem("Test");
+			m100.Click += OnTest;
+			MenuItem[] menu = new MenuItem[] { m1, m2, m3, m6, m10, m11, m100};
 			notifyIcon.ContextMenu = new ContextMenu(menu);
 		}
 
@@ -75,5 +77,10 @@ namespace Float
 			DataManager.RebuildModelList(modelPath);
 		}
 
+		void OnTest(object sender, EventArgs e)
+		{
+			//string path = FloatApp.Instance.GetManager<SteamManager>().GetRootPath();
+			//Log.Error(path);
+		}
 	}
 }

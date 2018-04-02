@@ -22,7 +22,7 @@
 
 using System;
 
-namespace Lite
+namespace Float
 {
 	public class Converter
 	{

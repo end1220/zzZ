@@ -63,7 +63,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\AppDefine.cs" />
+    <Compile Include="Source\AppConst.cs" />
     <Compile Include="Source\CustomSettings.cs" />
     <Compile Include="Source\Data\DataManager.cs" />
     <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
@@ -80,6 +80,7 @@
     <Compile Include="Source\Notify.cs" />
     <Compile Include="Source\Steam\SteamManager.cs" />
     <Compile Include="Source\Steam\SteamScript.cs" />
+    <Compile Include="Source\Util\DebugConsole.cs" />
     <Compile Include="Source\Util\Log.cs" />
     <Compile Include="Source\Util\ProtobufUtil.cs" />
     <Compile Include="Source\ModelData.cs" />

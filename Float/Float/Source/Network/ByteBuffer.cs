@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Lite
+namespace Float
 {
 	public class ByteBuffer
 	{

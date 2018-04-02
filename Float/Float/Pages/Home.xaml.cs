@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Float;
 
 namespace Float.Pages
 {
@@ -37,7 +38,6 @@ namespace Float.Pages
 			Author2.Content = data.Author;
 			thumb.Source = new BitmapImage(new Uri(data.PreviewImage, UriKind.Absolute));;
 		}
-
 
 		private void LBMouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{

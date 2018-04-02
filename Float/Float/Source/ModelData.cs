@@ -2,70 +2,72 @@
 using System.ComponentModel;
 using System.Windows.Input;
 
-
-public partial class ModelData : INotifyPropertyChanged
+namespace Float
 {
-	public long Id
+	public partial class ModelData : INotifyPropertyChanged
 	{
-		get { return id; }
-		set
+		public long Id
 		{
-			id = value;
-			NotifyPropertyChanged("Id");
+			get { return id; }
+			set
+			{
+				id = value;
+				NotifyPropertyChanged("Id");
+			}
 		}
-	}
 
-	public string Name
-	{
-		get { return name; }
-		set
+		public string Name
 		{
-			name = value;
-			NotifyPropertyChanged("Name");
+			get { return name; }
+			set
+			{
+				name = value;
+				NotifyPropertyChanged("Name");
+			}
 		}
-	}
 
-	public string Title
-	{
-		get { return title; }
-		set
+		public string Title
 		{
-			title = value;
-			NotifyPropertyChanged("Title");
+			get { return title; }
+			set
+			{
+				title = value;
+				NotifyPropertyChanged("Title");
+			}
 		}
-	}
 
-	public string Author
-	{
-		get { return author; }
-		set
+		public string Author
 		{
-			author = value;
-			NotifyPropertyChanged("Author");
+			get { return author; }
+			set
+			{
+				author = value;
+				NotifyPropertyChanged("Author");
+			}
 		}
-	}
 
-	public string PreviewImage
-	{
-		get { return AppDefine.PersistentDataPath + id + "/" + preview; }
-		set
+		public string PreviewImage
 		{
-			preview = value;
-			NotifyPropertyChanged("PreviewImage");
+			get { return AppConst.PersistentDataPath + id + "/" + preview; }
+			set
+			{
+				preview = value;
+				NotifyPropertyChanged("PreviewImage");
+			}
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public void NotifyPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+
+		private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs args)
+		{
+			Log.Error("buton up");
+		}
+
 	}
-
-	public event PropertyChangedEventHandler PropertyChanged;
-
-	public void NotifyPropertyChanged(string propertyName)
-	{
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-	}
-
-
-	private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs args)
-	{
-		Log.Error("buton up");
-	}
-
 }
