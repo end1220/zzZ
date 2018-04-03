@@ -5,6 +5,17 @@ using Steamworks;
 
 public class SteamManager
 {
+	private static SteamManager inst;
+	public static SteamManager Instance
+	{
+		get
+		{
+			if (inst == null)
+				inst = new SteamManager();
+			return inst;
+		}
+	}
+
 	public bool Initialized { get; private set; }
 
 	private SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
@@ -12,7 +23,6 @@ public class SteamManager
 	{
 		Debug.LogWarning(pchDebugText);
 	}
-
 
 	public void Init()
 	{
@@ -27,12 +37,6 @@ public class SteamManager
 
 		try
 		{
-			// If Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the
-			// Steam client and also launches this game again if the User owns it. This can act as a rudimentary form of DRM.
-
-			// Once you get a Steam AppID assigned by Valve, you need to replace AppId_t.Invalid with it and
-			// remove steam_appid.txt from the game depot. eg: "(AppId_t)480" or "new AppId_t(480)".
-			// See the Valve documentation for more information: https://partner.steamgames.com/documentation/drm#FAQ
 			if (SteamAPI.RestartAppIfNecessary(AppId_t.Invalid))
 			{
 				Application.Quit();
@@ -45,18 +49,6 @@ public class SteamManager
 			Application.Quit();
 			return;
 		}
-
-		// Initialize the SteamAPI, if Init() returns false this can happen for many reasons.
-		// Some examples include:
-		// Steam Client is not running.
-		// Launching from outside of steam without a steam_appid.txt file in place.
-		// Running under a different OS User or Access level (for example running "as administrator")
-		// Ensure that you own a license for the AppId on your active Steam account
-		// If your AppId is not completely set up. Either in Release State: Unavailable, or if it's missing default packages.
-		// Valve's documentation for this is located here:
-		// https://partner.steamgames.com/documentation/getting_started
-		// https://partner.steamgames.com/documentation/example // Under: Common Build Problems
-		// https://partner.steamgames.com/documentation/bootstrap_stats // At the very bottom
 
 		Initialized = SteamAPI.Init();
 		if (!Initialized)

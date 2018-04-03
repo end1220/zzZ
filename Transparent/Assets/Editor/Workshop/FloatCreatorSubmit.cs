@@ -15,7 +15,7 @@ namespace Lite
 		string itemTitle = "Test title";
 		string itemDesc = "This is the test description.";
 		string previewFilePath = "";
-		string contentPath = "E:\\Locke\\GitHub\\zzZ\\Transparent\\Output\\Floating\\1481419443";
+		string contentPath = "E:\\Locke\\GitHub\\zzZ\\Transparent\\Output\\Floating\\357893792";
 		bool agreeWorkshopPolicy = false;
 
 		private void OnSubmitGUI()
@@ -78,21 +78,9 @@ namespace Lite
 			// submit button
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
-			/*if (GUILayout.Button(Language.Get(TextID.createItem), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
-			{
-				if (EditorUtility.DisplayDialog(Language.Get(TextID.workshopPolicy),
-					Language.Get(TextID.ackWorkshopPolicy),
-					Language.Get(TextID.ok),
-					Language.Get(TextID.cancel)))
-				{
-					CreateItem();
-				}
-			}*/
-
 			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
 				CreateItem();
-				//UpdateItem();
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
@@ -108,7 +96,13 @@ namespace Lite
 			GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
 			GUILayout.EndHorizontal();
 
-			OnUpdateItemGUI();
+			// test
+			{
+				ulong BytesProcessed;
+				ulong BytesTotal;
+				EItemUpdateStatus reti = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
+				GUILayout.Label("GetItemUpdateProgress : ret " + reti + " -- " + BytesProcessed + " -- " + BytesTotal);
+			}
 		}
 
 		// steam api
@@ -155,7 +149,7 @@ namespace Lite
 			SteamUGC.SetItemVisibility(m_UGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic);
 			SteamUGC.SetItemTags(m_UGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
 			SteamUGC.SetItemContent(m_UGCUpdateHandle, contentPath);
-			//SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.png");
+			SteamUGC.SetItemPreview(m_UGCUpdateHandle, previewFilePath);
 
 			#region backup
 			/*SteamUGC.RemoveItemKeyValueTags(m_UGCUpdateHandle, "TestKey");
@@ -169,17 +163,6 @@ namespace Lite
 
 			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "submit content");
 			OnSubmitItemUpdateResultCallResult.Set(handle);
-		}
-
-		void OnUpdateItemGUI()
-		{
-			{
-				ulong BytesProcessed;
-				ulong BytesTotal;
-				EItemUpdateStatus reti = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
-				GUILayout.Label("GetItemUpdateProgress : ret " + reti + " -- " + BytesProcessed + " -- " + BytesTotal);
-			}
-
 		}
 
 		void OnCreateItemResult(CreateItemResult_t pCallback, bool bIOFailure)

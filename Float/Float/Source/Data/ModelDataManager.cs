@@ -40,8 +40,7 @@ namespace Float
 		{
 			FloatApp.MsgSystem.Register(AppConst.MSG_ITEM_DOWNLOADED, OnItemDownloaded);
 			FloatApp.MsgSystem.Register(AppConst.MSG_ITEM_INSTALLED, OnItemInstalled);
-
-			ValidateAllModelData();
+			FloatApp.MsgSystem.Register(AppConst.MSG_WORKSHOP_PATH_FOUND, OnWorkshopPathFound);
 		}
 
 		private void OnItemDownloaded(object[] args)
@@ -52,6 +51,12 @@ namespace Float
 		private void OnItemInstalled(object[] args)
 		{
 			RebuildModelListAsync();
+		}
+
+		private void OnWorkshopPathFound(object[] args)
+		{
+			Log.Info("Workshop Path Found");
+			ValidateAllModelDataAsync();
 		}
 
 		private async void RebuildModelListAsync()
@@ -65,6 +70,7 @@ namespace Float
 
 		private void ReloadModelList(List<ModelData> models)
 		{
+			Log.Info("Begin ReloadModelList");
 			lock (fileRWLock)
 			{
 				string jsonStr = File.ReadAllText(AppConst.modelListPath);
@@ -81,12 +87,14 @@ namespace Float
 					models.Add(modelArray.models[i]);
 				}
 			}
+			Log.Info("End ReloadModelList");
 		}
 
 		private void RebuildModelList()
 		{
 			try
 			{
+				Log.Info("Begin RebuildModelList");
 				lock (fileRWLock)
 				{
 					string modelPath = SteamManager.WorkshopInstallPath;
@@ -101,6 +109,7 @@ namespace Float
 					string arrayStr = JsonConvert.SerializeObject(modelArray, Formatting.Indented);
 					File.WriteAllText(modelPath + "/" + AppConst.modelListName, arrayStr, Encoding.UTF8);
 				}
+				Log.Info("End RebuildModelList");
 			}
 			catch (Exception e)
 			{
@@ -118,13 +127,14 @@ namespace Float
 			else
 			{
 				Log.Error("Invalid model data");
+				RebuildModelListAsync();
 			}
 		}
 
 		private bool ValidateAllModelData()
 		{
-			if (File.Exists(AppConst.modelListPath))
-				return true;
+			if (!File.Exists(AppConst.modelListPath))
+				return false;
 
 			return true;
 		}

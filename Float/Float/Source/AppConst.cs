@@ -29,6 +29,7 @@ namespace Float
 		public const int MSG_ITEM_DOWNLOADED = 101;
 		public const int MSG_MODEL_LIST_READY = 102;
 		public const int MSG_MODEL_LIST_UPDATE = 103;
+		public const int MSG_WORKSHOP_PATH_FOUND = 104;
 	}
 
 }

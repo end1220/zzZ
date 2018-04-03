@@ -1,6 +1,6 @@
 
-using Float;
 using Steamworks;
+
 
 namespace Float
 {
@@ -84,7 +84,10 @@ namespace Float
 			SteamAPI.RunCallbacks();
 
 			if (string.IsNullOrEmpty(WorkshopInstallPath))
-				FindWorkshopInstallPath();
+			{
+				if (FindWorkshopInstallPath())
+					FloatApp.MsgSystem.Push(AppConst.MSG_WORKSHOP_PATH_FOUND);
+			}
 		}
 
 		private void SteamAPIDebugTextHook(int nSeverity, System.Text.StringBuilder pchDebugText)
@@ -174,10 +177,10 @@ namespace Float
 			}
 		}
 
-		public string FindWorkshopInstallPath()
+		public bool FindWorkshopInstallPath()
 		{
 			if (!string.IsNullOrEmpty(WorkshopInstallPath))
-				return WorkshopInstallPath;
+				return true;
 
 			uint totalCount = SteamUGC.GetNumSubscribedItems();
 			if (publishedItemIDs == null || publishedItemIDs.Length != totalCount)
@@ -196,12 +199,12 @@ namespace Float
 					{
 						folder = folder.Replace("\\", "/");
 						WorkshopInstallPath = folder.Substring(0, folder.LastIndexOf("/"));
-						return WorkshopInstallPath;
+						return true;
 					}
 				}
 			}
 			Log.Error("SteamManager.GetWorkshopInstallPath: invalid.");
-			return "";
+			return false;
 		}
 
 	}

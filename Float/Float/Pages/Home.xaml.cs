@@ -59,6 +59,7 @@ namespace Float.Pages
 		{
 			List<ModelData> videos = FloatApp.DataManager.ModelList;
 			listBoxModels.ItemsSource = videos;
+			Log.Info("RefreshListbox");
 		}
 
 		public void SetCurrentModelData(ModelData data)
