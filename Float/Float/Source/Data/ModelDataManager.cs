@@ -122,6 +122,8 @@ namespace Float
 			bool ret = await Task.Run(() => { return ValidateAllModelData(); });
 			if (ret)
 			{
+				await Task.Run(() => { ReloadModelList(modelList); });
+
 				FloatApp.MsgSystem.Push(AppConst.MSG_MODEL_LIST_READY);
 			}
 			else

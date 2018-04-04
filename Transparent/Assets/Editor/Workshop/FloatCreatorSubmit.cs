@@ -12,8 +12,8 @@ namespace Lite
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{
-		string itemTitle = "Test title";
-		string itemDesc = "This is the test description.";
+		string itemTitle = "";
+		string itemDesc = "";
 		string previewFilePath = "";
 		string contentPath = "E:\\Locke\\GitHub\\zzZ\\Transparent\\Output\\Floating\\357893792";
 		bool agreeWorkshopPolicy = false;
@@ -80,7 +80,8 @@ namespace Lite
 			GUILayout.Space(leftSpace);
 			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
-				CreateItem();
+				if (CheckInputInfo())
+					CreateItem();
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
@@ -151,16 +152,6 @@ namespace Lite
 			SteamUGC.SetItemContent(m_UGCUpdateHandle, contentPath);
 			SteamUGC.SetItemPreview(m_UGCUpdateHandle, previewFilePath);
 
-			#region backup
-			/*SteamUGC.RemoveItemKeyValueTags(m_UGCUpdateHandle, "TestKey");
-			SteamUGC.AddItemKeyValueTag(m_UGCUpdateHandle, "TestKey", "TestValue");
-			SteamUGC.AddItemPreviewFile(m_UGCUpdateHandle, Application.dataPath + "/PreviewImage.jpg", EItemPreviewType.k_EItemPreviewType_Image);
-			SteamUGC.AddItemPreviewVideo(m_UGCUpdateHandle, "jHgZh4GV9G0");
-			SteamUGC.UpdateItemPreviewFile(m_UGCUpdateHandle, 0, Application.dataPath + "/PreviewImage.jpg");
-			SteamUGC.UpdateItemPreviewVideo(m_UGCUpdateHandle, 0, "jHgZh4GV9G0");
-			SteamUGC.RemoveItemPreview(m_UGCUpdateHandle, 0);*/
-			#endregion
-
 			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "submit content");
 			OnSubmitItemUpdateResultCallResult.Set(handle);
 		}
@@ -178,11 +169,17 @@ namespace Lite
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
 		{
 			Debug.Log("[" + SubmitItemUpdateResult_t.k_iCallback + " - SubmitItemUpdateResult] - " + pCallback.m_eResult + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
+		}
 
-			/*m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
-			SteamUGC.SetItemPreview(m_UGCUpdateHandle, "C:/Users/admin/Desktop/DefaultPreviewImage.gif");
-			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(m_UGCUpdateHandle, "submit img");
-			OnSubmitItemUpdateResultCallResult.Set(handle);*/
+		bool CheckInputInfo()
+		{
+			if (string.IsNullOrEmpty(itemTitle))
+				return false;
+			if (string.IsNullOrEmpty(itemDesc))
+				return false;
+			if (string.IsNullOrEmpty(itemTitle))
+				return false;
+			return true;
 		}
 
 	}

@@ -51,7 +51,7 @@ namespace Float
 			get { return AppConst.PersistentDataPath + id + "/" + preview; }
 			set
 			{
-				preview = value;
+				//preview = value;
 				NotifyPropertyChanged("PreviewImage");
 			}
 		}
