@@ -7,7 +7,7 @@ namespace Lite
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{
-		[MenuItem(AppDefine.AppName + "/Float Creator")]
+		[MenuItem(AppConst.AppName + "/Float Creator")]
 		public static void ShowExcelWindow()
 		{
 			Rect wr = new Rect(100, 100, 800, 700);

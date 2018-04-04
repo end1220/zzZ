@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class AppDefine
+public class AppConst
 {
 	public const string AppName = "Floating";
 	public const int FPS = 30;
@@ -28,5 +28,7 @@ public class AppDefine
 	public static string manifestPath = PersistentDataPath + "/" + manifestName;
 	public static string modelListPath = PersistentDataPath + "/" + modelListName;
 	public static string modelPath = PersistentDataPath;
-	
+
+	public const string workshopPolicyUrl = "http://steamcommunity.com/sharedfiles/workshoplegalagreement";
+	public const string previewName = "preview";
 }

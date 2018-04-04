@@ -14,7 +14,7 @@ namespace Lite
 		private static ScriptMetaInfo metaInfo = null;
 
 
-		[MenuItem(AppDefine.AppName + "/Fix/Gen meta", false, 1)]
+		[MenuItem(AppConst.AppName + "/Fix/Gen meta", false, 1)]
 		public static void GenScriptMeta()
 		{
 			string[] paths = AssetDatabase.GetAllAssetPaths();
@@ -48,7 +48,7 @@ namespace Lite
 			Debug.Log("Gen Script Done.");
 		}
 
-		[MenuItem(AppDefine.AppName + "/Fix/Fix All", false, 2)]
+		[MenuItem(AppConst.AppName + "/Fix/Fix All", false, 2)]
 		public static void FixAllResourceInDev()
 		{
 			try
@@ -73,7 +73,7 @@ namespace Lite
 		}
 
 
-		[MenuItem(AppDefine.AppName + "/Fix/Fix All with Dll", false, 3)]
+		[MenuItem(AppConst.AppName + "/Fix/Fix All with Dll", false, 3)]
 		public static void FixAllResourceInEditor()
 		{
 			try

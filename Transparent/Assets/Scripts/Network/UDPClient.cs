@@ -22,7 +22,7 @@ namespace Lite
 
 		public override void Init()
 		{
-			ipEnd = new IPEndPoint(IPAddress.Parse(AppDefine.remoteIP), AppDefine.remotePort);
+			ipEnd = new IPEndPoint(IPAddress.Parse(AppConst.remoteIP), AppConst.remotePort);
 			socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
 			IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);

@@ -7,7 +7,7 @@ namespace Lite
 {
 	public class BuildMenuItems
 	{
-		const string kSimulationMode = AppDefine.AppName + "/AssetBundle/Simulation Mode";
+		const string kSimulationMode = AppConst.AppName + "/AssetBundle/Simulation Mode";
 
 
 		[MenuItem(kSimulationMode, false, 1)]
@@ -25,7 +25,7 @@ namespace Lite
 		}
 
 
-		[MenuItem(AppDefine.AppName + "/AssetBundle/Refresh AssetBundle Names", false, 3)]
+		[MenuItem(AppConst.AppName + "/AssetBundle/Refresh AssetBundle Names", false, 3)]
 		static public void RefreshABNames()
 		{
 			try
@@ -38,7 +38,7 @@ namespace Lite
 			}
 		}
 
-		[MenuItem(AppDefine.AppName + "/AssetBundle/Build AB", false, 4)]
+		[MenuItem(AppConst.AppName + "/AssetBundle/Build AB", false, 4)]
 		static public void BuildAB()
 		{
 			try
@@ -51,7 +51,7 @@ namespace Lite
 			}
 		}
 
-		/*[MenuItem(AppDefine.AppName + "/AssetBundle/Build Sbms", false, 4)]
+		/*[MenuItem(AppConst.AppName + "/AssetBundle/Build Sbms", false, 4)]
 		static public void BuildSbms()
 		{
 			try

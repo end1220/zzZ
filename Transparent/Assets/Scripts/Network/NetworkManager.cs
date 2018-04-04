@@ -22,7 +22,7 @@ public class NetworkManager : IManager
 		{
 			TCPClient tcpClient = new TCPClient();
 			tcpClient.Init();
-			tcpClient.ConnectServer(AppDefine.remoteIP, AppDefine.remotePort);
+			tcpClient.ConnectServer(AppConst.remoteIP, AppConst.remotePort);
 			client = tcpClient;
 		}
 		else
@@ -66,7 +66,7 @@ public class NetworkManager : IManager
 		ByteBuffer bb = new ByteBuffer();
 		bb.WriteShort(msgId);
 		bb.WriteBytes(buffer);
-		if (AppDefine.LocalMode)
+		if (AppConst.LocalMode)
 		{
 			Packet packet = new Packet();
 			packet.msgId = msgId;

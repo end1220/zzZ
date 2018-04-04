@@ -20,7 +20,7 @@ namespace Lite
 			{
 				Instance = this;
 				Application.runInBackground = true;
-				Application.targetFrameRate = AppDefine.FPS;
+				Application.targetFrameRate = AppConst.FPS;
 				Screen.sleepTimeout = SleepTimeout.NeverSleep;
 				Screen.SetResolution(800, 600, false);
 

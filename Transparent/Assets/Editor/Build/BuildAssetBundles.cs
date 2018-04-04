@@ -12,7 +12,7 @@ using UnityEditor;
 public class BuildAssetBundles
 {
 
-	static string tmpOutputPath = "Output" + "/" + AppDefine.AppName;
+	static string tmpOutputPath = "Output" + "/" + AppConst.AppName;
 	static string copyTargetPath = "Assets/StreamingAssets";
 
 	static string LuaSrcPath = Application.dataPath + "/Lua";

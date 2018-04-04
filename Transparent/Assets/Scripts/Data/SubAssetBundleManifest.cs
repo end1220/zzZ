@@ -53,6 +53,18 @@ public class SubAssetBundleManifest
 			string asset = line.Substring(2);
 			Dependencies.Add(asset);
 		}
-
 	}
+
+	public void ReplaceFolderInfo(string oldFolderName, string newFolderName)
+	{
+		string old = oldFolderName + "/";
+		string neew = newFolderName + "/";
+		FileName.Replace(old, neew);
+		AssetBundleName.Replace(old, neew);
+		foreach (var i in Assets)
+			i.Replace(old, neew);
+		foreach (var i in Dependencies)
+			i.Replace(old, neew);
+	}
+
 }

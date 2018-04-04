@@ -22,12 +22,12 @@ namespace Lite
 			modelRoot = transform;
 		}
 
-		public void LoadModel(int id)
+		public void LoadModel(string id)
 		{
 			ModelData data = DataManager.Instance.GetModelData(id);
 			if (data != null)
 			{
-				GameObject prefab = ResourceManager.Instance.LoadAsset<GameObject>(data.bundleName, data.assetName);
+				GameObject prefab = ResourceManager.Instance.LoadAsset<GameObject>(data.bundle, data.asset);
 				GameObject go = GameObject.Instantiate(prefab);
 				go.SetActive(true);
 				ModelPrefab modelPrefab = go.GetComponent<ModelPrefab>();

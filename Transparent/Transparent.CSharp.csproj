@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.4p1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -128,10 +130,8 @@
     <Compile Include="Assets\Scripts\Network\Packet.cs" />
     <Compile Include="Assets\Scripts\Network\TCPClient.cs" />
     <Compile Include="Assets\Scripts\Network\UDPClient.cs" />
-    <Compile Include="Assets\Scripts\SpaceWarClient.cs" />
-    <Compile Include="Assets\Scripts\SteamStatsAndAchievements.cs" />
     <Compile Include="Assets\Scripts\Steamworks.NET\SteamManager.cs" />
-    <Compile Include="Assets\Scripts\Util\AppDefine.cs" />
+    <Compile Include="Assets\Scripts\Util\AppConst.cs" />
     <Compile Include="Assets\Scripts\Util\AppUtils.cs" />
     <Compile Include="Assets\Scripts\Util\FileUtils.cs" />
     <Compile Include="Assets\Scripts\Util\Log.cs" />

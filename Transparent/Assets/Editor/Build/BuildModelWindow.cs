@@ -12,7 +12,7 @@ namespace Lite
 	public class BuildModelWindow : EditorWindow
 	{
 
-		[MenuItem(AppDefine.AppName + "/BuildModel")]
+		[MenuItem(AppConst.AppName + "/BuildModel")]
 		public static void ShowExcelWindow()
 		{
 			Rect wr = new Rect(100, 100, 640, 480);
@@ -21,7 +21,7 @@ namespace Lite
 		}
 
 		string modelPath = "";
-		string outputPath = "Output/" + AppDefine.AppName;
+		string outputPath = "Output/" + AppConst.AppName;
 		string prefabPath = "";
 		ModelPrefab prefab;
 		string titleDesc = "No title";
@@ -111,8 +111,8 @@ namespace Lite
 			}
 			if (GUILayout.Button("refresh", GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
 			{
-				RebuildMyManifest(outputPath, outputPath + "/" + AppDefine.manifestName);
-				RebuildModelList(outputPath, outputPath + "/" + AppDefine.manifestName);
+				RebuildMyManifest(outputPath, outputPath + "/" + AppConst.manifestName);
+				RebuildModelList(outputPath, outputPath + "/" + AppConst.manifestName);
 				EditorUtility.DisplayDialog("Floating", "Refresh success!", "OK");
 			}
 			GUILayout.EndHorizontal();
@@ -140,16 +140,16 @@ namespace Lite
 				File.WriteAllText(outputPath + "/" + subManifestName, jsonStr, Encoding.UTF8);
 
 				ModelData modelData = new ModelData();
-				modelData.id = uid;
-				modelData.name = abName;
-				modelData.bundleName = abName;
-				modelData.assetName = assetName.Substring(assetName.IndexOf("Assets/"));
+				modelData.workshopId = uid.ToString();
+				//modelData.name = abName;
+				modelData.bundle = abName;
+				modelData.asset = assetName.Substring(assetName.IndexOf("Assets/"));
 				modelData.title = titleDesc;
-				modelData.author = author;
+				//modelData.author = author;
 				modelData.preview = preview;
 				jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
 				string subfolderPath = outputPath + "/" + subfolderName;
-				File.WriteAllText(subfolderPath + "/" + AppDefine.subModelDataName, jsonStr, Encoding.UTF8);
+				File.WriteAllText(subfolderPath + "/" + AppConst.subModelDataName, jsonStr, Encoding.UTF8);
 
 				AssetDatabase.Refresh();
 				EditorUtility.DisplayDialog("Floating", "Done! Output: " + subfolderPath, "OK");
@@ -201,7 +201,7 @@ namespace Lite
 				List<ModelData> dataList = new List<ModelData>();
 				for (int i = 0; i < subDirs.Length; ++i)
 				{
-					string filePath = subDirs[i] + "/" + AppDefine.subModelDataName;
+					string filePath = subDirs[i] + "/" + AppConst.subModelDataName;
 					if (File.Exists(filePath))
 					{
 						string txt = File.ReadAllText(filePath);
@@ -211,10 +211,10 @@ namespace Lite
 				}
 				modelArray.models = dataList.ToArray();
 				string arrayStr = JsonConvert.SerializeObject(modelArray, Formatting.Indented);
-				File.WriteAllText(modelPath + "/" + AppDefine.modelListName, arrayStr, Encoding.UTF8);
+				File.WriteAllText(modelPath + "/" + AppConst.modelListName, arrayStr, Encoding.UTF8);
 
 				// copy to streamingsassets
-				CopyAssetBundles(modelPath, AppDefine.PersistentDataPath);
+				CopyAssetBundles(modelPath, AppConst.PersistentDataPath);
 
 				AssetDatabase.Refresh();
 			}

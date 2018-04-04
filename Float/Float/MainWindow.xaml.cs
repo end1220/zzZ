@@ -37,7 +37,7 @@ namespace Float
 
 			notify.Create(this);
 			this.Visibility = Visibility.Visible;
-			//this.Visibility = Visibility.Hidden;
+			this.Visibility = Visibility.Hidden;
 		}
 
 		void OnActivated(object sender, EventArgs e)

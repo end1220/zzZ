@@ -73,13 +73,13 @@ namespace Lite
 
 		public void Initialize()
 		{
-			m_BaseDownloadingURL = "file://" + AppDefine.PersistentDataPath;// = "http://www.MyWebsite/MyAssetBundles";
+			m_BaseDownloadingURL = "file://" + AppConst.PersistentDataPath;// = "http://www.MyWebsite/MyAssetBundles";
 
 #if UNITY_EDITOR
 			if (SimulateAssetBundleInEditor)
 				return;
 #endif
-			string txt = File.ReadAllText(AppDefine.manifestPath);
+			string txt = File.ReadAllText(AppConst.manifestPath);
 			manifest = JsonConvert.DeserializeObject<MyAssetBundleManifest>(txt);
 		}
 
@@ -168,7 +168,7 @@ namespace Lite
 
 		public T LoadAsset<T>(string assetBundleName, string assetName) where T : UnityEngine.Object
 		{
-			string path = AppDefine.PersistentDataPath + assetBundleName;
+			string path = AppConst.PersistentDataPath + assetBundleName;
 
 #if UNITY_EDITOR
 			if (SimulateAssetBundleInEditor)
@@ -310,7 +310,7 @@ namespace Lite
 
 		public AssetBundle LoadAssetBundleSync(string assetBundleName)
 		{
-			string path = AppDefine.PersistentDataPath + assetBundleName;
+			string path = AppConst.PersistentDataPath + assetBundleName;
 #if UNITY_EDITOR
 			if (SimulateAssetBundleInEditor)
 			{

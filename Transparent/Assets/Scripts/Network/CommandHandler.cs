@@ -78,7 +78,7 @@ public class CommandHandler
 	static void OnPlayThis(Command cmd)
 	{
 		//Log.Info("play this");
-		int id = cmd.number1;
+		string id = cmd.string1;
 		ModelScene.Instance.LoadModel(id);
 	}
 }

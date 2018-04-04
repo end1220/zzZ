@@ -11,13 +11,15 @@ namespace Lite
 	[Serializable]
 	public class ModelData
 	{
-		public int id;
-		public string name;
-		public string bundleName;
-		public string assetName;
+		public string workshopId;
 		public string title;
-		public string author;
+		public string description;
 		public string preview;
+		public string[] tags;
+		public int visibility;
+		public string bundle;
+		public string asset;
+		public int version;
 	}
 
 	[Serializable]
@@ -30,7 +32,7 @@ namespace Lite
 	{
 		public static DataManager Instance { private set; get; }
 
-		Dictionary<int, ModelData> modelDic = new Dictionary<int, ModelData>();
+		Dictionary<string, ModelData> modelDic = new Dictionary<string, ModelData>();
 
 
 		public override void Init()
@@ -51,7 +53,7 @@ namespace Lite
 
 		/*public static void RefreshModelList()
 		{
-			string modelPath = AppDefine.modelPath;
+			string modelPath = AppConst.modelPath;
 			if (!Directory.Exists(modelPath))
 			{
 				Log.Error("RefreshModelList: Directory Not Exists: " + modelPath);
@@ -81,7 +83,7 @@ namespace Lite
 			ModelDataArray modelArray = new ModelDataArray();
 			modelArray.models = models.ToArray();
 			string jsonStr = JsonUtility.ToJson(modelArray);
-			FileStream fs = File.Open(AppDefine.modelListPath, FileMode.Create);
+			FileStream fs = File.Open(AppConst.modelListPath, FileMode.Create);
 			StreamWriter sw = new StreamWriter(fs);
 			sw.Write(jsonStr);
 			sw.Flush();
@@ -90,7 +92,7 @@ namespace Lite
 
 		public void ReloadModelData()
 		{
-			string jsonStr = File.ReadAllText(AppDefine.modelListPath);
+			string jsonStr = File.ReadAllText(AppConst.modelListPath);
 			if (string.IsNullOrEmpty(jsonStr))
 			{
 				Log.Error("Cannot load model data !");
@@ -100,10 +102,10 @@ namespace Lite
 			ModelDataArray modelArray = JsonUtility.FromJson<ModelDataArray>(jsonStr);
 			modelDic.Clear();
 			for (int i = 0; i < modelArray.models.Length; ++i)
-				modelDic.Add(modelArray.models[i].id, modelArray.models[i]);
+				modelDic.Add(modelArray.models[i].workshopId, modelArray.models[i]);
 		}
 
-		public ModelData GetModelData(int id)
+		public ModelData GetModelData(string id)
 		{
 			ModelData data;
 			modelDic.TryGetValue(id, out data);

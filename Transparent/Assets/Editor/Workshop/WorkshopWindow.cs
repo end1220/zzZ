@@ -10,7 +10,7 @@ namespace Lite
 	public class WorkshopWindow : EditorWindow
 	{
 
-		[MenuItem(AppDefine.AppName + "/Workshop")]
+		[MenuItem(AppConst.AppName + "/Workshop")]
 		public static void ShowExcelWindow()
 		{
 			Rect wr = new Rect(100, 100, 960, 640);

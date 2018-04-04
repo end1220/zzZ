@@ -5,19 +5,34 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Steamworks;
+
 
 namespace Float
 {
 	public partial class ModelData
 	{
-		public long id;
-		public string name;
-		public string bundleName;
-		public string assetName;
+		public long workshopId;
 		public string title;
+		public string description;
 		public string author;
 		public string preview;
+		public string[] tags;
+		public int visibility;
+		public string bundle;
+		public string asset;
+		public int version;
+		/*{y
+		"contentrating" : "Mature",
+		"description" : "",
+		"file" : "scene.json",
+		"monetization" : false,
+		"preview" : "preview.png",
+		"tags" : [ "Girls" ],
+		"title" : "sugar",
+		"type" : "scene",
+		"visibility" : "public",
+		"workshopid" : 1334958012
+		}*/
 	}
 
 	public class ModelDataArray
@@ -27,12 +42,7 @@ namespace Float
 
 	public class ModelDataManager : IManager
 	{
-		private List<ModelData> modelList = new List<ModelData>();
-
-		public List<ModelData> ModelList
-		{
-			get { return modelList; }
-		}
+		public List<ModelData> ModelList { get; } = new List<ModelData>();
 
 		private object fileRWLock = new object();
 
@@ -63,7 +73,7 @@ namespace Float
 		{
 			await Task.Run(() => { RebuildModelList(); });
 
-			await Task.Run(() => { ReloadModelList(modelList); });
+			await Task.Run(() => { ReloadModelList(ModelList); });
 
 			FloatApp.MsgSystem.Push(AppConst.MSG_MODEL_LIST_UPDATE);
 		}
@@ -122,7 +132,7 @@ namespace Float
 			bool ret = await Task.Run(() => { return ValidateAllModelData(); });
 			if (ret)
 			{
-				await Task.Run(() => { ReloadModelList(modelList); });
+				await Task.Run(() => { ReloadModelList(ModelList); });
 
 				FloatApp.MsgSystem.Push(AppConst.MSG_MODEL_LIST_READY);
 			}

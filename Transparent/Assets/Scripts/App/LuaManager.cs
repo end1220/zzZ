@@ -112,7 +112,7 @@ namespace Lite
 				return;
 			}
 #endif
-			AddSearchPath(AppDefine.PersistentDataPath + "/lua");
+			AddSearchPath(AppConst.PersistentDataPath + "/lua");
 		}
 
 		public void AddSearchPath(string fullPath)
