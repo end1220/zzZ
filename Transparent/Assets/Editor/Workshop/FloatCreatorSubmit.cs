@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEditor;
-using System;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Steamworks;
 
@@ -12,11 +10,12 @@ namespace Lite
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{
-		string itemTitle = "";
-		string itemDesc = "";
+		string itemTitle = "p0";
+		string itemDesc = "hahahaha";
 		string previewPath = "";
-		string contentPath = "E:\\Locke\\GitHub\\zzZ\\Transparent\\Output\\Floating\\357893792";
-		bool agreeWorkshopPolicy = false;
+		string contentPath = "E:/Locke/GitHub/zzZ/Transparent/Output/Floating/1894426371";
+		string tempContentPath;
+		bool agreeWorkshopPolicy = true;
 
 		private void OnSubmitGUI()
 		{
@@ -38,18 +37,13 @@ namespace Lite
 			GUILayout.Space(spaceSize);
 			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
 			
-			GUILayout.Box(Resources.Load(Path.GetFileNameWithoutExtension(previewPath)) as Texture, GUILayout.Width(128), GUILayout.Height(128));
+			GUILayout.Box(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(128), GUILayout.Height(128));
 			GUILayout.BeginVertical();
 			GUILayout.Space(120);
-			if (GUILayout.Button("Select", GUILayout.Width(buttonLen2)))
+			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(buttonLen2)))
 			{
-				previewPath = EditorUtility.OpenFilePanel("Select Preview File", string.Empty, "jpg,png");
-				if (!string.IsNullOrEmpty(previewPath) && File.Exists(previewPath))
-				{
-					File.Copy(previewPath, contentPath + "/" + FormatPreviewFileName(previewPath));
-					File.Copy(previewPath, Application.dataPath + "/Editor/Resources/" + FormatPreviewFileName(previewPath));
-					AssetDatabase.Refresh();
-				}
+				previewPath = EditorUtility.OpenFilePanel(Language.Get(TextID.selectPreview), string.Empty, "jpg,png");
+				CopyPreviewFile(previewPath);
 			}
 			GUILayout.EndVertical();
 			GUILayout.EndHorizontal();
@@ -66,33 +60,26 @@ namespace Lite
 			GUILayout.Space(leftSpace);
 			agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, Language.Get(TextID.accept), GUILayout.Width(60));
 			if (GUILayout.Button(Language.Get(TextID.legal), FloatGUIStyle.link, GUILayout.Width(130)))
-			{
 				Application.OpenURL(AppConst.workshopPolicyUrl);
-			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
 
 			// submit button
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(leftSpace);
+			EditorGUI.BeginDisabledGroup(!agreeWorkshopPolicy);
 			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
 			{
+				//MakeTemporaryContent(111111111);
 				if (CheckInputInfo())
 					CreateItem();
 			}
+			EditorGUI.EndDisabledGroup();
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
 
-			// steam info begin
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("SteamID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("AppID:", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
-			GUILayout.EndHorizontal();
+			/*GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
+			GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));;*/
 
 			{
 				ulong BytesProcessed;
@@ -101,7 +88,6 @@ namespace Lite
 				if (reti != EItemUpdateStatus.k_EItemUpdateStatusInvalid)
 				{
 					EditorUtility.DisplayProgressBar("Uploading", reti.ToString(), (float)((double)BytesProcessed / (double)BytesTotal));
-					//GUILayout.Label("GetItemUpdateProgress : ret " + reti + " -- " + BytesProcessed + " -- " + BytesTotal);
 				}
 				/*else
 				{
@@ -139,13 +125,11 @@ namespace Lite
 		{
 			SteamAPICall_t handle = SteamUGC.CreateItem(SteamUtils.GetAppID(), EWorkshopFileType.k_EWorkshopFileTypeCommunity);
 			OnCreateItemResultCallResult.Set(handle);
-			//Debug.Log("SteamUGC.CreateItem(" + SteamUtils.GetAppID() + ", " + EWorkshopFileType.k_EWorkshopFileTypeCommunity + ") : " + handle);
 		}
 
 		private void UpdateItem()
 		{
 			m_UGCUpdateHandle = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), m_PublishedFileId);
-			//Debug.Log("SteamUGC.StartItemUpdate(" + SteamUtils.GetAppID() + ", " + m_PublishedFileId + ") : " + m_UGCUpdateHandle);
 
 			SteamUGC.SetItemTitle(m_UGCUpdateHandle, itemTitle);
 			SteamUGC.SetItemDescription(m_UGCUpdateHandle, itemDesc);
@@ -162,11 +146,10 @@ namespace Lite
 
 		void OnCreateItemResult(CreateItemResult_t pCallback, bool bIOFailure)
 		{
-			//Debug.Log("[" + CreateItemResult_t.k_iCallback + " - CreateItemResult] - " + pCallback.m_eResult + " -- " + pCallback.m_nPublishedFileId + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
 			if (pCallback.m_eResult == EResult.k_EResultOK)
 			{
 				m_PublishedFileId = pCallback.m_nPublishedFileId;
-				ReplaceContentWithWorkshopID(m_PublishedFileId.m_PublishedFileId);
+				MakeTemporaryContent(m_PublishedFileId.m_PublishedFileId);
 				UpdateItem();
 			}
 			else
@@ -178,10 +161,10 @@ namespace Lite
 
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
 		{
-			//Debug.Log("[" + SubmitItemUpdateResult_t.k_iCallback + " - SubmitItemUpdateResult] - " + pCallback.m_eResult + " -- " + pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement);
 			if (pCallback.m_eResult == EResult.k_EResultOK)
 			{
-				EditorUtility.DisplayDialog("Complete", "Done", "OK");
+				EditorUtility.ClearProgressBar();
+				EditorUtility.DisplayDialog("Complete", "Submit successfully", "OK");
 			}
 			else
 			{
@@ -223,11 +206,6 @@ namespace Lite
 				EditorUtility.DisplayDialog("Error", "Preview file does not exist.", "OK");
 				return false;
 			}
-			if (!File.Exists(GetContentPreviewPath()))
-			{
-				EditorUtility.DisplayDialog("Error", "Preview file copy does not exist.", "OK");
-				return false;
-			}
 			return true;
 		}
 
@@ -238,24 +216,47 @@ namespace Lite
 
 		private string GetContentPreviewPath()
 		{
-			return contentPath + FormatPreviewFileName(previewPath);
+			return contentPath + "/" + FormatPreviewFileName(previewPath);
 		}
 
-		private void ReplaceContentWithWorkshopID(ulong workshopID)
+		private void MakeTemporaryContent(ulong workshopID)
 		{
+			if (!Directory.Exists(contentPath))
+				return;
+
 			contentPath = contentPath.Replace("\\", "/");
+			int endIdx = contentPath.LastIndexOf("/");
+			string subContentPath = contentPath.Substring(0, endIdx);
+			string oldFolderName = contentPath.Substring(endIdx + 1);
+			string newContentPath = subContentPath + "/temporary";
+			if (Directory.Exists(newContentPath))
+				FileUtil.DeleteFileOrDirectory(newContentPath);
+			//Directory.CreateDirectory(newContentPath);
+
+			FileUtil.CopyFileOrDirectory(contentPath, newContentPath);
+
+			contentPath = newContentPath;
+			tempContentPath = newContentPath;
+			ReplaceContentWithWorkshopID(workshopID, oldFolderName);
+		}
+
+		private void ReplaceContentWithWorkshopID(ulong workshopID, string oldFolderName)
+		{
+			/*contentPath = contentPath.Replace("\\", "/");
 			string oldContentPath = contentPath;
 			int endIdx = contentPath.LastIndexOf("/");
 			string subContentPath = contentPath.Substring(0, endIdx);
-			string oldFolderName = contentPath.Substring(endIdx);
+			//string oldFolderName = contentPath.Substring(endIdx);
 			string newContentPath = subContentPath + "/" + workshopID;
+			if (Directory.Exists(newContentPath))
+				FileUtil.DeleteFileOrDirectory(newContentPath);
 			Directory.Move(oldContentPath, newContentPath);
 
+			contentPath = newContentPath;*/
 			string newFolderName = workshopID.ToString();
-			contentPath = newContentPath;
 
 			// model data
-			string modelDataPath = contentPath + "/" + oldFolderName + ".json";
+			string modelDataPath = contentPath + "/" + AppConst.subModelDataName;
 			string text = File.ReadAllText(modelDataPath);
 			ModelData data = JsonUtility.FromJson<ModelData>(text);
 			SaveModelDataToFile(
@@ -269,12 +270,36 @@ namespace Lite
 					);
 
 			// sbm
-			string sbmPath = contentPath + "/" + oldFolderName + ".sbm";
+			string sbmPath = contentPath + "/" + AppConst.assetbundleName + ".sbm";
 			string jsonStr = File.ReadAllText(sbmPath);
 			SubAssetBundleManifest subManifest = JsonConvert.DeserializeObject<SubAssetBundleManifest>(jsonStr);
 			subManifest.ReplaceFolderInfo(oldFolderName, newFolderName);
 			jsonStr = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
 			File.WriteAllText(sbmPath, jsonStr, Encoding.UTF8);
+		}
+
+		private void CopyPreviewFile(string previewPath)
+		{
+			if (!string.IsNullOrEmpty(previewPath) && File.Exists(previewPath))
+			{
+				File.Copy(previewPath, contentPath + "/" + FormatPreviewFileName(previewPath), true);
+				File.Copy(previewPath, Application.dataPath + "/Editor/Resources/" + FormatPreviewFileName(previewPath), true);
+				AssetDatabase.Refresh();
+			}
+		}
+
+		private void ClearTempDirectory()
+		{
+			string path1 = contentPath + "/" + FormatPreviewFileName(previewPath);
+			if (File.Exists(path1))
+				File.Delete(path1);
+
+			string path2 = Application.dataPath + "/Editor/Resources/" + FormatPreviewFileName(previewPath);
+			if (File.Exists(path2))
+				File.Delete(path2);
+
+			if (Directory.Exists(tempContentPath))
+				FileUtil.DeleteFileOrDirectory(tempContentPath);
 		}
 
 	}

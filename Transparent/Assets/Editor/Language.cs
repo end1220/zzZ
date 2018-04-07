@@ -42,6 +42,7 @@ public static class TextID
 	public const int build = 54;
 	public const int refresh = 55;
 	public const int selectModelFolder = 56;
+	public const int selectPreview = 57;
 
 	public const int wndTitle = 100;
 	public const int mainHelpBox = 101;
@@ -79,6 +80,7 @@ public static class Language
 		new LangData(54, "Build", "打包"),
 		new LangData(55, "Refresh", "刷新"),
 		new LangData(56, "Select model folder", "选择资源根目录"),
+		new LangData(57, "Select a preview image", "选择预览图片"),
 
 		new LangData(100, "Float Creator", "Float创作与发布"),
 		new LangData(101, "This is where you: \n1. build mods\n 2. submit to steam workshop", "在这里你：\n1.制作mod\n2. 上传到steam创意工坊"),

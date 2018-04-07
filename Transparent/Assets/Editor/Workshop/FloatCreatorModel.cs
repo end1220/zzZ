@@ -77,7 +77,7 @@ namespace Lite
 				//long uid = AppUtils.GenUniqueGUIDLong();
 				int uid = AppUtils.RandomInt(0, int.MaxValue);
 				string subfolderName = uid.ToString();
-				string abName = subfolderName + "/" + subfolderName;
+				string abName = subfolderName + "/" + AppConst.assetbundleName;
 				CreateNewOutputPath(outputPath, false);
 				AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
 				AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb },

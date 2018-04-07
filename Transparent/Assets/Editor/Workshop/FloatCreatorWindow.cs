@@ -28,6 +28,7 @@ namespace Lite
         private void OnDestroy()
 		{
 			DestroySteamAPI();
+			ClearTempDirectory();
 		}
 
 		private void Update()
