@@ -80,24 +80,31 @@ namespace Float
 
 		private void ReloadModelList(List<ModelData> models)
 		{
-			Log.Info("Begin ReloadModelList");
-			lock (fileRWLock)
+			try
 			{
-				string jsonStr = File.ReadAllText(AppConst.modelListPath);
-				if (string.IsNullOrEmpty(jsonStr))
+				Log.Info("Begin ReloadModelList");
+				lock (fileRWLock)
 				{
-					Log.Error("Cannot load model data !");
-					return;
-				}
+					string jsonStr = File.ReadAllText(AppConst.modelListPath);
+					if (string.IsNullOrEmpty(jsonStr))
+					{
+						Log.Error("Cannot load model data !");
+						return;
+					}
 
-				ModelDataArray modelArray = JsonConvert.DeserializeObject<ModelDataArray>(jsonStr);
-				models.Clear();
-				for (int i = 0; i < modelArray.models.Length; ++i)
-				{
-					models.Add(modelArray.models[i]);
+					ModelDataArray modelArray = JsonConvert.DeserializeObject<ModelDataArray>(jsonStr);
+					models.Clear();
+					for (int i = 0; i < modelArray.models.Length; ++i)
+					{
+						models.Add(modelArray.models[i]);
+					}
 				}
+				Log.Info("End ReloadModelList");
 			}
-			Log.Info("End ReloadModelList");
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
 
 		private void RebuildModelList()
@@ -110,14 +117,19 @@ namespace Float
 					string modelPath = SteamManager.WorkshopInstallPath;
 					string[] subDirs = Directory.GetDirectories(modelPath);
 					ModelDataArray modelArray = new ModelDataArray();
-					modelArray.models = new ModelData[subDirs.Length];
+					List<ModelData> foundList = new List<ModelData>();
 					for (int i = 0; i < subDirs.Length; ++i)
 					{
-						string txt = File.ReadAllText(subDirs[i] + "/" + AppConst.subModelDataName);
-						modelArray.models[i] = JsonConvert.DeserializeObject<ModelData>(txt);
+						string filepath = subDirs[i] + "/" + AppConst.subModelDataName;
+						if (!File.Exists(filepath))
+							continue;
+						string txt = File.ReadAllText(filepath);
+						ModelData data = JsonConvert.DeserializeObject<ModelData>(txt);
+						foundList.Add(data);
 					}
+					modelArray.models = foundList.ToArray();
 					string arrayStr = JsonConvert.SerializeObject(modelArray, Formatting.Indented);
-					File.WriteAllText(modelPath + "/" + AppConst.modelListName, arrayStr, Encoding.UTF8);
+					File.WriteAllText(AppConst.modelListPath, arrayStr, Encoding.UTF8);
 				}
 				Log.Info("End RebuildModelList");
 			}
@@ -148,7 +160,7 @@ namespace Float
 			if (!File.Exists(AppConst.modelListPath))
 				return false;
 
-			return true;
+			return false;
 		}
 
 		/*private Task<uint> RebuildModelList()

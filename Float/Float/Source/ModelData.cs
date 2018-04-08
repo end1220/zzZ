@@ -49,11 +49,11 @@ namespace Float
 		public string PreviewImage
 		{
 			get { return AppConst.PersistentDataPath + workshopId + "/" + preview; }
-			set
+			/*set
 			{
 				//preview = value;
 				NotifyPropertyChanged("PreviewImage");
-			}
+			}*/
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

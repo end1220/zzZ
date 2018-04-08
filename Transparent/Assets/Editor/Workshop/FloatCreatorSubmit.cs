@@ -72,14 +72,16 @@ namespace Lite
 			{
 				//MakeTemporaryContent(111111111);
 				if (CheckInputInfo())
+				{
+					EditorUtility.DisplayCancelableProgressBar("Submiting", "Create item", 0.2f);
 					CreateItem();
+				}
 			}
 			EditorGUI.EndDisabledGroup();
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spaceSize);
 
-			/*GUILayout.Label(SteamUser.GetSteamID().m_SteamID.ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
-			GUILayout.Label(SteamUtils.GetAppID().ToString(), FloatGUIStyle.boldLabel, GUILayout.Width(textLen));;*/
+			/*SteamUser.GetSteamID().m_SteamID  SteamUtils.GetAppID()*/
 
 			{
 				ulong BytesProcessed;
@@ -87,12 +89,8 @@ namespace Lite
 				EItemUpdateStatus reti = SteamUGC.GetItemUpdateProgress(m_UGCUpdateHandle, out BytesProcessed, out BytesTotal);
 				if (reti != EItemUpdateStatus.k_EItemUpdateStatusInvalid)
 				{
-					EditorUtility.DisplayProgressBar("Uploading", reti.ToString(), (float)((double)BytesProcessed / (double)BytesTotal));
+					EditorUtility.DisplayCancelableProgressBar("Submiting", reti.ToString(), (float)((double)BytesProcessed / (double)BytesTotal));
 				}
-				/*else
-				{
-					EditorUtility.ClearProgressBar();
-				}*/
 			}
 		}
 
@@ -150,10 +148,14 @@ namespace Lite
 			{
 				m_PublishedFileId = pCallback.m_nPublishedFileId;
 				MakeTemporaryContent(m_PublishedFileId.m_PublishedFileId);
+
+				EditorUtility.DisplayCancelableProgressBar("Submiting", "Update item", 0.3f);
+
 				UpdateItem();
 			}
 			else
 			{
+				EditorUtility.ClearProgressBar();
 				string text = "Create workshop item failed. Error code : " + pCallback.m_eResult;
 				EditorUtility.DisplayDialog("Error", text, "OK");
 			}
@@ -262,9 +264,9 @@ namespace Lite
 			SaveModelDataToFile(
 					modelDataPath,
 					workshopID.ToString(),
-					data.title,
-					data.description,
-					data.preview,
+					itemTitle,
+					itemDesc,
+					FormatPreviewFileName(previewPath),
 					data.bundle,
 					data.asset
 					);
@@ -300,6 +302,8 @@ namespace Lite
 
 			if (Directory.Exists(tempContentPath))
 				FileUtil.DeleteFileOrDirectory(tempContentPath);
+
+			AssetDatabase.Refresh();
 		}
 
 	}

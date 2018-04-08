@@ -126,7 +126,7 @@ namespace Lite
 			modelData.workshopId = id;
 			modelData.title = title;
 			modelData.description = desc;
-			modelData.preview = "default";
+			modelData.preview = preview;
 			modelData.bundle = bundle;
 			modelData.asset = asset;
 			string jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);

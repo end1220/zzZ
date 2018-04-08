@@ -17,12 +17,13 @@ namespace Float
 			}
 		}
 
-		public const string modelListName = "modellist.json";
-		public const string subModelDataName = "modeldata.json";
+		public const string modelListName = "projectlist.json";
+		public const string subModelDataName = "project.json";
 		public const string manifestName = AppName + ".abm";
 		public const string subMetaName = "info.sbm";
 		public static string modelListPath = PersistentDataPath + modelListName;
 		public static string modelPath = PersistentDataPath;
+		public const string previewName = "preview";
 
 		// message id
 		public const int MSG_ITEM_INSTALLED = 100;
