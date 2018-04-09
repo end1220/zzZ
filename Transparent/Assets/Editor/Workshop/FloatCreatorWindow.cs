@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 
 
-namespace Lite
+namespace Float
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{

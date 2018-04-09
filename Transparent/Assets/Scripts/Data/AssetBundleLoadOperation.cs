@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 
-namespace Lite
+namespace Float
 {
 	public abstract class AssetBundleLoadOperation : IEnumerator
 	{

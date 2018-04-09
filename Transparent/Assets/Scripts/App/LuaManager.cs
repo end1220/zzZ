@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using XLua;
 
 
-namespace Lite
+namespace Float
 {
 
 	public class LuaManager : IManager

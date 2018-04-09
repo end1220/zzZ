@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 
 
-namespace Lite
+namespace Float
 {
 
 	public class UDPClient : NetClient

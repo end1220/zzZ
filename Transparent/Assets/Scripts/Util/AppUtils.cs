@@ -77,7 +77,7 @@ static public class AppUtils
 	{
 		GC.Collect();
 		Resources.UnloadUnusedAssets();
-		Lite.LuaManager.Instance.LuaGC();
+		Float.LuaManager.Instance.LuaGC();
 	}
 
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AppConst
 {
-	public const string AppName = "Floating";
+	public const string AppName = "Float";
 	public const int FPS = 30;
 
 	public const string remoteIP = "127.0.0.1";
@@ -32,4 +32,5 @@ public class AppConst
 
 	public const string workshopPolicyUrl = "http://steamcommunity.com/sharedfiles/workshoplegalagreement";
 	public const string previewName = "preview";
+	public const string contentFolderName = "content";
 }

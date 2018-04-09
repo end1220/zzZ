@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Lite
+namespace Float
 {
 	/// <summary>
 	/// File identifier util.

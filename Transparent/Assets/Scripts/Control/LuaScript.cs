@@ -4,7 +4,7 @@ using UnityEngine;
 using XLua;
 
 
-namespace Lite
+namespace Float
 {
 
 	public class LuaScript : MonoBehaviour

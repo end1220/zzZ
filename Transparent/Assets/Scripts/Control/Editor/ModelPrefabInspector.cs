@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
 
-namespace Lite
+namespace Float
 {
 	[CustomEditor(typeof(ModelPrefab))]
 	public class ModelPrefabInspector : Editor

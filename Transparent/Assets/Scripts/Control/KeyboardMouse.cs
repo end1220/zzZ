@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Lite
+namespace Float
 {
 
 	public class KeyboardMouse : MonoBehaviour

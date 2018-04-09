@@ -4,7 +4,7 @@ using System.IO;
 using System.Net.Sockets;
 
 
-namespace Lite
+namespace Float
 {
 	public enum DisconnectType
 	{

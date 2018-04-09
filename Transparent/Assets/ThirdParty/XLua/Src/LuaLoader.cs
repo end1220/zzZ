@@ -14,7 +14,7 @@ public class LuaLoader : FileUtils
 	{
 		instance = this;
 #if UNITY_EDITOR
-		beBundle = !Lite.ResourceManager.SimulateAssetBundleInEditor;
+		beBundle = !Float.ResourceManager.SimulateAssetBundleInEditor;
 #else
 		beBundle = true;
 #endif
@@ -31,7 +31,7 @@ public class LuaLoader : FileUtils
 		if (File.Exists(url))
 		{
             AssetBundle bundle = null;
-			Lite.LoadedAssetBundle loadedBundle = Lite.ResourceManager.Instance.GetLoadedAssetBundle(bundleName, out err);
+			Float.LoadedAssetBundle loadedBundle = Float.ResourceManager.Instance.GetLoadedAssetBundle(bundleName, out err);
             if (loadedBundle == null)
             {
                 bundle = AssetBundle.LoadFromFile(url);

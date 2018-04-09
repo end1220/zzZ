@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace Lite
+namespace Float
 {
 
 	public class Singleton<T> where T : new()

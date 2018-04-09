@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Lite
+namespace Float
 {
 
 	public class BreathLoop : MonoBehaviour

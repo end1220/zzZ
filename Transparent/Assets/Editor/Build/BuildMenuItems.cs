@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-namespace Lite
+namespace Float
 {
 	public class BuildMenuItems
 	{

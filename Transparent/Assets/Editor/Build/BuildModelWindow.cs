@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 
-namespace Lite
+namespace Float
 {
 	public class BuildModelWindow : EditorWindow
 	{

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 
-namespace Lite
+namespace Float
 {
 
 	[RequireComponent(typeof(Camera))]

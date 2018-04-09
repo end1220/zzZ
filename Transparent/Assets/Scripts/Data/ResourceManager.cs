@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using UObject = UnityEngine.Object;
 
 
-namespace Lite
+namespace Float
 {
 
 	public class LoadedAssetBundle

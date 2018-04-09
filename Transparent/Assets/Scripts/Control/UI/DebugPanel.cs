@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace Lite
+namespace Float
 {
 	public class DebugPanel : MonoBehaviour
 	{

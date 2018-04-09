@@ -1,6 +1,6 @@
 
 
-namespace Lite
+namespace Float
 {
 	public struct Packet
 	{

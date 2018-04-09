@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 // Taken from http://www.superstarcoders.com/blogs/posts/md4-hash-algorithm-in-c-sharp.aspx
 // Probably not the best implementation of MD4, but it works.
 
-namespace Lite
+namespace Float
 {
 	/// <summary>
 	/// MD4.

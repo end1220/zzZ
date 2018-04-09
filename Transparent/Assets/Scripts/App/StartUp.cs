@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 
 
-namespace Lite
+namespace Float
 {
 
 	public class StartUp : MonoBehaviour

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Steamworks;
 
 
-namespace Lite
+namespace Float
 {
 	public partial class FloatCreatorWindow : EditorWindow
 	{
