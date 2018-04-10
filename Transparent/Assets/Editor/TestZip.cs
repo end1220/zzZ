@@ -7,14 +7,14 @@ using ICSharpCode.SharpZipLib.Zip;
 
 class TestZip
 {
-	[MenuItem("Floating/zip")]
+	//[MenuItem("Floating/zip")]
 	static void Zip()
 	{
 		ZipUtility.Zip(new string[]{ "Zip" }, "C:/Users/admin/Desktop/", "C:/Users/admin/Desktop/test.zip", null, new MyZipCallback());
 	}
 
 
-	[MenuItem("Floating/unzip")]
+	//[MenuItem("Floating/unzip")]
 	static void UnZip()
 	{
 		ZipUtility.UnzipFile("C:/Users/admin/Desktop/test.zip", "C:/Users/admin/Desktop/test", null, new MyUnzipCallback());

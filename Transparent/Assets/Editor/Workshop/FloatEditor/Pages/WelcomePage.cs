@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
@@ -73,13 +73,38 @@ namespace Float
 
 		public override void OnGUI()
 		{
+			int space = 5;
+
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(Language.Get(TextID.mainHelpBox), FloatGUIStyle.helpBox, GUILayout.Width(400), GUILayout.Height(60));
+			GUILayout.Space(40);
+			GUILayout.Label(Language.Get(TextID.language), GUILayout.Width(60));
+			Language.langType = (LangType)EditorGUILayout.EnumPopup(Language.langType, GUILayout.Width(150));
+			GUILayout.EndHorizontal();
+			GUILayout.Label("——————————————————————————————————————————————————————");
+			GUILayout.Space(20);
+
+			if (!SteamManager.Instance.Initialized)
+			{
+				GUILayout.BeginVertical();
+				GUILayout.Label(Language.Get(TextID.errorTitle), FloatGUIStyle.largeLabel);
+				GUILayout.Label(Language.Get(TextID.steamInitError), FloatGUIStyle.largeLabel);
+				GUILayout.EndVertical();
+				return;
+			}
+
+			GUILayout.BeginVertical();
+
+			GUILayout.Label("Recent projects:", FloatGUIStyle.largeLabel);
+			GUILayout.Space(space);
+
 			if (projectList.Count == 0)
 			{
-				GUILayout.Label("No project yet", FloatGUIStyle.label);
+				GUILayout.Label("    No projects", FloatGUIStyle.label);
+				GUILayout.Space(space);
 			}
 			else
 			{
-				GUILayout.Label("Projects", FloatGUIStyle.label);
 				GUILayout.BeginScrollView(new Vector2(10, 10), GUILayout.Width(500), GUILayout.Height(400));
 				foreach (var project in projectList)
 				{
@@ -91,12 +116,22 @@ namespace Float
 					GUILayout.EndVertical();
 					if (GUILayout.Button("open"))
 					{
-						creator.ShowPage(typeof(ModifyOldItemPage));
+						creatorWindow.OpenPage(typeof(ModifyOldItemPage));
 					}
 					GUILayout.EndHorizontal();
 				}
 				GUILayout.EndScrollView();
 			}
+
+			GUILayout.Label("........................................................");
+			GUILayout.Space(space);
+
+			if (GUILayout.Button("Create new project", FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(50)))
+			{
+				creatorWindow.OpenPage(typeof(CreateNewItemPage));
+			}
+
+			GUILayout.EndVertical();
 		}
 
 	}

@@ -28,11 +28,15 @@ namespace Float
 			pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
 			pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
 			currentPage = pages[typeof(WelcomePage)];
+
+			if (!SteamManager.Instance.Initialized)
+				SteamManager.Instance.Init();
 		}
 
 		private void OnDestroy()
 		{
-			
+			if (SteamManager.Instance.Initialized)
+				SteamManager.Instance.Destroy();
 		}
 
 		private void Update()
@@ -45,7 +49,7 @@ namespace Float
 			currentPage.OnGUI();
 		}
 		
-		public void ShowPage(Type type)
+		public void OpenPage(Type type)
 		{
 			FloatEditorPage page;
 			if (pages.TryGetValue(type, out page))
@@ -62,11 +66,11 @@ namespace Float
 
 	public abstract class FloatEditorPage
 	{
-		protected FloatEditorWindow creator;
+		protected FloatEditorWindow creatorWindow;
 
 		public FloatEditorPage(FloatEditorWindow creator)
 		{
-			this.creator = creator;
+			this.creatorWindow = creator;
 		}
 
 		public virtual void OnGUI()
