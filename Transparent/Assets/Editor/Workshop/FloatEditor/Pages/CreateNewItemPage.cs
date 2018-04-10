@@ -41,7 +41,7 @@ namespace Float
 
 		}
 
-		public override void OnShow()
+		public override void OnShow(object param)
 		{
 
 		}

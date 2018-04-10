@@ -48,8 +48,8 @@ namespace Float
 		{
 			currentPage.OnGUI();
 		}
-		
-		public void OpenPage(Type type)
+
+		public void OpenPage(Type type, object param = null)
 		{
 			FloatEditorPage page;
 			if (pages.TryGetValue(type, out page))
@@ -58,7 +58,7 @@ namespace Float
 					return;
 				currentPage.OnHide();
 				currentPage = page;
-				currentPage.OnShow();
+				currentPage.OnShow(param);
 			}
 		}
 	}
@@ -83,7 +83,7 @@ namespace Float
 
 		}
 
-		public virtual void OnShow()
+		public virtual void OnShow(object param)
 		{
 
 		}
