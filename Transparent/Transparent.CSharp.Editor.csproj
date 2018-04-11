@@ -163,6 +163,7 @@
     <Compile Include="Assets\Editor\Workshop\FloatCreatorWindow.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\FloatEditorWindow.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\ModelAssetBuilder.cs" />
+    <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\BaseItemPage.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\CreateNewItemPage.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\ModifyOldItemPage.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\WelcomePage.cs" />

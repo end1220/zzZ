@@ -23,15 +23,15 @@ namespace Float
 
 		void Awake()
 		{
+			if (!SteamManager.Instance.Initialized)
+				SteamManager.Instance.Init();
+
 			FloatGUIStyle.Ensure();
 			pages.Add(typeof(WelcomePage), new WelcomePage(this));
 			pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
 			pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
-	
-			OpenPage(typeof(WelcomePage), null);
 
-			if (!SteamManager.Instance.Initialized)
-				SteamManager.Instance.Init();
+			OpenPage(typeof(WelcomePage), null);
 		}
 
 		private void OnDestroy()
