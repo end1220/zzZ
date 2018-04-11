@@ -25,7 +25,7 @@ public class AppConst
 	public const string subModelDataName = "project.json";
 	public const string assetbundleName = "assetbundle";
 	public const string manifestName = AppName + ".abm";
-	public const string subMetaName = "info.sbm";
+	public const string subManifestName = assetbundleName + ".sbm";
 	public static string manifestPath = PersistentDataPath + "/" + manifestName;
 	public static string modelListPath = PersistentDataPath + "/" + modelListName;
 	public static string modelPath = PersistentDataPath;

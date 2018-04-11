@@ -25,7 +25,7 @@ namespace Float
 		public override void OnShow(object param)
 		{
 			/*string installPath = "";*/
-			string projectsPath = "d:/Float/projects";
+			string projectsPath = System.Environment.CurrentDirectory + "/projects";
 
 			projectList.Clear();
 			if (Directory.Exists(projectsPath))
@@ -40,10 +40,16 @@ namespace Float
 						Log.Error(AppConst.subModelDataName + " is missing in " + dir);
 						continue;
 					}
-					string previewPath = Path.Combine(dir, AppConst.previewName);
-					if (!File.Exists(previewPath + ".jpg") && !File.Exists(previewPath + ".png"))
+					var data = JsonConvert.DeserializeObject<ModelData>(File.ReadAllText(modelDataPath));
+					if (data == null)
 					{
-						Log.Error(AppConst.previewName + " image is missing in " + dir);
+						Log.Error("Deserialize failed: " + modelDataPath);
+						continue;
+					}
+					string previewPath = Path.Combine(dir, data.preview);
+					if (!File.Exists(previewPath))
+					{
+						Log.Error(previewPath + " is missing");
 						continue;
 					}
 					string bundlePath = Path.Combine(Path.Combine(dir, AppConst.contentFolderName), AppConst.assetbundleName);
@@ -52,19 +58,13 @@ namespace Float
 						Log.Error(AppConst.assetbundleName + " is missing in " + Path.Combine(dir, AppConst.contentFolderName));
 						continue;
 					}
-					string sbmPath = Path.Combine(Path.Combine(dir, AppConst.contentFolderName), AppConst.subMetaName);
+					string sbmPath = Path.Combine(Path.Combine(dir, AppConst.contentFolderName), AppConst.subManifestName);
 					if (!File.Exists(sbmPath))
 					{
-						Log.Error(AppConst.subMetaName + " is missing in " + Path.Combine(dir, AppConst.contentFolderName));
+						Log.Error(AppConst.subManifestName + " is missing in " + Path.Combine(dir, AppConst.contentFolderName));
 						continue;
 					}
-
-					var data = JsonConvert.DeserializeObject<ModelData>(File.ReadAllText(modelDataPath));
-					if (data == null)
-					{
-						Log.Error("Deserialize failed: " + modelDataPath);
-						continue;
-					}
+					
 					ProjectItemData item = new ProjectItemData() { directory = dir, modeldata = data };
 					projectList.Add(item);
 				}

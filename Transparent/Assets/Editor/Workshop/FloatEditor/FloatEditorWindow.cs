@@ -27,7 +27,8 @@ namespace Float
 			pages.Add(typeof(WelcomePage), new WelcomePage(this));
 			pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
 			pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
-			currentPage = pages[typeof(WelcomePage)];
+	
+			OpenPage(typeof(WelcomePage));
 
 			if (!SteamManager.Instance.Initialized)
 				SteamManager.Instance.Init();
@@ -56,7 +57,8 @@ namespace Float
 			{
 				if (page == currentPage)
 					return;
-				currentPage.OnHide();
+				if (currentPage != null)
+					currentPage.OnHide();
 				currentPage = page;
 				currentPage.OnShow(param);
 			}

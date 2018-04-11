@@ -84,7 +84,7 @@ namespace Float
 					BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
 				AssetDatabase.Refresh();
 
-				string subManifestName = abName + ".sbm";
+				string subManifestName = AppConst.subManifestName;
 				SubAssetBundleManifest subManifest = new SubAssetBundleManifest(subManifestName, abName);
 				subManifest.SetUnityManifest(outputPath + "/" + abName + ".manifest");
 				string jsonStr = JsonConvert.SerializeObject(subManifest, Formatting.Indented);
