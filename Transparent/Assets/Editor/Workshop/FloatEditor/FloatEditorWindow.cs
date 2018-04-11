@@ -21,17 +21,21 @@ namespace Float
 		private FloatEditorPage currentPage = null;
 		private Dictionary<Type, FloatEditorPage> pages = new Dictionary<Type, FloatEditorPage>();
 
-		void Awake()
+		private void Ensure()
 		{
 			if (!SteamManager.Instance.Initialized)
 				SteamManager.Instance.Init();
 
 			FloatGUIStyle.Ensure();
-			pages.Add(typeof(WelcomePage), new WelcomePage(this));
-			pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
-			pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
 
-			OpenPage(typeof(WelcomePage), null);
+			if (pages.Count == 0)
+			{
+				pages.Add(typeof(WelcomePage), new WelcomePage(this));
+				pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
+				pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
+
+				OpenPage(typeof(WelcomePage), null);
+			}
 		}
 
 		private void OnDestroy()
@@ -45,11 +49,13 @@ namespace Float
 
 		private void Update()
 		{
+			Ensure();
 			currentPage.OnUpdate();
 		}
 
 		void OnGUI()
 		{
+			Ensure();
 			currentPage.OnGUI();
 		}
 

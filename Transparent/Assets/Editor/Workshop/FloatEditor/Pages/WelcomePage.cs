@@ -10,6 +10,7 @@ namespace Float
 	{
 		public string directory;
 		public ModelData modeldata;
+		public string tempPreviewPath;
 	}
 
 	public class WelcomePage : FloatEditorPage
@@ -30,7 +31,7 @@ namespace Float
 
 		public override void OnDestroy()
 		{
-
+			DeleteCopiedPreviews();
 		}
 
 		public override void OnGUI()
@@ -71,7 +72,7 @@ namespace Float
 				foreach (var project in projectList)
 				{
 					GUILayout.BeginHorizontal();
-					if (GUILayout.Button(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(100), GUILayout.Height(100)))
+					if (GUILayout.Button(Resources.Load(project.tempPreviewPath) as Texture, GUILayout.Width(100), GUILayout.Height(100)))
 					{
 						creatorWindow.OpenPage(typeof(ModifyOldItemPage), project);
 					}
@@ -104,6 +105,11 @@ namespace Float
 				foreach (string d in dirs)
 				{
 					string dir = d.Replace("\\", "/");
+					string folderName = Path.GetFileName(dir);
+					int uid = 0;
+					if (!int.TryParse(folderName, out uid))
+						continue;
+
 					string modelDataPath = Path.Combine(dir, AppConst.subModelDataName);
 					if (!File.Exists(modelDataPath))
 					{
@@ -139,6 +145,10 @@ namespace Float
 					projectList.Add(item);
 				}
 			}
+			else
+			{
+				Directory.CreateDirectory(AppConst.projectsPath);
+			}
 		}
 
 		private string GetTempPreviewsPath()
@@ -155,12 +165,16 @@ namespace Float
 
 			foreach (var project in projectList)
 			{
-				string targetDir = tempDir + Path.GetDirectoryName(project.directory);
+				string folderName = Path.GetFileName(project.directory);
+				string targetDir = Path.Combine(tempDir, folderName);
 				Directory.CreateDirectory(targetDir);
 				string sourceDir = Path.Combine(project.directory, project.modeldata.preview);
 				string destPath = Path.Combine(targetDir, project.modeldata.preview);
-				File.Copy(sourceDir, destPath);
+				File.Copy(sourceDir, destPath, true);
+				project.tempPreviewPath = "welcomepage_temp/" + folderName + "/" + AppConst.previewName;
 			}
+
+			AssetDatabase.Refresh();
 		}
 
 		private void DeleteCopiedPreviews()
