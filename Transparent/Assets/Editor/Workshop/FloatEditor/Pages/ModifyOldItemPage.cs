@@ -52,69 +52,61 @@ namespace Float
 
 		}
 
-		float spaceSize = 15f;
-		float leftSpace = 10;
-		float titleLen = 100;
-		float textLen = 600;
-		float buttonLen1 = 100;
-		float buttonLen2 = 50;
-		float buttonHeight = 40;
-
 		private void OnSubmitGUI()
 		{
 			if (projectData == null || projectData.modeldata == null)
 				return;
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			projectData.modeldata.title = GUILayout.TextField(projectData.modeldata.title, FloatGUIStyle.textField, GUILayout.Width(textLen));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			projectData.modeldata.title = GUILayout.TextField(projectData.modeldata.title, FloatGUIStyle.textField, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label(Language.Get(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			projectData.modeldata.description = GUILayout.TextArea(projectData.modeldata.description, FloatGUIStyle.textArea, GUILayout.Width(textLen), GUILayout.Height(140));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label(Language.Get(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			projectData.modeldata.description = GUILayout.TextArea(projectData.modeldata.description, FloatGUIStyle.textArea, GUILayout.Width(FloatGUIStyle.textLen), GUILayout.Height(140));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 
 			GUILayout.Box(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(128), GUILayout.Height(128));
 			GUILayout.BeginVertical();
 			GUILayout.Space(120);
-			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(buttonLen2)))
+			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
 			{
 				previewPath = EditorUtility.OpenFilePanel(Language.Get(TextID.selectPreview), string.Empty, "jpg,png");
 				CopyPreviewFile(previewPath);
 			}
 			GUILayout.EndVertical();
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.Label(contentPath, FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			GUILayout.Label(contentPath, FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, Language.Get(TextID.accept), GUILayout.Width(60));
 			if (GUILayout.Button(Language.Get(TextID.legal), FloatGUIStyle.link, GUILayout.Width(130)))
 				Application.OpenURL(AppConst.workshopPolicyUrl);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			// submit button
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			EditorGUI.BeginDisabledGroup(!agreeWorkshopPolicy);
-			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(FloatGUIStyle.buttonHeight)))
 			{
 				//MakeTemporaryContent(111111111);
 				if (CheckInputInfo())
@@ -125,7 +117,7 @@ namespace Float
 			}
 			EditorGUI.EndDisabledGroup();
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			/*SteamUser.GetSteamID().m_SteamID  SteamUtils.GetAppID()*/
 
@@ -284,7 +276,7 @@ namespace Float
 			string modelDataPath = contentPath + "/" + AppConst.subModelDataName;
 			string text = File.ReadAllText(modelDataPath);
 			ModelData data = JsonUtility.FromJson<ModelData>(text);
-			modelBuilder.SaveModelDataToFile(
+			ModelAssetBuilder.SaveModelDataToFile(
 					modelDataPath,
 					workshopID.ToString(),
 					projectData.modeldata.title,

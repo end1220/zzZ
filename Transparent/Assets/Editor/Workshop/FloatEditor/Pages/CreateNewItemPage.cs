@@ -14,8 +14,7 @@ namespace Float
 		string itemTitle = "p0";
 		string itemDesc = "hahahaha";
 		string previewPath = "";
-		string contentPath = "E:/Locke/GitHub/zzZ/Transparent/Output/Floating/1894426371";
-		string tempContentPath;
+		string contentPath = "";
 		bool agreeWorkshopPolicy = true;
 
 
@@ -23,6 +22,11 @@ namespace Float
 			base(creator)
 		{
 
+		}
+
+		public override void OnDestroy()
+		{
+			modelBuilder.OnDestroy();
 		}
 
 		public override void OnGUI()
@@ -51,69 +55,64 @@ namespace Float
 
 		}
 
-		float spaceSize = 15f;
-		float leftSpace = 10;
-		float titleLen = 100;
-		float textLen = 600;
-		float buttonLen1 = 100;
-		float buttonLen2 = 50;
-		float buttonHeight = 40;
-
 		private void OnSubmitGUI()
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			itemTitle = GUILayout.TextField(itemTitle, FloatGUIStyle.textField, GUILayout.Width(textLen));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			itemTitle = GUILayout.TextField(itemTitle, FloatGUIStyle.textField, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label(Language.Get(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			itemDesc = GUILayout.TextArea(itemDesc, FloatGUIStyle.textArea, GUILayout.Width(textLen), GUILayout.Height(140));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label(Language.Get(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			itemDesc = GUILayout.TextArea(itemDesc, FloatGUIStyle.textArea, GUILayout.Width(FloatGUIStyle.textLen), GUILayout.Height(140));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 
 			GUILayout.Box(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(128), GUILayout.Height(128));
 			GUILayout.BeginVertical();
 			GUILayout.Space(120);
-			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(buttonLen2)))
+			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
 			{
 				previewPath = EditorUtility.OpenFilePanel(Language.Get(TextID.selectPreview), string.Empty, "jpg,png");
 				CopyPreviewFile(previewPath);
 			}
 			GUILayout.EndVertical();
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(spaceSize);
-			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.Label(contentPath, FloatGUIStyle.boldLabel, GUILayout.Width(textLen));
+			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			GUILayout.Label(contentPath, FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			agreeWorkshopPolicy = GUILayout.Toggle(agreeWorkshopPolicy, Language.Get(TextID.accept), GUILayout.Width(60));
 			if (GUILayout.Button(Language.Get(TextID.legal), FloatGUIStyle.link, GUILayout.Width(130)))
 				Application.OpenURL(AppConst.workshopPolicyUrl);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			// submit button
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			EditorGUI.BeginDisabledGroup(!agreeWorkshopPolicy);
-			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(FloatGUIStyle.buttonHeight)))
 			{
-				//MakeTemporaryContent(111111111);
-				if (CheckInputInfo())
+				if (string.IsNullOrEmpty(modelBuilder.AssetBundlePath))
+				{
+					;
+				}
+				else if (CheckInputInfo())
 				{
 					EditorUtility.DisplayCancelableProgressBar("Submiting", "Create item", 0.2f);
 					CreateItem();
@@ -121,7 +120,7 @@ namespace Float
 			}
 			EditorGUI.EndDisabledGroup();
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			/*SteamUser.GetSteamID().m_SteamID  SteamUtils.GetAppID()*/
 
@@ -177,7 +176,7 @@ namespace Float
 			if (pCallback.m_eResult == EResult.k_EResultOK)
 			{
 				m_PublishedFileId = pCallback.m_nPublishedFileId;
-				MakeTemporaryContent(m_PublishedFileId.m_PublishedFileId);
+				MakeContent(m_PublishedFileId.m_PublishedFileId, modelBuilder.AssetBundlePath);
 
 				EditorUtility.DisplayCancelableProgressBar("Submiting", "Update item", 0.3f);
 
@@ -218,17 +217,18 @@ namespace Float
 				EditorUtility.DisplayDialog("Error", "Description cannot be empty.", "OK");
 				return false;
 			}
-			if (string.IsNullOrEmpty(contentPath))
+			string rawContentPath = modelBuilder.AssetBundlePath;
+			if (string.IsNullOrEmpty(rawContentPath))
 			{
-				EditorUtility.DisplayDialog("Error", "Description cannot be empty.", "OK");
+				EditorUtility.DisplayDialog("Error", "Content directory cannot be empty.", "OK");
 				return false;
 			}
-			if (!Directory.Exists(contentPath))
+			if (!Directory.Exists(rawContentPath))
 			{
 				EditorUtility.DisplayDialog("Error", "Content directory does not exist.", "OK");
 				return false;
 			}
-			if (Directory.GetFiles(contentPath).Length < 3)
+			if (Directory.GetFiles(rawContentPath).Length < 3)
 			{
 				EditorUtility.DisplayDialog("Error", "Content directory cannot be empty.", "OK");
 				return false;
@@ -251,47 +251,36 @@ namespace Float
 			return contentPath + "/" + FormatPreviewFileName(previewPath);
 		}
 
-		private void MakeTemporaryContent(ulong workshopID)
+		private void MakeContent(ulong workshopID, string modelAssetbundlePath)
 		{
-			if (!Directory.Exists(contentPath))
+			if (!Directory.Exists(modelAssetbundlePath))
 				return;
 
-			contentPath = contentPath.Replace("\\", "/");
-			int endIdx = contentPath.LastIndexOf("/");
-			string subContentPath = contentPath.Substring(0, endIdx);
-			string oldFolderName = contentPath.Substring(endIdx + 1);
-			string newContentPath = subContentPath + "/temporary";
+			modelAssetbundlePath = modelAssetbundlePath.Replace("\\", "/");
+			int endIdx = modelAssetbundlePath.LastIndexOf("/");
+			//string subContentPath = modelAssetbundlePath.Substring(0, endIdx);
+			string oldFolderName = modelAssetbundlePath.Substring(endIdx + 1);
+			string newContentPath = Path.Combine(AppConst.projectsPath, workshopID.ToString());//subContentPath + "/temporary";
 			if (Directory.Exists(newContentPath))
 				FileUtil.DeleteFileOrDirectory(newContentPath);
 			//Directory.CreateDirectory(newContentPath);
 
-			FileUtil.CopyFileOrDirectory(contentPath, newContentPath);
+			FileUtil.CopyFileOrDirectory(modelAssetbundlePath, newContentPath);
 
 			contentPath = newContentPath;
-			tempContentPath = newContentPath;
+
 			ReplaceContentWithWorkshopID(workshopID, oldFolderName);
 		}
 
 		private void ReplaceContentWithWorkshopID(ulong workshopID, string oldFolderName)
 		{
-			/*contentPath = contentPath.Replace("\\", "/");
-			string oldContentPath = contentPath;
-			int endIdx = contentPath.LastIndexOf("/");
-			string subContentPath = contentPath.Substring(0, endIdx);
-			//string oldFolderName = contentPath.Substring(endIdx);
-			string newContentPath = subContentPath + "/" + workshopID;
-			if (Directory.Exists(newContentPath))
-				FileUtil.DeleteFileOrDirectory(newContentPath);
-			Directory.Move(oldContentPath, newContentPath);
-
-			contentPath = newContentPath;*/
 			string newFolderName = workshopID.ToString();
 
 			// model data
 			string modelDataPath = contentPath + "/" + AppConst.subModelDataName;
 			string text = File.ReadAllText(modelDataPath);
 			ModelData data = JsonUtility.FromJson<ModelData>(text);
-			modelBuilder.SaveModelDataToFile(
+			ModelAssetBuilder.SaveModelDataToFile(
 					modelDataPath,
 					workshopID.ToString(),
 					itemTitle,
@@ -322,16 +311,19 @@ namespace Float
 
 		private void ClearTempDirectory()
 		{
+/*
 			string path1 = contentPath + "/" + FormatPreviewFileName(previewPath);
 			if (File.Exists(path1))
-				File.Delete(path1);
+				File.Delete(path1);*/
 
 			string path2 = Application.dataPath + "/Editor/Resources/" + FormatPreviewFileName(previewPath);
 			if (File.Exists(path2))
 				File.Delete(path2);
 
+/*
 			if (Directory.Exists(tempContentPath))
 				FileUtil.DeleteFileOrDirectory(tempContentPath);
+*/
 
 			AssetDatabase.Refresh();
 		}

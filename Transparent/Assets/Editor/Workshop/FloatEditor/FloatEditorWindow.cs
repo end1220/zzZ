@@ -28,7 +28,7 @@ namespace Float
 			pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
 			pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
 	
-			OpenPage(typeof(WelcomePage));
+			OpenPage(typeof(WelcomePage), null);
 
 			if (!SteamManager.Instance.Initialized)
 				SteamManager.Instance.Init();
@@ -36,6 +36,9 @@ namespace Float
 
 		private void OnDestroy()
 		{
+			foreach (var pg in pages.Values)
+				pg.OnDestroy();
+			
 			if (SteamManager.Instance.Initialized)
 				SteamManager.Instance.Destroy();
 		}
@@ -50,7 +53,7 @@ namespace Float
 			currentPage.OnGUI();
 		}
 
-		public void OpenPage(Type type, object param = null)
+		public void OpenPage(Type type, object param)
 		{
 			FloatEditorPage page;
 			if (pages.TryGetValue(type, out page))
@@ -75,25 +78,16 @@ namespace Float
 			this.creatorWindow = creator;
 		}
 
-		public virtual void OnGUI()
-		{
+		public virtual void OnDestroy() { }
 
-		}
+		public virtual void OnGUI() { }
 
-		public virtual void OnUpdate()
-		{
+		public virtual void OnUpdate() { }
 
-		}
+		public virtual void OnShow(object param) { }
 
-		public virtual void OnShow(object param)
-		{
+		public virtual void OnHide() { }
 
-		}
-
-		public virtual void OnHide()
-		{
-
-		}
 	}
 
 }

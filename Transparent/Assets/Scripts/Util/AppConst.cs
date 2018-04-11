@@ -33,4 +33,6 @@ public class AppConst
 	public const string workshopPolicyUrl = "http://steamcommunity.com/sharedfiles/workshoplegalagreement";
 	public const string previewName = "preview";
 	public const string contentFolderName = "content";
+
+	public static string projectsPath = System.Environment.CurrentDirectory.Replace("\\", "/") + "/projects";
 }

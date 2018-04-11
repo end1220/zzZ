@@ -12,80 +12,84 @@ namespace Float
 {
 	public class ModelAssetBuilder
 	{
-		float spaceSize = 15f;
-		float leftSpace = 10;
-		float titleLen = 100;
-		float textLen = 600;
-		float buttonLen1 = 100;
-		float buttonLen2 = 50;
-		float buttonHeight = 40;
+		public string AssetBundlePath = "E:/Locke/GitHub/zzZ/Transparent/Output/Floating/1894426371";
 
 		string modelPath = "";
-		string outputPath = "Output/" + AppConst.AppName;
+		string outputPath = "";
 		string prefabPath = "";
 		ModelPrefab prefab;
+
+		public ModelAssetBuilder()
+		{
+			outputPath = Environment.CurrentDirectory.Replace("\\", "/") + "/projects/ModelOutput/";
+		}
+
+		public void OnDestroy()
+		{
+
+		}
 
 		public void OnGUI()
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
-			GUILayout.Label(Language.Get(TextID.Output), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			GUILayout.TextField(Environment.CurrentDirectory.Replace("\\", "/") + "/" + outputPath, FloatGUIStyle.textFieldPath, GUILayout.Width(textLen));
+			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Label(Language.Get(TextID.Output), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			GUILayout.TextField(outputPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize * 2);
+			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
-			GUILayout.Label(Language.Get(TextID.model), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
+			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Label(Language.Get(TextID.model), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
 			modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
-			modelPath = GUILayout.TextField(modelPath, FloatGUIStyle.textFieldPath, GUILayout.Width(textLen));
-			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(buttonLen2)))
+			modelPath = GUILayout.TextField(modelPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
+			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
 			{
-				modelPath = EditorUtility.OpenFolderPanel(Language.Get(TextID.selectModelFolder), String.Empty, "");
+				modelPath = EditorUtility.OpenFolderPanel(Language.Get(TextID.selectModelFolder), string.Empty, "");
 				if (!string.IsNullOrEmpty(modelPath))
 					EditorPrefs.SetString("BMW_ModelPath", modelPath);
 			}
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize * 2);
+			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
-			GUILayout.Label(Language.Get(TextID.prefab), FloatGUIStyle.boldLabel, GUILayout.Width(titleLen));
-			prefab = EditorGUILayout.ObjectField(prefab, typeof(ModelPrefab), false, GUILayout.Width(textLen)) as ModelPrefab;
+			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Label(Language.Get(TextID.prefab), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			prefab = EditorGUILayout.ObjectField(prefab, typeof(ModelPrefab), false, GUILayout.Width(FloatGUIStyle.textLen)) as ModelPrefab;
 			if (prefab != null)
 				prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize * 2);
+			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(leftSpace);
-			if (GUILayout.Button(Language.Get(TextID.build), FloatGUIStyle.button, GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
+			GUILayout.Space(FloatGUIStyle.leftSpace);
+			if (GUILayout.Button(Language.Get(TextID.build), FloatGUIStyle.button, GUILayout.Width(FloatGUIStyle.buttonLen1), GUILayout.Height(FloatGUIStyle.buttonHeight)))
 			{
 				if (prefab != null)
 				{
 					prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
-					BuildSingleAB(modelPath, outputPath, prefabPath);
+					AssetBundlePath = BuildSingleAB(modelPath, outputPath, prefabPath);
 				}
 			}
-			if (GUILayout.Button(Language.Get(TextID.refresh), FloatGUIStyle.button, GUILayout.Width(buttonLen1), GUILayout.Height(buttonHeight)))
+			if (GUILayout.Button(Language.Get(TextID.refresh), FloatGUIStyle.button, GUILayout.Width(FloatGUIStyle.buttonLen1), GUILayout.Height(FloatGUIStyle.buttonHeight)))
 			{
 				RebuildMyManifest(outputPath, outputPath + "/" + AppConst.manifestName);
 				RebuildModelList(outputPath, outputPath + "/" + AppConst.manifestName);
 				EditorUtility.DisplayDialog("Floating", "Refresh success!", "OK");
 			}
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spaceSize);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 		}
 
-		private void BuildSingleAB(string sourcePath, string outputPath, string assetName)
+		private string BuildSingleAB(string sourcePath, string outputPath, string assetName)
 		{
 			try
 			{
-				//long uid = AppUtils.GenUniqueGUIDLong();
 				int uid = AppUtils.RandomInt(0, int.MaxValue);
 				string subfolderName = uid.ToString();
 				string abName = subfolderName + "/" + AppConst.assetbundleName;
+				string assetBundlePath = outputPath + "/" + subfolderName;
 				CreateNewOutputPath(outputPath, false);
 				AssetBundleBuild abb = CollectBuildInfo(sourcePath, abName);
 				AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, new AssetBundleBuild[] { abb },
@@ -99,26 +103,28 @@ namespace Float
 				File.WriteAllText(outputPath + "/" + subManifestName, jsonStr, Encoding.UTF8);
 
 				SaveModelDataToFile(
-					outputPath + "/" + subfolderName + "/" + AppConst.subModelDataName,
+					assetBundlePath + "/" + AppConst.subModelDataName,
 					uid.ToString(),
-					"title",
-					"desc",
-					"preview",
+					"no title",
+					"no desc",
+					"no preview",
 					abName,
 					assetName.Substring(assetName.IndexOf("Assets/"))
 					);
 
 				AssetDatabase.Refresh();
-				EditorUtility.DisplayDialog("Floating", "Done!", "OK");
+				EditorUtility.DisplayDialog("Float", "Done!", "OK");
+				return assetBundlePath;
 			}
 			catch (Exception e)
 			{
 				AssetDatabase.Refresh();
 				Log.Error(e.ToString());
 			}
+			return "";
 		}
 
-		public void SaveModelDataToFile(string path, string id, string title, string desc, string preview, string bundle, string asset)
+		public static void SaveModelDataToFile(string path, string id, string title, string desc, string preview, string bundle, string asset)
 		{
 			ModelData modelData = new ModelData();
 			modelData.workshopId = id;

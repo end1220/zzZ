@@ -54,4 +54,13 @@ public static class FloatGUIStyle
 		button.fontStyle = FontStyle.Bold;
 		button.fontSize = fontSizeInput;
 	}
+
+	// constants
+	public const float spaceSize = 15f;
+	public const float leftSpace = 10;
+	public const float titleLen = 100;
+	public const float textLen = 600;
+	public const float buttonLen1 = 100;
+	public const float buttonLen2 = 50;
+	public const float buttonHeight = 40;
 }
