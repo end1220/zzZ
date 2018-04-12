@@ -55,7 +55,6 @@ namespace Float
 
 		void OnGUI()
 		{
-			Ensure();
 			currentPage.OnGUI();
 		}
 

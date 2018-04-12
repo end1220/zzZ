@@ -1,0 +1,73 @@
+ManifestFileVersion: 0
+CRC: 2681188199
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8a83ae67d448554d962255084f05b0fc
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: fb40cb6d4e85d6fc95664c0a0aff4ce4
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5de8184aebc665f40b63857e525ed768, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/StoreAssets/Barbarian/Models/Textures/AXE_Normal.jpg
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Motion0.png
+- Assets/StoreAssets/Barbarian/Models/Textures/Accessories_Color.jpg
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo5.png
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Motion1.png
+- Assets/StoreAssets/Barbarian/Models/Materials/Body_Color.mat
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo0.png
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo1.png
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo2.png
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo3.png
+- Assets/StoreAssets/Barbarian/Models/Materials/lambert1.mat
+- Assets/StoreAssets/Barbarian/Animators/Barbarian Animator Controller.controller
+- Assets/StoreAssets/Barbarian/Models/Materials/eye_L1.mat
+- Assets/StoreAssets/Barbarian/Models/Textures/Body_Color.jpg
+- Assets/StoreAssets/Barbarian/Models/Textures/Body_Normal.jpg
+- Assets/StoreAssets/Barbarian/Models/Materials/eye_R1.mat
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo4.png
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Motion3.png
+- Assets/StoreAssets/Barbarian/Models/Materials/Left.mat
+- Assets/StoreAssets/Barbarian/Models/Materials/Eyeball.mat
+- Assets/StoreAssets/Barbarian/Models/Materials/Right.mat
+- Assets/StoreAssets/Barbarian/Barbarian.prefab
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Motion2.png
+- Assets/StoreAssets/Barbarian/Models/Materials/Accessories_Color.mat
+- Assets/StoreAssets/Barbarian/Models/Textures/Accessories_normal.jpg
+- Assets/StoreAssets/Barbarian/Models/Textures/AXE_Color.jpg
+- Assets/StoreAssets/Barbarian/Models/Materials/face.mat
+- Assets/StoreAssets/Barbarian/Models/Textures/Accessories_Spec.jpg
+- Assets/StoreAssets/Barbarian/Models/Materials/eyeline.mat
+- Assets/StoreAssets/Barbarian/Models/Materials/eyebase.mat
+- Assets/StoreAssets/Barbarian/Models/Textures/Emos/Emo6.png
+- Assets/StoreAssets/Barbarian/Models/Barbarian.fbx
+Dependencies: []

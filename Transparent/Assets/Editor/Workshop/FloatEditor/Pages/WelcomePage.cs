@@ -25,8 +25,11 @@ namespace Float
 
 		public override void OnShow(object param)
 		{
-			LoadHistoryProjects();
-			CopyPreviewsToEditor();
+			if (SteamManager.Instance.Initialized)
+			{
+				LoadHistoryProjects();
+				CopyPreviewsToEditor();
+			}
 		}
 
 		public override void OnDestroy()
@@ -34,9 +37,11 @@ namespace Float
 			DeleteCopiedPreviews();
 		}
 
+		Vector2 scrollPosition = Vector2.zero;
 		public override void OnGUI()
 		{
 			int space = 5;
+			int recentWidth = 400;
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Language.Get(TextID.mainHelpBox), FloatGUIStyle.helpBox, GUILayout.Width(400), GUILayout.Height(60));
@@ -44,7 +49,7 @@ namespace Float
 			GUILayout.Label(Language.Get(TextID.language), GUILayout.Width(60));
 			Language.langType = (LangType)EditorGUILayout.EnumPopup(Language.langType, GUILayout.Width(150));
 			GUILayout.EndHorizontal();
-			GUILayout.Label("——————————————————————————————————————————————————————");
+			//GUILayout.Label("——————————————————————————————————————————————————————");
 			GUILayout.Space(20);
 
 			if (!SteamManager.Instance.Initialized)
@@ -56,19 +61,21 @@ namespace Float
 				return;
 			}
 
+			GUILayout.BeginHorizontal();
+
 			GUILayout.BeginVertical();
 
-			GUILayout.Label("Recent projects:", FloatGUIStyle.largeLabel);
+			GUILayout.Label("Recent projects", FloatGUIStyle.largeLabel, GUILayout.Width(recentWidth));
 			GUILayout.Space(space);
 
 			if (projectList.Count == 0)
 			{
-				GUILayout.Label("    No projects", FloatGUIStyle.label);
+				GUILayout.Label("    No projects", FloatGUIStyle.label, GUILayout.Width(recentWidth));
 				GUILayout.Space(space);
 			}
 			else
 			{
-				GUILayout.BeginScrollView(new Vector2(10, 10), GUILayout.Width(500), GUILayout.Height(400));
+				scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(recentWidth), GUILayout.Height(400));
 				foreach (var project in projectList)
 				{
 					GUILayout.BeginHorizontal();
@@ -77,23 +84,31 @@ namespace Float
 						creatorWindow.OpenPage(typeof(ModifyOldItemPage), project);
 					}
 					GUILayout.BeginVertical();
-					GUILayout.Label(project.modeldata.title, FloatGUIStyle.label);
-					GUILayout.Label(project.modeldata.description, FloatGUIStyle.label);
+					GUILayout.Label(project.modeldata.title, FloatGUIStyle.label, GUILayout.Width(recentWidth-100));
+					GUILayout.Label(project.modeldata.description, FloatGUIStyle.label, GUILayout.Width(recentWidth - 100));
 					GUILayout.EndVertical();
 					GUILayout.EndHorizontal();
 				}
 				GUILayout.EndScrollView();
 			}
 
-			GUILayout.Label("........................................................");
+			//GUILayout.Label("........................................................");
 			GUILayout.Space(space);
 
-			if (GUILayout.Button("Create new project", FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(50)))
+			GUILayout.EndVertical();
+
+			GUILayout.BeginVertical();
+
+			GUILayout.Label("Create projects", FloatGUIStyle.largeLabel, GUILayout.Width(300));
+			GUILayout.Space(space);
+			if (GUILayout.Button("New project", FloatGUIStyle.button, GUILayout.Width(150), GUILayout.Height(40)))
 			{
 				creatorWindow.OpenPage(typeof(CreateNewItemPage), null);
 			}
 
 			GUILayout.EndVertical();
+
+			GUILayout.EndHorizontal();
 		}
 
 		private void LoadHistoryProjects()

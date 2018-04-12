@@ -1,0 +1,11 @@
+﻿{
+  "workshopId": "1822222612",
+  "title": "no title",
+  "description": "no desc",
+  "preview": "preview.jpg",
+  "tags": null,
+  "visibility": 0,
+  "bundle": "1822222612/assetbundle",
+  "asset": "Assets/StoreAssets/Barbarian/Barbarian.prefab",
+  "version": 0
+}
