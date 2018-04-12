@@ -75,7 +75,7 @@ namespace Float
 			}
 			else
 			{
-				scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(recentWidth), GUILayout.Height(400));
+				scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(recentWidth + 50), GUILayout.Height(400));
 				foreach (var project in projectList)
 				{
 					GUILayout.BeginHorizontal();
@@ -84,7 +84,7 @@ namespace Float
 						creatorWindow.OpenPage(typeof(ModifyOldItemPage), project);
 					}
 					GUILayout.BeginVertical();
-					GUILayout.Label(project.modeldata.title, FloatGUIStyle.label, GUILayout.Width(recentWidth-100));
+					GUILayout.Label(project.modeldata.title, FloatGUIStyle.boldLabel, GUILayout.Width(recentWidth-100));
 					GUILayout.Label(project.modeldata.description, FloatGUIStyle.label, GUILayout.Width(recentWidth - 100));
 					GUILayout.EndVertical();
 					GUILayout.EndHorizontal();
@@ -101,7 +101,7 @@ namespace Float
 
 			GUILayout.Label("Create projects", FloatGUIStyle.largeLabel, GUILayout.Width(300));
 			GUILayout.Space(space);
-			if (GUILayout.Button("New project", FloatGUIStyle.button, GUILayout.Width(150), GUILayout.Height(40)))
+			if (GUILayout.Button("New project", FloatGUIStyle.button, GUILayout.Width(120), GUILayout.Height(30)))
 			{
 				creatorWindow.OpenPage(typeof(CreateNewItemPage), null);
 			}
