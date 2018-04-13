@@ -2,6 +2,8 @@
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Float
 {
@@ -14,37 +16,33 @@ namespace Float
 			Rect wr = new Rect(100, 100, 800, 700);
 			var window = (FloatEditorWindow)EditorWindow.GetWindowWithRect(typeof(FloatEditorWindow), wr, true, Language.Get(TextID.wndTitle));
 			window.Show();
+			window.Reset();
 		}
 
-		///////////////////
-
-		private FloatEditorPage currentPage = null;
-		private Dictionary<Type, FloatEditorPage> pages = new Dictionary<Type, FloatEditorPage>();
-
-		private void Ensure()
+		private class FloatEditorWindowContext
 		{
-			if (!SteamManager.Instance.Initialized)
-				SteamManager.Instance.Init();
+			public int currentPageIndex;
+		}
 
-			FloatGUIStyle.Ensure();
+		string layoutSavePath = Environment.CurrentDirectory.Replace("\\", "/") + "/ProjectSettings/FloatEditor";
+		private FloatEditorWindowContext context = new FloatEditorWindowContext();
+		private FloatEditorPage currentPage = null;
+		private Dictionary<Type, FloatEditorPage> pagesDic = new Dictionary<Type, FloatEditorPage>();
 
-			if (pages.Count == 0)
-			{
-				pages.Add(typeof(WelcomePage), new WelcomePage(this));
-				pages.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
-				pages.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
-
-				OpenPage(typeof(WelcomePage), null);
-			}
+		private void Awake()
+		{
+			Ensure();
 		}
 
 		private void OnDestroy()
 		{
-			foreach (var pg in pages.Values)
+			foreach (var pg in pagesDic.Values)
 				pg.Destroy();
 			
 			if (SteamManager.Instance.Initialized)
 				SteamManager.Instance.Destroy();
+
+			DeleteLayoutFile();
 		}
 
 		private void Update()
@@ -56,13 +54,12 @@ namespace Float
 		void OnGUI()
 		{
 			currentPage.DrawGUI();
-			SaveContext();
 		}
 
 		public void OpenPage(Type type, object param)
 		{
 			FloatEditorPage page;
-			if (pages.TryGetValue(type, out page))
+			if (pagesDic.TryGetValue(type, out page))
 			{
 				if (page == currentPage)
 					return;
@@ -70,14 +67,57 @@ namespace Float
 					currentPage.Hide();
 				currentPage = page;
 				currentPage.Show(param);
+
+				SaveContext();
+			}
+		}
+
+		private void Ensure()
+		{
+			if (!SteamManager.Instance.Initialized)
+				SteamManager.Instance.Init();
+
+			FloatGUIStyle.Ensure();
+
+			if (pagesDic.Count == 0)
+			{
+				pagesDic.Add(typeof(WelcomePage), new WelcomePage(this));
+				pagesDic.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
+				pagesDic.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
+
+				Type tp = typeof(WelcomePage);
+				if (File.Exists(layoutSavePath))
+					context = JsonConvert.DeserializeObject<FloatEditorWindowContext>(File.ReadAllText(layoutSavePath));
+				if (context.currentPageIndex == 0)
+					tp = typeof(WelcomePage);
+				else if (context.currentPageIndex == 1)
+					tp = typeof(CreateNewItemPage);
+				else if (context.currentPageIndex == 2)
+					tp = typeof(ModifyOldItemPage);
+				OpenPage(tp, null);
 			}
 		}
 
 		private void SaveContext()
 		{
-
+			string str = JsonConvert.SerializeObject(context);
+			File.WriteAllText(this.layoutSavePath, str);
 		}
 
+		private void DeleteLayoutFile()
+		{
+			if (File.Exists(layoutSavePath))
+				File.Delete(layoutSavePath);
+		}
+
+		private void Reset()
+		{
+			DeleteLayoutFile();
+			if (pagesDic.Count > 0)
+			{
+				OpenPage(typeof(WelcomePage), null);
+			}
+		}
 	}
 
 }

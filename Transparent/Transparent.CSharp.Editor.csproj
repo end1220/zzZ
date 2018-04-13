@@ -165,6 +165,7 @@
     <Compile Include="Assets\Editor\Workshop\FloatEditor\ModelAssetBuilder.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\BaseItemPage.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\CreateNewItemPage.cs" />
+    <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\FloatEditorPage.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\ModifyOldItemPage.cs" />
     <Compile Include="Assets\Editor\Workshop\FloatEditor\Pages\WelcomePage.cs" />
     <Compile Include="Assets\Editor\Workshop\SteamUGCTest.cs" />

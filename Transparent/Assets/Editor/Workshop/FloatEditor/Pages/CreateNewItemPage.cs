@@ -21,7 +21,7 @@ namespace Float
 		{
 			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(FloatGUIStyle.buttonHeight)))
 			{
-				if (string.IsNullOrEmpty(modelBuilder.AssetBundlePath))
+				if (string.IsNullOrEmpty(modelBuilder.AssetbundlePath))
 				{
 					;
 				}

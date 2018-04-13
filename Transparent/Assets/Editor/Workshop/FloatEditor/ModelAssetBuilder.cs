@@ -12,21 +12,42 @@ namespace Float
 {
 	public class ModelAssetBuilder
 	{
-		public string AssetBundlePath = "E:/Locke/GitHub/zzZ/Transparent/Output/Floating/1894426371";
+		public string AssetbundlePath { get { return context.assetbundlePath; } }
 
-		string modelPath = "";
-		string outputPath = "";
-		string prefabPath = "";
+		string layoutSavePath = Environment.CurrentDirectory.Replace("\\", "/") + "/ProjectSettings/ModelBuilder";
+
+		private class Context
+		{
+			public string modelPath = "";
+			public string outputPath = Environment.CurrentDirectory.Replace("\\", "/") + "/projects/ModelOutput/";
+			public string prefabPath = "";
+			public string assetbundlePath = "E:/Locke/GitHub/zzZ/Transparent/Output/Floating/1894426371";
+		}
+
+		Context context = new Context();
+
 		ModelPrefab prefab;
 
 		public ModelAssetBuilder()
 		{
-			outputPath = Environment.CurrentDirectory.Replace("\\", "/") + "/projects/ModelOutput/";
+			if (File.Exists(layoutSavePath))
+			{
+				context = JsonConvert.DeserializeObject<Context>(File.ReadAllText(layoutSavePath));
+			}
 		}
 
 		public void OnDestroy()
 		{
+			if (File.Exists(layoutSavePath))
+			{
+				File.Delete(layoutSavePath);
+			}
+		}
 
+		public void SaveContext()
+		{
+			string str = JsonConvert.SerializeObject(context);
+			File.WriteAllText(layoutSavePath, str);
 		}
 
 		public void OnGUI()
@@ -34,21 +55,21 @@ namespace Float
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Output), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-			GUILayout.TextField(outputPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
+			GUILayout.TextField(context.outputPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.model), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-			string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
-			modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
-			modelPath = GUILayout.TextField(modelPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
+			//string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
+			//context.modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
+			context.modelPath = GUILayout.TextField(context.modelPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
 			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
 			{
-				modelPath = EditorUtility.OpenFolderPanel(Language.Get(TextID.selectModelFolder), string.Empty, "");
-				if (!string.IsNullOrEmpty(modelPath))
-					EditorPrefs.SetString("BMW_ModelPath", modelPath);
+				context.modelPath = EditorUtility.OpenFolderPanel(Language.Get(TextID.selectModelFolder), string.Empty, "");
+				//if (!string.IsNullOrEmpty(context.modelPath))
+				//	EditorPrefs.SetString("BMW_ModelPath", context.modelPath);
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
@@ -58,7 +79,7 @@ namespace Float
 			GUILayout.Label(Language.Get(TextID.prefab), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			prefab = EditorGUILayout.ObjectField(prefab, typeof(ModelPrefab), false, GUILayout.Width(FloatGUIStyle.textLen)) as ModelPrefab;
 			if (prefab != null)
-				prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
+				context.prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
 
@@ -68,14 +89,14 @@ namespace Float
 			{
 				if (prefab != null)
 				{
-					prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
-					AssetBundlePath = BuildSingleAB(modelPath, outputPath, prefabPath);
+					context.prefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
+					context.assetbundlePath = BuildSingleAB(context.modelPath, context.outputPath, context.prefabPath);
 				}
 			}
 			if (GUILayout.Button(Language.Get(TextID.refresh), FloatGUIStyle.button, GUILayout.Width(FloatGUIStyle.buttonLen1), GUILayout.Height(FloatGUIStyle.buttonHeight)))
 			{
-				RebuildMyManifest(outputPath, outputPath + "/" + AppConst.manifestName);
-				RebuildModelList(outputPath, outputPath + "/" + AppConst.manifestName);
+				RebuildMyManifest(context.outputPath, context.outputPath + "/" + AppConst.manifestName);
+				RebuildModelList(context.outputPath, context.outputPath + "/" + AppConst.manifestName);
 				EditorUtility.DisplayDialog("Floating", "Refresh success!", "OK");
 			}
 			GUILayout.EndHorizontal();
