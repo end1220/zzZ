@@ -12,6 +12,11 @@ namespace Float
 
 		}
 
+		protected override void SaveContext()
+		{
+
+		}
+
 		protected override void OnOperateGUI()
 		{
 			if (GUILayout.Button(Language.Get(TextID.submitToWorkshop), FloatGUIStyle.button, GUILayout.Width(200), GUILayout.Height(FloatGUIStyle.buttonHeight)))

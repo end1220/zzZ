@@ -30,12 +30,12 @@ namespace Float
 			
 		}
 
-		public override void OnDestroy()
+		protected override void OnDestroy()
 		{
 			modelBuilder.OnDestroy();
 		}
 
-		public override void OnGUI()
+		protected override void OnGUI()
 		{
 			GUILayout.BeginVertical();
 
@@ -46,7 +46,7 @@ namespace Float
 			GUILayout.EndVertical();
 		}
 
-		public override void OnShow(object param)
+		protected override void OnShow(object param)
 		{
 			if (OnCreateItemResultCallResult == null)
 				OnCreateItemResultCallResult = CallResult<CreateItemResult_t>.Create(OnCreateItemResult);

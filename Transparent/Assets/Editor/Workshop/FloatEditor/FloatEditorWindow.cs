@@ -41,7 +41,7 @@ namespace Float
 		private void OnDestroy()
 		{
 			foreach (var pg in pages.Values)
-				pg.OnDestroy();
+				pg.Destroy();
 			
 			if (SteamManager.Instance.Initialized)
 				SteamManager.Instance.Destroy();
@@ -50,12 +50,13 @@ namespace Float
 		private void Update()
 		{
 			Ensure();
-			currentPage.OnUpdate();
+			currentPage.Update();
 		}
 
 		void OnGUI()
 		{
-			currentPage.OnGUI();
+			currentPage.DrawGUI();
+			SaveContext();
 		}
 
 		public void OpenPage(Type type, object param)
@@ -66,32 +67,16 @@ namespace Float
 				if (page == currentPage)
 					return;
 				if (currentPage != null)
-					currentPage.OnHide();
+					currentPage.Hide();
 				currentPage = page;
-				currentPage.OnShow(param);
+				currentPage.Show(param);
 			}
 		}
-	}
 
-
-	public abstract class FloatEditorPage
-	{
-		protected FloatEditorWindow creatorWindow;
-
-		public FloatEditorPage(FloatEditorWindow creator)
+		private void SaveContext()
 		{
-			this.creatorWindow = creator;
+
 		}
-
-		public virtual void OnDestroy() { }
-
-		public virtual void OnGUI() { }
-
-		public virtual void OnUpdate() { }
-
-		public virtual void OnShow(object param) { }
-
-		public virtual void OnHide() { }
 
 	}
 

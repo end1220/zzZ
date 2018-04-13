@@ -23,7 +23,12 @@ namespace Float
 
 		}
 
-		public override void OnShow(object param)
+		protected override void SaveContext()
+		{
+
+		}
+
+		protected override void OnShow(object param)
 		{
 			if (SteamManager.Instance.Initialized)
 			{
@@ -32,13 +37,13 @@ namespace Float
 			}
 		}
 
-		public override void OnDestroy()
+		protected override void OnDestroy()
 		{
 			DeleteCopiedPreviews();
 		}
 
 		Vector2 scrollPosition = Vector2.zero;
-		public override void OnGUI()
+		protected override void OnGUI()
 		{
 			int space = 5;
 			int recentWidth = 400;

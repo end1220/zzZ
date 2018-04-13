@@ -17,7 +17,12 @@ namespace Float
 
 		}
 
-		public override void OnShow(object param)
+		protected override void SaveContext()
+		{
+
+		}
+
+		protected override void OnShow(object param)
 		{
 			base.OnShow(param);
 
