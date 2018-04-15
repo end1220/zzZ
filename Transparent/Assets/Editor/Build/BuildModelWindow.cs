@@ -12,7 +12,7 @@ namespace Float
 	public class BuildModelWindow : EditorWindow
 	{
 
-		[MenuItem(AppConst.AppName + "/BuildModel")]
+		//[MenuItem(AppConst.AppName + "/BuildModel")]
 		public static void ShowExcelWindow()
 		{
 			Rect wr = new Rect(100, 100, 640, 480);

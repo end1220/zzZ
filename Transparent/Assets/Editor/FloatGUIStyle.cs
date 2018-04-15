@@ -17,6 +17,9 @@ public static class FloatGUIStyle
 
 	public static void Ensure()
 	{
+		if (skin != null)
+			return;
+
 		int fontSizeNormal = 12;
 		int fontSizeInput = 14;
 		int fontSizeLarge = 18;
@@ -51,6 +54,7 @@ public static class FloatGUIStyle
 		toggle.fontSize = fontSizeNormal;
 
 		button = new GUIStyle(EditorStyles.miniButton);
+		button.font = label.font;
 		button.fontStyle = FontStyle.Bold;
 		button.fontSize = fontSizeInput;
 	}

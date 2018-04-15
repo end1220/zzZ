@@ -15,19 +15,19 @@ namespace Float
 		{
 			Rect wr = new Rect(100, 100, 800, 700);
 			var window = (FloatEditorWindow)EditorWindow.GetWindowWithRect(typeof(FloatEditorWindow), wr, true, Language.Get(TextID.wndTitle));
-			window.Show();
 			window.Reset();
+			window.Show();
 		}
 
 		private class FloatEditorWindowContext
 		{
-			public int currentPageIndex;
+			public string currentPage;
 		}
 
 		string layoutSavePath = Environment.CurrentDirectory.Replace("\\", "/") + "/ProjectSettings/FloatEditor";
 		private FloatEditorWindowContext context = new FloatEditorWindowContext();
 		private FloatEditorPage currentPage = null;
-		private Dictionary<Type, FloatEditorPage> pagesDic = new Dictionary<Type, FloatEditorPage>();
+		private Dictionary<string, FloatEditorPage> pagesDic = new Dictionary<string, FloatEditorPage>();
 
 		private void Awake()
 		{
@@ -53,10 +53,11 @@ namespace Float
 
 		void OnGUI()
 		{
+			FloatGUIStyle.Ensure();
 			currentPage.DrawGUI();
 		}
 
-		public void OpenPage(Type type, object param)
+		public void OpenPage(string type, object param)
 		{
 			FloatEditorPage page;
 			if (pagesDic.TryGetValue(type, out page))
@@ -72,34 +73,39 @@ namespace Float
 			}
 		}
 
+		public void OpenDefaultPage()
+		{
+			OpenPage(typeof(WelcomePage).Name, null);
+		}
+
 		private void Ensure()
 		{
 			if (!SteamManager.Instance.Initialized)
 				SteamManager.Instance.Init();
 
-			FloatGUIStyle.Ensure();
-
 			if (pagesDic.Count == 0)
 			{
-				pagesDic.Add(typeof(WelcomePage), new WelcomePage(this));
-				pagesDic.Add(typeof(CreateNewItemPage), new CreateNewItemPage(this));
-				pagesDic.Add(typeof(ModifyOldItemPage), new ModifyOldItemPage(this));
+				pagesDic.Add(typeof(WelcomePage).Name, new WelcomePage(this));
+				pagesDic.Add(typeof(CreateNewItemPage).Name, new CreateNewItemPage(this));
+				pagesDic.Add(typeof(ModifyOldItemPage).Name, new ModifyOldItemPage(this));
 
-				Type tp = typeof(WelcomePage);
 				if (File.Exists(layoutSavePath))
+				{
 					context = JsonConvert.DeserializeObject<FloatEditorWindowContext>(File.ReadAllText(layoutSavePath));
-				if (context.currentPageIndex == 0)
-					tp = typeof(WelcomePage);
-				else if (context.currentPageIndex == 1)
-					tp = typeof(CreateNewItemPage);
-				else if (context.currentPageIndex == 2)
-					tp = typeof(ModifyOldItemPage);
-				OpenPage(tp, null);
+					if (!string.IsNullOrEmpty(context.currentPage))
+					{
+						if (!string.IsNullOrEmpty(context.currentPage) && pagesDic.ContainsKey(context.currentPage))
+							OpenPage(context.currentPage, null);
+					}
+				}
+				else
+					OpenDefaultPage();
 			}
 		}
 
 		private void SaveContext()
 		{
+			context.currentPage = currentPage.GetType().Name;
 			string str = JsonConvert.SerializeObject(context);
 			File.WriteAllText(this.layoutSavePath, str);
 		}
@@ -115,7 +121,7 @@ namespace Float
 			DeleteLayoutFile();
 			if (pagesDic.Count > 0)
 			{
-				OpenPage(typeof(WelcomePage), null);
+				OpenDefaultPage();
 			}
 		}
 	}

@@ -86,7 +86,7 @@ namespace Float
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button(Resources.Load(project.tempPreviewPath) as Texture, GUILayout.Width(100), GUILayout.Height(100)))
 					{
-						creatorWindow.OpenPage(typeof(ModifyOldItemPage), project);
+						creatorWindow.OpenPage(typeof(ModifyOldItemPage).Name, project);
 					}
 					GUILayout.BeginVertical();
 					GUILayout.Label(project.modeldata.title, FloatGUIStyle.boldLabel, GUILayout.Width(recentWidth-100));
@@ -108,7 +108,7 @@ namespace Float
 			GUILayout.Space(space);
 			if (GUILayout.Button("New project", FloatGUIStyle.button, GUILayout.Width(120), GUILayout.Height(30)))
 			{
-				creatorWindow.OpenPage(typeof(CreateNewItemPage), null);
+				creatorWindow.OpenPage(typeof(CreateNewItemPage).Name, null);
 			}
 
 			GUILayout.EndVertical();

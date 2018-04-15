@@ -19,7 +19,7 @@ namespace Float
 
 		protected override void SaveContext()
 		{
-
+			base.SaveContext();
 		}
 
 		protected override void OnShow(object param)
