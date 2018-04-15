@@ -1,7 +1,7 @@
 ﻿{
   "workshopId": "1822222612",
-  "title": "标题吗",
-  "description": "描述吗哦呵呵哒嘿\nCool",
+  "title": "标题重要性",
+  "description": "离散事件模拟（discrete event simulation），这个东西可能在游戏领域用得并不是很多，它是模拟仿真领域的一个仿真模型，用来模拟在时间轴上一系列离散事件后，整个系统的变化情况，这么说，可能还是有点抽象，给大家举一个使用离散事件模拟的一个经典的例子，如何计算银行柜台排队的平均等待时间[……]",
   "preview": "preview.jpg",
   "tags": null,
   "visibility": 0,

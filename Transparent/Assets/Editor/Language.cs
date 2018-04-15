@@ -59,6 +59,11 @@ public static class TextID
 	public const int submitToWorkshop = 112;
 	public const int workshopPolicy = 113;
 	public const int ackWorkshopPolicy = 115;
+
+	public const int recentProject = 115;
+	public const int noProject = 116;
+	public const int createProject = 117;
+	public const int newProject = 118;
 }
 
 public static class Language
@@ -97,6 +102,11 @@ public static class Language
 		new LangData(112, "Subimit to Workshop", "提交到创意工坊"),
 		new LangData(113, "Workshop Policy", "创意工坊法律协议"),
 		new LangData(114, "Accept the Workshop Legal Agreement?", "提交物品的同时也表示您同意了《创意工坊服务条款》"),
+
+		new LangData(115, "Recent projects", "最近的项目"),
+		new LangData(116, "    No project", "    尚无..."),
+		new LangData(117, "Create projects", "创建新项目"),
+		new LangData(118, "New project", "新建项目"),
 	};
 
 	private static Dictionary<int, LangData> dataDic = new Dictionary<int, LangData>();

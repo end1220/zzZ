@@ -29,6 +29,8 @@ public static class FloatGUIStyle
 
 		label = new GUIStyle(EditorStyles.label);
 		label.fontSize = fontSizeNormal;
+		label.wordWrap = true;
+		label.richText = true;
 
 		boldLabel = new GUIStyle(EditorStyles.label);
 		boldLabel.fontStyle = FontStyle.Bold;
@@ -53,7 +55,7 @@ public static class FloatGUIStyle
 		toggle = new GUIStyle(EditorStyles.toggle);
 		toggle.fontSize = fontSizeNormal;
 
-		button = new GUIStyle(EditorStyles.miniButton);
+		button = new GUIStyle(EditorStyles.miniButtonMid);
 		button.font = label.font;
 		button.fontStyle = FontStyle.Bold;
 		button.fontSize = fontSizeInput;
