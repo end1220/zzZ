@@ -49,7 +49,6 @@ namespace Float
 			int space = 5;
 			int recentWidth = 400;
 			int areaHeight = 500;
-
 			GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(10);
@@ -113,7 +112,7 @@ namespace Float
 			GUILayout.EndVertical();
 
 			GUILayout.BeginArea(new Rect(520, 140, 200, areaHeight));
-			if (GUILayout.Button(Language.Get(TextID.newProject), /*FloatGUIStyle.button, */GUILayout.Width(120), GUILayout.Height(30)))
+			if (GUILayout.Button(Language.Get(TextID.newProject), FloatGUIStyle.button, GUILayout.Width(120), GUILayout.Height(30)))
 				creatorWindow.OpenPage(typeof(CreateNewItemPage).Name, null);
 			GUILayout.EndArea();
 

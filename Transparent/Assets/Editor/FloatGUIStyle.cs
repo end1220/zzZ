@@ -14,6 +14,7 @@ public static class FloatGUIStyle
 	public static GUIStyle button { get; private set; }
 	public static GUIStyle helpBox { get; private set; }
 	public static GUIStyle link { get; private set; }
+	public static GUIStyle foldout { get; private set; }
 
 	public static void Ensure()
 	{
@@ -55,18 +56,23 @@ public static class FloatGUIStyle
 		toggle = new GUIStyle(EditorStyles.toggle);
 		toggle.fontSize = fontSizeNormal;
 
-		button = new GUIStyle(EditorStyles.miniButtonMid);
-		button.font = label.font;
+		button = new GUIStyle(EditorStyles.miniButton);
 		button.fontStyle = FontStyle.Bold;
 		button.fontSize = fontSizeInput;
+
+		foldout = new GUIStyle(EditorStyles.foldout);
+		foldout.fontStyle = FontStyle.Bold;
+		foldout.fontSize = fontSizeInput;
+		foldout.fixedWidth = 400;
+		foldout.fixedHeight = 20;
 	}
 
 	// constants
 	public const float spaceSize = 15f;
 	public const float leftSpace = 10;
 	public const float titleLen = 100;
-	public const float textLen = 600;
+	public const float textLen = 550;
 	public const float buttonLen1 = 100;
 	public const float buttonLen2 = 50;
-	public const float buttonHeight = 40;
+	public const float buttonHeight = 30;
 }

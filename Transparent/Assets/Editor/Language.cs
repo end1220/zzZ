@@ -82,8 +82,8 @@ public static class Language
 		new LangData(51, "Model", "模型路径"),
 		new LangData(52, "Prefab", "预制路径"),
 		new LangData(53, "Select", "选择"),
-		new LangData(54, "Build", "打包"),
-		new LangData(55, "Refresh", "刷新"),
+		new LangData(54, "Build", "打  包"),
+		new LangData(55, "Refresh", "刷  新"),
 		new LangData(56, "Select model folder", "选择资源根目录"),
 		new LangData(57, "Select a preview image", "选择预览图片"),
 

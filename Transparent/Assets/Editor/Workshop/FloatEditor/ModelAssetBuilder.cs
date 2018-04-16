@@ -156,7 +156,7 @@ namespace Float
 			if (prefab != null)
 				context.PrefabPath = AssetDatabase.GetAssetPath(prefab.gameObject);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);

@@ -135,14 +135,45 @@ namespace Float
 			}
 		}
 
+		bool foldoutModel = true;
+		bool foldoutSubmit = true;
 		protected override void OnGUI()
 		{
+			GUILayout.Space(10);// to top
 			GUILayout.BeginVertical();
+			GUILayout.BeginHorizontal();
+			GUILayout.Space(10);
 
-			modelBuilder.OnGUI();
+			GUILayout.BeginVertical();
+			foldoutModel = EditorGUILayout.Foldout(foldoutModel, "Step 1: Build model asset", true, FloatGUIStyle.foldout);
+			GUILayout.Space(5);
+			if (foldoutModel)
+			{
+				GUILayout.BeginHorizontal();
+				GUILayout.Space(10);
+				GUILayout.Label("", FloatGUIStyle.helpBox, GUILayout.Width(750), GUILayout.Height(200));
+				GUILayout.EndHorizontal();
+				GUILayout.BeginArea(new Rect(25, 50, 750, 200));
+				modelBuilder.OnGUI();
+				GUILayout.EndArea();
+			}
+			GUILayout.Space(10);
 
-			OnSubmitGUI();
+			foldoutSubmit = EditorGUILayout.Foldout(foldoutSubmit, "Step 2: Submit to Workshop", true, FloatGUIStyle.foldout);
+			GUILayout.Space(5);
+			if (foldoutSubmit)
+			{
+				GUILayout.BeginHorizontal();
+				GUILayout.Space(10);
+				GUILayout.Label("", FloatGUIStyle.helpBox, GUILayout.Width(750), GUILayout.Height(420));
+				GUILayout.EndHorizontal();
+				GUILayout.BeginArea(new Rect(25, foldoutModel ? 290 : 85, 750, 400));
+				OnSubmitGUI();
+				GUILayout.EndArea();
+			}
+			GUILayout.EndVertical();
 
+			GUILayout.EndHorizontal();
 			GUILayout.EndVertical();
 		}
 
@@ -174,21 +205,21 @@ namespace Float
 		private void OnSubmitGUI()
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			context.ItemTitle = GUILayout.TextField(context.ItemTitle, FloatGUIStyle.textField, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-			context.ItemDesc = GUILayout.TextArea(context.ItemDesc, FloatGUIStyle.textArea, GUILayout.Width(FloatGUIStyle.textLen), GUILayout.Height(140));
+			context.ItemDesc = GUILayout.TextArea(context.ItemDesc, FloatGUIStyle.textArea, GUILayout.Width(FloatGUIStyle.textLen), GUILayout.Height(100));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 
 			GUILayout.Box(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(128), GUILayout.Height(128));
@@ -204,7 +235,7 @@ namespace Float
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize);
+			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			GUILayout.Label(context.ContentPath, FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
