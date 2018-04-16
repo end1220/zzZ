@@ -151,9 +151,9 @@ namespace Float
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(10);
-				GUILayout.Label("", FloatGUIStyle.helpBox, GUILayout.Width(750), GUILayout.Height(200));
+				GUILayout.Label("", FloatGUIStyle.helpBox, GUILayout.Width(750), GUILayout.Height(170));
 				GUILayout.EndHorizontal();
-				GUILayout.BeginArea(new Rect(25, 50, 750, 200));
+				GUILayout.BeginArea(new Rect(25, 50, 750, 170));
 				modelBuilder.OnGUI();
 				GUILayout.EndArea();
 			}
@@ -165,10 +165,10 @@ namespace Float
 			{
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(10);
-				GUILayout.Label("", FloatGUIStyle.helpBox, GUILayout.Width(750), GUILayout.Height(420));
+				GUILayout.Label("", FloatGUIStyle.helpBox, GUILayout.Width(750), GUILayout.Height(440));
 				GUILayout.EndHorizontal();
-				GUILayout.BeginArea(new Rect(25, foldoutModel ? 290 : 85, 750, 400));
-				OnSubmitGUI();
+				GUILayout.BeginArea(new Rect(25, foldoutModel ? 260 : 85, 750, 420));
+				OnItemGUI();
 				GUILayout.EndArea();
 			}
 			GUILayout.EndVertical();
@@ -202,21 +202,21 @@ namespace Float
 			}
 		}
 
-		private void OnSubmitGUI()
+		private void OnItemGUI()
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			context.ItemTitle = GUILayout.TextField(context.ItemTitle, FloatGUIStyle.textField, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Desc), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			context.ItemDesc = GUILayout.TextArea(context.ItemDesc, FloatGUIStyle.textArea, GUILayout.Width(FloatGUIStyle.textLen), GUILayout.Height(100));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
@@ -224,7 +224,7 @@ namespace Float
 
 			GUILayout.Box(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(128), GUILayout.Height(128));
 			GUILayout.BeginVertical();
-			GUILayout.Space(120);
+			GUILayout.Space(115);
 			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
 			{
 				context.PreviewPath = EditorUtility.OpenFilePanel(Language.Get(TextID.selectPreview), string.Empty, "jpg,png");
@@ -232,14 +232,14 @@ namespace Float
 			}
 			GUILayout.EndVertical();
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			GUILayout.Label(context.ContentPath, FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.leftSpace);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);

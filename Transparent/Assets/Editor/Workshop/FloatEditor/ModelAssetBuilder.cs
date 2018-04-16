@@ -132,7 +132,7 @@ namespace Float
 			GUILayout.Label(Language.Get(TextID.Output), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			GUILayout.TextField(context.OutputPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
@@ -147,7 +147,7 @@ namespace Float
 				//	EditorPrefs.SetString("BMW_ModelPath", context.modelPath);
 			}
 			GUILayout.EndHorizontal();
-			GUILayout.Space(FloatGUIStyle.spaceSize * 2);
+			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
