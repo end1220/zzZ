@@ -14,13 +14,13 @@ namespace Float
 		private string LayoutSavePath = System.Environment.CurrentDirectory.Replace("\\", "/") + "/ProjectSettings/ItemLayout";
 
 		[JsonObject(MemberSerialization.OptIn)]
-		private class Context
+		public class Context
 		{
 			[JsonProperty]
-			public string itemTitle = "p0";
+			public string itemTitle = "";
 
 			[JsonProperty]
-			public string itemDesc = "hahahaha";
+			public string itemDesc = "";
 
 			[JsonProperty]
 			public string previewPath = "";
@@ -110,7 +110,7 @@ namespace Float
 			}
 		}
 
-		private Context context = new Context();
+		protected Context context = new Context();
 
 		// steam api
 		private CallResult<CreateItemResult_t> OnCreateItemResultCallResult;
@@ -130,9 +130,9 @@ namespace Float
 			modelBuilder.OnDestroy();
 
 			if (File.Exists(LayoutSavePath))
-			{
 				File.Delete(LayoutSavePath);
-			}
+
+			ClearTempDirectory();
 		}
 
 		bool foldoutModel = true;
@@ -182,6 +182,18 @@ namespace Float
 			if (File.Exists(LayoutSavePath))
 			{
 				context = JsonConvert.DeserializeObject<Context>(File.ReadAllText(LayoutSavePath));
+			}
+
+			// open old project
+			if (param != null)
+			{
+				ProjectItemData project = (ProjectItemData)param;
+				ModelData data = project.modeldata;
+				context.itemTitle = data.title;
+				context.itemDesc = data.description;
+				context.previewPath = Path.Combine(project.directory, data.preview).Replace("\\", "/");
+				context.contentPath = Path.Combine(project.directory, AppConst.contentFolderName).Replace("\\", "/");
+				CopyPreviewFile(context.PreviewPath);
 			}
 
 			if (OnCreateItemResultCallResult == null)
@@ -403,10 +415,25 @@ namespace Float
 		{
 			string newFolderName = workshopID.ToString();
 
-			// model data
 			string modelDataPath = context.ContentPath + "/" + AppConst.subModelDataName;
 			string text = File.ReadAllText(modelDataPath);
 			ModelData data = JsonUtility.FromJson<ModelData>(text);
+
+			// root content data
+			int endIdx = context.ContentPath.LastIndexOf("/");
+			string rootPath = context.ContentPath.Substring(0, endIdx);
+			string rootModelPath = rootPath + "/" + AppConst.subModelDataName;
+			ModelAssetBuilder.SaveModelDataToFile(
+					rootModelPath,
+					workshopID.ToString(),
+					context.ItemTitle,
+					context.ItemDesc,
+					FormatPreviewFileName(context.PreviewPath),
+					data.bundle,
+					data.asset
+					);
+
+			// content model data
 			ModelAssetBuilder.SaveModelDataToFile(
 					modelDataPath,
 					workshopID.ToString(),
@@ -430,6 +457,11 @@ namespace Float
 		{
 			if (!string.IsNullOrEmpty(previewPath) && File.Exists(previewPath))
 			{
+				int endIdx = context.ContentPath.LastIndexOf("/");
+				string rootPath = context.ContentPath.Substring(0, endIdx);
+				string targetRoot = rootPath + "/" + FormatPreviewFileName(previewPath);
+				if (previewPath != targetRoot)
+					File.Copy(previewPath, rootPath + "/" + FormatPreviewFileName(previewPath), true);
 				File.Copy(previewPath, context.ContentPath + "/" + FormatPreviewFileName(previewPath), true);
 				File.Copy(previewPath, Application.dataPath + "/Editor/Resources/" + FormatPreviewFileName(previewPath), true);
 				AssetDatabase.Refresh();

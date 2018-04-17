@@ -20,6 +20,7 @@ namespace Float
 		protected override void SaveContext()
 		{
 			base.SaveContext();
+			UpdateSaveProjectFiles();
 		}
 
 		protected override void OnShow(object param)
@@ -45,6 +46,37 @@ namespace Float
 			}
 		}
 
+		private void UpdateSaveProjectFiles()
+		{
+			CopyPreviewFile(context.PreviewPath);
+
+			string modelDataPath = context.ContentPath + "/" + AppConst.subModelDataName;
+			string text = File.ReadAllText(modelDataPath);
+			ModelData data = JsonUtility.FromJson<ModelData>(text);
+
+			int endIdx = context.ContentPath.LastIndexOf("/");
+			string rootPath = context.ContentPath.Substring(0, endIdx);
+			string rootModelPath = rootPath + "/" + AppConst.subModelDataName;
+			ModelAssetBuilder.SaveModelDataToFile(
+					rootModelPath,
+					data.workshopId,
+					context.ItemTitle,
+					context.ItemDesc,
+					FormatPreviewFileName(context.PreviewPath),
+					data.bundle,
+					data.asset
+					);
+
+			ModelAssetBuilder.SaveModelDataToFile(
+					modelDataPath,
+					data.workshopId,
+					context.ItemTitle,
+					context.ItemDesc,
+					FormatPreviewFileName(context.PreviewPath),
+					data.bundle,
+					data.asset
+					);
+		}
 	}
 
 
