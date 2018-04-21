@@ -7,7 +7,7 @@ using Steamworks;
 
 namespace Float
 {
-	public abstract class BaseItemPage : FloatEditorPage
+	public abstract class BaseItemPage : BasePage
 	{
 		protected ModelAssetBuilder modelBuilder = new ModelAssetBuilder();
 
@@ -117,7 +117,8 @@ namespace Float
 		private CallResult<SubmitItemUpdateResult_t> OnSubmitItemUpdateResultCallResult;
 		protected PublishedFileId_t mPublishedFileId;
 		private UGCUpdateHandle_t mUGCUpdateHandle;
-
+		private bool isUpdatingItem = false;
+		private EItemUpdateStatus lastItemUpdateStatus = EItemUpdateStatus.k_EItemUpdateStatusInvalid;
 
 		public BaseItemPage(FloatEditorWindow creator) :
 			base(creator)
@@ -135,6 +136,50 @@ namespace Float
 			ClearTempDirectory();
 		}
 
+		protected override void OnUpdate()
+		{
+			if (isUpdatingItem)
+			{
+				ulong BytesProcessed;
+				ulong BytesTotal;
+				EItemUpdateStatus ret = SteamUGC.GetItemUpdateProgress(mUGCUpdateHandle, out BytesProcessed, out BytesTotal);
+				if (ret != EItemUpdateStatus.k_EItemUpdateStatusInvalid)
+				{
+					lastItemUpdateStatus = ret;
+					int textId = 0;
+					switch (ret)
+					{
+						case EItemUpdateStatus.k_EItemUpdateStatusPreparingConfig:
+							textId = TextID.PreparingConfig;
+							break;
+						case EItemUpdateStatus.k_EItemUpdateStatusPreparingContent:
+							textId = TextID.PreparingContent;
+							break;
+						case EItemUpdateStatus.k_EItemUpdateStatusUploadingContent:
+							textId = TextID.UploadingContent;
+							break;
+						case EItemUpdateStatus.k_EItemUpdateStatusUploadingPreviewFile:
+							textId = TextID.ploadingPreviewFile;
+							break;
+						case EItemUpdateStatus.k_EItemUpdateStatusCommittingChanges:
+							textId = TextID.CommittingChanges;
+							break;
+					}
+					EditorUtility.DisplayCancelableProgressBar(Language.Get(TextID.submitting), Language.Get(textId), (float)((double)BytesProcessed / (double)BytesTotal));
+				}
+				else
+				{
+					isUpdatingItem = false;
+					EditorUtility.ClearProgressBar();
+					if (lastItemUpdateStatus == EItemUpdateStatus.k_EItemUpdateStatusCommittingChanges)
+					{
+						lastItemUpdateStatus = EItemUpdateStatus.k_EItemUpdateStatusInvalid;
+						EditorUtility.DisplayDialog(Language.Get(TextID.complete), Language.Get(TextID.submitDone), Language.Get(TextID.ok));
+					}
+				}
+			}
+		}
+
 		bool foldoutModel = true;
 		bool foldoutSubmit = true;
 		protected override void OnGUI()
@@ -145,7 +190,7 @@ namespace Float
 			GUILayout.Space(10);
 
 			GUILayout.BeginVertical();
-			foldoutModel = EditorGUILayout.Foldout(foldoutModel, "Step 1: Build model asset", true, FloatGUIStyle.foldout);
+			foldoutModel = EditorGUILayout.Foldout(foldoutModel, Language.Get(TextID.step1), true, FloatGUIStyle.foldout);
 			GUILayout.Space(5);
 			if (foldoutModel)
 			{
@@ -159,7 +204,7 @@ namespace Float
 			}
 			GUILayout.Space(10);
 
-			foldoutSubmit = EditorGUILayout.Foldout(foldoutSubmit, "Step 2: Submit to Workshop", true, FloatGUIStyle.foldout);
+			foldoutSubmit = EditorGUILayout.Foldout(foldoutSubmit, Language.Get(TextID.step2), true, FloatGUIStyle.foldout);
 			GUILayout.Space(5);
 			if (foldoutSubmit)
 			{
@@ -270,16 +315,6 @@ namespace Float
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			/*SteamUser.GetSteamID().m_SteamID  SteamUtils.GetAppID()*/
-
-			{
-				ulong BytesProcessed;
-				ulong BytesTotal;
-				EItemUpdateStatus reti = SteamUGC.GetItemUpdateProgress(mUGCUpdateHandle, out BytesProcessed, out BytesTotal);
-				if (reti != EItemUpdateStatus.k_EItemUpdateStatusInvalid)
-				{
-					EditorUtility.DisplayCancelableProgressBar("Submiting", reti.ToString(), (float)((double)BytesProcessed / (double)BytesTotal));
-				}
-			}
 		}
 
 		protected virtual void OnOperateGUI()
@@ -308,6 +343,8 @@ namespace Float
 
 			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(mUGCUpdateHandle, "submit content");
 			OnSubmitItemUpdateResultCallResult.Set(handle);
+
+			isUpdatingItem = true;
 		}
 
 		void OnCreateItemResult(CreateItemResult_t pCallback, bool bIOFailure)
@@ -317,30 +354,33 @@ namespace Float
 				mPublishedFileId = pCallback.m_nPublishedFileId;
 				MakeContent(mPublishedFileId.m_PublishedFileId, modelBuilder.AssetbundlePath);
 
-				EditorUtility.DisplayCancelableProgressBar("Submiting", "Update item", 0.3f);
+				EditorUtility.DisplayCancelableProgressBar(Language.Get(TextID.submitting), "", 0.3f);
 
 				UpdateItem();
 			}
 			else
 			{
 				EditorUtility.ClearProgressBar();
-				string text = "Create workshop item failed. Error code : " + pCallback.m_eResult;
-				EditorUtility.DisplayDialog("Error", text, "OK");
+				string text = Language.Get(TextID.createFailed) + pCallback.m_eResult;
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), text, Language.Get(TextID.ok));
 			}
 		}
 
 		void OnSubmitItemUpdateResult(SubmitItemUpdateResult_t pCallback, bool bIOFailure)
 		{
+			isUpdatingItem = false;
+			lastItemUpdateStatus = EItemUpdateStatus.k_EItemUpdateStatusInvalid;
+
 			if (pCallback.m_eResult == EResult.k_EResultOK)
 			{
 				EditorUtility.ClearProgressBar();
-				EditorUtility.DisplayDialog("Complete", "Submit successfully", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.complete), Language.Get(TextID.submitDone), Language.Get(TextID.ok));
 			}
 			else
 			{
 				EditorUtility.ClearProgressBar();
-				string text = "Submit workshop item failed. Error code : " + pCallback.m_eResult;
-				EditorUtility.DisplayDialog("Error", text, "OK");
+				string text = Language.Get(TextID.submitFailed) + pCallback.m_eResult;
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), text, Language.Get(TextID.ok));
 			}
 		}
 
@@ -348,33 +388,33 @@ namespace Float
 		{
 			if (string.IsNullOrEmpty(context.ItemTitle))
 			{
-				EditorUtility.DisplayDialog("Error", "Title cannot be empty.", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.titleEmpty), Language.Get(TextID.ok));
 				return false;
 			}
 			if (string.IsNullOrEmpty(context.ItemDesc))
 			{
-				EditorUtility.DisplayDialog("Error", "Description cannot be empty.", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.descEmpty), Language.Get(TextID.ok));
 				return false;
 			}
 			string rawContentPath = modelBuilder.AssetbundlePath;
 			if (string.IsNullOrEmpty(rawContentPath))
 			{
-				EditorUtility.DisplayDialog("Error", "Content directory cannot be empty.", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.contentEmpty), Language.Get(TextID.ok));
 				return false;
 			}
 			if (!Directory.Exists(rawContentPath))
 			{
-				EditorUtility.DisplayDialog("Error", "Content directory does not exist.", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.contentMissing), Language.Get(TextID.ok));
 				return false;
 			}
 			if (Directory.GetFiles(rawContentPath).Length < 3)
 			{
-				EditorUtility.DisplayDialog("Error", "Content directory cannot be empty.", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.contentInvalid), Language.Get(TextID.ok));
 				return false;
 			}
 			if (!File.Exists(context.PreviewPath))
 			{
-				EditorUtility.DisplayDialog("Error", "Preview file does not exist.", "OK");
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.previewMissing), Language.Get(TextID.ok));
 				return false;
 			}
 			return true;

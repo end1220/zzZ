@@ -13,7 +13,7 @@ namespace Float
 		public string tempPreviewPath;
 	}
 
-	public class WelcomePage : FloatEditorPage
+	public class WelcomePage : BasePage
 	{
 		private List<ProjectItemData> projectList = new List<ProjectItemData>();
 

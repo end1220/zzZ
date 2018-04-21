@@ -26,8 +26,8 @@ namespace Float
 
 		string layoutSavePath = Environment.CurrentDirectory.Replace("\\", "/") + "/ProjectSettings/FloatEditor";
 		private FloatEditorWindowContext context = new FloatEditorWindowContext();
-		private FloatEditorPage currentPage = null;
-		private Dictionary<string, FloatEditorPage> pagesDic = new Dictionary<string, FloatEditorPage>();
+		private BasePage currentPage = null;
+		private Dictionary<string, BasePage> pagesDic = new Dictionary<string, BasePage>();
 
 		private void Awake()
 		{
@@ -59,7 +59,7 @@ namespace Float
 
 		public void OpenPage(string type, object param)
 		{
-			FloatEditorPage page;
+			BasePage page;
 			if (pagesDic.TryGetValue(type, out page))
 			{
 				if (page == currentPage)

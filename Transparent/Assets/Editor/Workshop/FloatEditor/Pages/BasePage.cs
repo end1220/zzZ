@@ -1,20 +1,28 @@
+using UnityEditor;
+using UnityEngine;
 
 namespace Float
 {
-	public abstract class FloatEditorPage
+	public abstract class BasePage
 	{
 		protected FloatEditorWindow creatorWindow;
 
-		public FloatEditorPage(FloatEditorWindow creator)
+		float lastSaveTime = 0;
+
+		public BasePage(FloatEditorWindow creator)
 		{
 			this.creatorWindow = creator;
 		}
 
 		public virtual void Destroy() { OnDestroy(); }
 
-		public virtual void DrawGUI() { OnGUI(); SaveContext(); }
+		public virtual void DrawGUI() { OnGUI(); }
 
-		public virtual void Update() { OnUpdate(); }
+		public virtual void Update()
+		{
+			OnUpdate();
+			SaveContext();
+		}
 
 		public virtual void Show(object param) { OnShow(param); }
 
