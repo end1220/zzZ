@@ -55,7 +55,7 @@ namespace Float
 			GUILayout.Label(Language.Get(TextID.mainHelpBox), FloatGUIStyle.helpBox, GUILayout.Width(400), GUILayout.Height(60));
 			GUILayout.Space(40);
 			GUILayout.Label(Language.Get(TextID.language), GUILayout.Width(60));
-			Language.langType = (LangType)EditorGUILayout.EnumPopup(Language.langType, GUILayout.Width(150));
+			Language.langType = (LangType)FloatGUIStyle.EnumPopup(Language.langType, GUILayout.Width(150));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(20);
 

@@ -7,6 +7,45 @@ using Steamworks;
 
 namespace Float
 {
+	public enum CategoryType
+	{
+		Unspecified,
+		Scene,
+		Video,
+		Web,
+		App
+	}
+
+	public enum Genre
+	{
+		Unspecified,
+		Abstract,
+		Animal,
+		Cartoon,
+		Games,
+		Girls,
+		Guys,
+		Fantacy,
+		Nature,
+		Music
+	}
+
+	public enum Rating
+	{
+		Unspecified,
+		Everybody,
+		Suspicious,
+		Mature
+	}
+
+	public enum PublishedVisibility
+	{
+		Unspecified,
+		Public,
+		FriendsOnly,
+		Private,
+	}
+
 	public abstract class BaseItemPage : BasePage
 	{
 		protected ModelAssetBuilder modelBuilder = new ModelAssetBuilder();
@@ -30,6 +69,18 @@ namespace Float
 
 			[JsonProperty]
 			public bool agreeWorkshopPolicy = true;
+
+			[JsonProperty]
+			public PublishedVisibility visibility;
+
+			[JsonProperty]
+			public CategoryType category = CategoryType.Unspecified;
+
+			[JsonProperty]
+			public Genre genre = Genre.Unspecified;
+
+			[JsonProperty]
+			public Rating rating = Rating.Unspecified;
 
 			[JsonIgnore]
 			public bool dirty;
@@ -106,6 +157,66 @@ namespace Float
 					if (agreeWorkshopPolicy != value)
 						dirty = true;
 					agreeWorkshopPolicy = value;
+				}
+			}
+
+			[JsonIgnore]
+			public PublishedVisibility Visibility
+			{
+				get
+				{
+					return visibility;
+				}
+				set
+				{
+					if (visibility != value)
+						dirty = true;
+					visibility = value;
+				}
+			}
+
+			[JsonIgnore]
+			public CategoryType Category
+			{
+				get
+				{
+					return category;
+				}
+				set
+				{
+					if (category != value)
+						dirty = true;
+					category = value;
+				}
+			}
+
+			[JsonIgnore]
+			public Genre Genre
+			{
+				get
+				{
+					return genre;
+				}
+				set
+				{
+					if (genre != value)
+						dirty = true;
+					genre = value;
+				}
+			}
+
+			[JsonIgnore]
+			public Rating Rating
+			{
+				get
+				{
+					return rating;
+				}
+				set
+				{
+					if (rating != value)
+						dirty = true;
+					rating = value;
 				}
 			}
 		}
@@ -265,6 +376,7 @@ namespace Float
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Title), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
 			context.ItemTitle = FloatGUIStyle.TextField(context.ItemTitle, FloatGUIStyle.textField, GUILayout.Width(FloatGUIStyle.textLen));
+			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
@@ -276,25 +388,58 @@ namespace Float
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
+
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Preview), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-
 			GUILayout.Box(Resources.Load(AppConst.previewName) as Texture, GUILayout.Width(128), GUILayout.Height(128));
+
 			GUILayout.BeginVertical();
-			GUILayout.Space(115);
+			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
+			GUILayout.Space(100);
 			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
 			{
 				context.PreviewPath = EditorUtility.OpenFilePanel(Language.Get(TextID.selectPreview), string.Empty, "jpg,png");
 				CopyPreviewFile(context.PreviewPath);
 			}
 			GUILayout.EndVertical();
+
+			GUILayout.BeginVertical();
+
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(Language.Get(TextID.category), FloatGUIStyle.boldLabel, GUILayout.Width(60));
+			context.Category = (CategoryType)EditorGUILayout.EnumPopup(context.Category, GUILayout.Width(150));
+			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(10);
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(Language.Get(TextID.genre), FloatGUIStyle.boldLabel, GUILayout.Width(60));
+			context.Genre = (Genre)EditorGUILayout.EnumPopup(context.Genre, GUILayout.Width(150));
+			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(10);
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(Language.Get(TextID.rating), FloatGUIStyle.boldLabel, GUILayout.Width(60));
+			context.Rating = (Rating)EditorGUILayout.EnumPopup(context.Rating, GUILayout.Width(150));
+			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(10);
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(Language.Get(TextID.visibility), FloatGUIStyle.boldLabel, GUILayout.Width(60));
+			context.Visibility = (PublishedVisibility)EditorGUILayout.EnumPopup(context.Visibility, GUILayout.Width(150));
+			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
+			GUILayout.EndHorizontal();
+
+			GUILayout.EndVertical();
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
-			GUILayout.Label("Content", FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-			GUILayout.Label(context.ContentPath, FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.textLen));
+			GUILayout.Label(Language.Get(TextID.content), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
+			GUILayout.Label(context.ContentPath, FloatGUIStyle.label, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
@@ -317,10 +462,7 @@ namespace Float
 			/*SteamUser.GetSteamID().m_SteamID  SteamUtils.GetAppID()*/
 		}
 
-		protected virtual void OnOperateGUI()
-		{
-
-		}
+		protected virtual void OnOperateGUI() { }
 
 		protected void CreateItem()
 		{
@@ -334,14 +476,41 @@ namespace Float
 
 			SteamUGC.SetItemTitle(mUGCUpdateHandle, context.ItemTitle);
 			SteamUGC.SetItemDescription(mUGCUpdateHandle, context.ItemDesc);
-			SteamUGC.SetItemUpdateLanguage(mUGCUpdateHandle, "english");
-			SteamUGC.SetItemMetadata(mUGCUpdateHandle, "This is the test metadata.");
-			SteamUGC.SetItemVisibility(mUGCUpdateHandle, ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic);
-			SteamUGC.SetItemTags(mUGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
+			string lang = "english";
+			switch (Language.langType)
+			{
+				case LangType.Chinese:lang = "simplified chinese";break;
+				case LangType.English:lang = "english";break;
+				case LangType.Japanese:lang = "japanese";break;
+				case LangType.Korean:lang = "korean";break;
+			}
+			SteamUGC.SetItemUpdateLanguage(mUGCUpdateHandle, lang);
+			//SteamUGC.SetItemMetadata(mUGCUpdateHandle, "null");
+			ERemoteStoragePublishedFileVisibility visb = ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
+			switch (context.Visibility)
+			{
+				case PublishedVisibility.FriendsOnly:
+					visb = ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityFriendsOnly;
+					break;
+				case PublishedVisibility.Private:
+					visb = ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPrivate;
+					break;
+				case PublishedVisibility.Public:
+					visb = ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
+					break;
+			}
+			SteamUGC.SetItemVisibility(mUGCUpdateHandle, visb);
+			//SteamUGC.SetItemTags(mUGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
+			SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Type");
+			SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Type", context.Category.ToString());
+			SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Rating");
+			SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Rating", context.Rating.ToString());
+			SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Genre");
+			SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Genre", context.Genre.ToString());
 			SteamUGC.SetItemContent(mUGCUpdateHandle, context.ContentPath);
 			SteamUGC.SetItemPreview(mUGCUpdateHandle, GetContentPreviewPath());
 
-			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(mUGCUpdateHandle, "submit content");
+			SteamAPICall_t handle = SteamUGC.SubmitItemUpdate(mUGCUpdateHandle, "");
 			OnSubmitItemUpdateResultCallResult.Set(handle);
 
 			isUpdatingItem = true;
@@ -391,9 +560,14 @@ namespace Float
 				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.titleEmpty), Language.Get(TextID.ok));
 				return false;
 			}
-			if (string.IsNullOrEmpty(context.ItemDesc))
+			if (Encoding.Default.GetBytes(context.ItemTitle).Length >= Constants.k_cchPublishedDocumentTitleMax)
 			{
-				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.descEmpty), Language.Get(TextID.ok));
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.titleToLong), Language.Get(TextID.ok));
+				return false;
+			}
+			if (Encoding.Default.GetBytes(context.ItemDesc).Length >= Constants.k_cchPublishedDocumentDescriptionMax)
+			{
+				EditorUtility.DisplayDialog(Language.Get(TextID.error), Language.Get(TextID.descToLong), Language.Get(TextID.ok));
 				return false;
 			}
 			string rawContentPath = modelBuilder.AssetbundlePath;

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 public enum LangType
 {
+	[EnumLabel("English")]
 	English,
+	[EnumLabel("中文")]
 	Chinese,
+	[EnumLabel("日本語")]
 	Japanese,
+	[EnumLabel("한국어")]
 	Korean
 }
 
@@ -33,7 +37,12 @@ public static class TextID
 	public const int Desc = 2;
 	public const int Preview = 3;
 	public const int Tag = 4;
-	public const int Visib = 5;
+	public const int visibility = 5;
+	public const int category = 6;
+	public const int content = 7;
+	public const int genre = 8;
+	public const int rating = 9;
+	public const int required = 19;
 
 	public const int Output = 50;
 	public const int model = 51;
@@ -84,6 +93,8 @@ public static class TextID
 	public const int UploadingContent = 135;
 	public const int ploadingPreviewFile = 136;
 	public const int CommittingChanges = 137;
+	public const int titleToLong = 138;
+	public const int descToLong = 139;
 }
 
 public static class Language
@@ -93,10 +104,15 @@ public static class Language
 	private static LangData[] datas = new LangData[]
 	{
 		new LangData(TextID.Title, "Title", "标题"),
-		new LangData(TextID.Desc, "Description", "描述"),
+		new LangData(TextID.Desc, "Description", "简介"),
 		new LangData(TextID.Preview, "Preview", "预览图"),
 		new LangData(TextID.Tag, "Tag", "标签"),
-		new LangData(TextID.Visib, "Visibility", "可见度"),
+		new LangData(TextID.visibility, "Visibility", "可见度"),
+		new LangData(TextID.category, "Category", "种类"),
+		new LangData(TextID.content, "Content", "内容"),
+		new LangData(TextID.genre, "Genre", "分类"),
+		new LangData(TextID.rating, "Rating", "评级"),
+		new LangData(TextID.required, "*required", "*必填"),
 
 		new LangData(TextID.Output, "Output", "输出路径"),
 		new LangData(TextID.model, "Model", "模型路径"),
@@ -137,15 +153,17 @@ public static class Language
 		new LangData(TextID.submitDone, "Submit successfully", "上传完毕"),
 		new LangData(TextID.submitFailed, "Submit workshop item failed. Error code : ", "上传物品失败。错误码："),
 
-		new LangData(TextID.titleEmpty, "Title cannot be empty.", "标题不能空"),
-		new LangData(TextID.descEmpty, "Description cannot be empty.", "描述不能空"),
+		new LangData(TextID.titleEmpty, "The title cannot be empty.", "标题不能空"),
+		new LangData(TextID.titleToLong, "The title exceeds the limit", "标题过长"),
+		new LangData(TextID.descEmpty, "The description cannot be empty.", "简介不能空"),
+		new LangData(TextID.descToLong, "The description exceeds the limit", "简介过长"),
 		new LangData(TextID.contentEmpty, "Content directory cannot be empty.", "内容文件夹不能空"),
 		new LangData(TextID.contentMissing, "Content directory does not exist.", "内容文件夹不存在"),
 		new LangData(TextID.contentInvalid, "Content directory cannot be empty.", "内容文件夹不完整"),
 		new LangData(TextID.previewMissing, "Preview file does not exist.", "预览图丢失"),
 
-		new LangData(TextID.PreparingConfig, "Processing configuration data", "解析配置信息"),
-		new LangData(TextID.PreparingContent, "Reading and processing content files", "解析内容"),
+		new LangData(TextID.PreparingConfig, "Processing configuration data", "处理配置信息"),
+		new LangData(TextID.PreparingContent, "Reading and processing content files", "处理内容"),
 		new LangData(TextID.UploadingContent, "Uploading content changes to Steam", "上传内容"),
 		new LangData(TextID.ploadingPreviewFile, "Uploading new preview file image", "上传预览图"),
 		new LangData(TextID.CommittingChanges, "Committing all changes", "提交修改日志"),

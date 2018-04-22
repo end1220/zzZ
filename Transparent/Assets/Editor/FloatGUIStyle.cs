@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.Reflection;
 
 public static class FloatGUIStyle
 {
@@ -15,6 +17,7 @@ public static class FloatGUIStyle
 	public static GUIStyle helpBox { get; private set; }
 	public static GUIStyle link { get; private set; }
 	public static GUIStyle foldout { get; private set; }
+	public static GUIStyle red { get; private set; }
 
 	public static void Ensure()
 	{
@@ -27,6 +30,7 @@ public static class FloatGUIStyle
 
 		skin = Resources.Load<GUISkin>("FloatGUISkin");
 		link = skin.FindStyle("Link");
+		red = skin.FindStyle("red");
 
 		label = new GUIStyle(EditorStyles.label);
 		label.fontSize = fontSizeNormal;
@@ -70,7 +74,7 @@ public static class FloatGUIStyle
 	// constants
 	public const float spaceSize = 15f;
 	public const float leftSpace = 10;
-	public const float titleLen = 100;
+	public const float titleLen = 80;
 	public const float textLen = 550;
 	public const float buttonLen1 = 100;
 	public const float buttonLen2 = 50;
@@ -142,6 +146,65 @@ public static class FloatGUIStyle
 		value = HandleCopyPaste(textFieldID) ?? value;
 
 		return GUILayout.TextArea(value, style, options);
+	}
+
+	public static object EnumPopup(string title, Enum selected, params GUILayoutOption[] options)
+	{
+		int index = 0;
+		var array = Enum.GetValues(selected.GetType());
+		int length = array.Length;
+
+		string[] enumString = new string[length];
+		for (int i = 0; i < length; i++)
+		{
+			FieldInfo[] fields = selected.GetType().GetFields();
+			foreach (FieldInfo field in fields)
+			{
+				if (field.Name.Equals(array.GetValue(i).ToString()))
+				{
+					object[] objs = field.GetCustomAttributes(typeof(EnumLabelAttribute), true);
+					if (objs != null && objs.Length > 0)
+					{
+						enumString[i] = ((EnumLabelAttribute)objs[0]).label;
+					}
+				}
+			}
+		}
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.PrefixLabel(title);
+		index = EditorGUILayout.Popup(selected.GetHashCode(), enumString, options);
+		EditorGUILayout.EndHorizontal();
+
+		return Enum.ToObject(selected.GetType(), index);
+	}
+
+	public static object EnumPopup(Enum selected, params GUILayoutOption[] options)
+	{
+		int index = 0;
+		var array = Enum.GetValues(selected.GetType());
+		int length = array.Length;
+
+		string[] enumString = new string[length];
+		for (int i = 0; i < length; i++)
+		{
+			FieldInfo[] fields = selected.GetType().GetFields();
+			foreach (FieldInfo field in fields)
+			{
+				if (field.Name.Equals(array.GetValue(i).ToString()))
+				{
+					object[] objs = field.GetCustomAttributes(typeof(EnumLabelAttribute), true);
+					if (objs != null && objs.Length > 0)
+					{
+						enumString[i] = ((EnumLabelAttribute)objs[0]).label;
+					}
+				}
+			}
+		}
+
+		index = EditorGUILayout.Popup(selected.GetHashCode(), enumString, options);
+
+		return Enum.ToObject(selected.GetType(), index);
 	}
 
 }
