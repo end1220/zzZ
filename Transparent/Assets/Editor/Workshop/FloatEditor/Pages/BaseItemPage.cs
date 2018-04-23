@@ -9,10 +9,15 @@ namespace Float
 {
 	public enum CategoryType
 	{
+		[EnumLanguage(TextID.accept)]
 		Unspecified,
+		[EnumLanguage(TextID.ackWorkshopPolicy)]
 		Scene,
+		[EnumLanguage(TextID.build)]
 		Video,
+		[EnumLanguage(TextID.cancel)]
 		Web,
+		[EnumLanguage(TextID.category)]
 		App
 	}
 
@@ -285,7 +290,10 @@ namespace Float
 					if (lastItemUpdateStatus == EItemUpdateStatus.k_EItemUpdateStatusCommittingChanges)
 					{
 						lastItemUpdateStatus = EItemUpdateStatus.k_EItemUpdateStatusInvalid;
-						EditorUtility.DisplayDialog(Language.Get(TextID.complete), Language.Get(TextID.submitDone), Language.Get(TextID.ok));
+						bool ok = EditorUtility.DisplayDialog(Language.Get(TextID.complete), Language.Get(TextID.submitDone), Language.Get(TextID.ok), Language.Get(TextID.cancel));
+						if (ok)
+							Application.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=" + mPublishedFileId.m_PublishedFileId.ToString());
+						//SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + mPublishedFileId.m_PublishedFileId.ToString());
 					}
 				}
 			}
@@ -407,7 +415,7 @@ namespace Float
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Language.Get(TextID.category), FloatGUIStyle.boldLabel, GUILayout.Width(60));
-			context.Category = (CategoryType)EditorGUILayout.EnumPopup(context.Category, GUILayout.Width(150));
+			context.Category = (CategoryType)FloatGUIStyle.EnumPopup2(context.Category, GUILayout.Width(150));
 			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
 			GUILayout.EndHorizontal();
 
@@ -500,13 +508,18 @@ namespace Float
 					break;
 			}
 			SteamUGC.SetItemVisibility(mUGCUpdateHandle, visb);
-			//SteamUGC.SetItemTags(mUGCUpdateHandle, new string[] { "Tag One", "Tag Two", "Test Tags", "Sorry" });
-			SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Type");
-			SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Type", context.Category.ToString());
-			SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Rating");
-			SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Rating", context.Rating.ToString());
-			SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Genre");
-			SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Genre", context.Genre.ToString());
+			SteamUGC.SetItemTags(mUGCUpdateHandle, 
+				new string[] {
+					context.Category.ToString(),
+					context.Rating.ToString(),
+					context.Genre.ToString()
+				});
+			//SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Type");
+			//SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Type", context.Category.ToString());
+			//SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Rating");
+			//SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Rating", context.Rating.ToString());
+			//SteamUGC.RemoveItemKeyValueTags(mUGCUpdateHandle, "Genre");
+			//SteamUGC.AddItemKeyValueTag(mUGCUpdateHandle, "Genre", context.Genre.ToString());
 			SteamUGC.SetItemContent(mUGCUpdateHandle, context.ContentPath);
 			SteamUGC.SetItemPreview(mUGCUpdateHandle, GetContentPreviewPath());
 
@@ -520,6 +533,9 @@ namespace Float
 		{
 			if (pCallback.m_eResult == EResult.k_EResultOK)
 			{
+				if (pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement)
+					Application.OpenURL(AppConst.workshopPolicyUrl);
+
 				mPublishedFileId = pCallback.m_nPublishedFileId;
 				MakeContent(mPublishedFileId.m_PublishedFileId, modelBuilder.AssetbundlePath);
 
@@ -542,8 +558,13 @@ namespace Float
 
 			if (pCallback.m_eResult == EResult.k_EResultOK)
 			{
+				if (pCallback.m_bUserNeedsToAcceptWorkshopLegalAgreement)
+					Application.OpenURL(AppConst.workshopPolicyUrl);
+
 				EditorUtility.ClearProgressBar();
-				EditorUtility.DisplayDialog(Language.Get(TextID.complete), Language.Get(TextID.submitDone), Language.Get(TextID.ok));
+				bool ok = EditorUtility.DisplayDialog(Language.Get(TextID.complete), Language.Get(TextID.submitDone), Language.Get(TextID.ok), Language.Get(TextID.cancel));
+				if (ok)
+					Application.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=" + mPublishedFileId.m_PublishedFileId.ToString());
 			}
 			else
 			{

@@ -1,108 +1,110 @@
 using System.Collections.Generic;
 
-
-public enum LangType
+namespace Float
 {
-	[EnumLabel("English")]
-	English,
-	[EnumLabel("中文")]
-	Chinese,
-	[EnumLabel("日本語")]
-	Japanese,
-	[EnumLabel("한국어")]
-	Korean
-}
 
-public class LangData
-{
-	public int id;
-	public string en;
-	public string zh;
-	public string jp;
-	public string kr;
-
-	public LangData(int id, string en, string zh, string jp = "", string kr = "")
+	public enum LangType
 	{
-		this.id = id;
-		this.en = en;
-		this.zh = zh;
-		this.jp = jp;
-		this.kr = kr;
+		[EnumLabel("English")]
+		English,
+		[EnumLabel("中文")]
+		Chinese,
+		[EnumLabel("日本語")]
+		Japanese,
+		[EnumLabel("한국어")]
+		Korean
 	}
-}
 
-public static class TextID
-{
-	public const int Title = 1;
-	public const int Desc = 2;
-	public const int Preview = 3;
-	public const int Tag = 4;
-	public const int visibility = 5;
-	public const int category = 6;
-	public const int content = 7;
-	public const int genre = 8;
-	public const int rating = 9;
-	public const int required = 19;
-
-	public const int Output = 50;
-	public const int model = 51;
-	public const int prefab = 52;
-	public const int select = 53;
-	public const int build = 54;
-	public const int refresh = 55;
-	public const int selectModelFolder = 56;
-	public const int selectPreview = 57;
-
-	public const int wndTitle = 100;
-	public const int mainHelpBox = 101;
-	public const int language = 102;
-	public const int export = 103;
-	public const int submit = 104;
-	public const int errorTitle = 105;
-	public const int steamInitError = 106;
-	public const int ok = 107;
-	public const int cancel = 108;
-	public const int legal = 109;
-	public const int accept = 110;
-	public const int createItem = 111;
-	public const int submitToWorkshop = 112;
-	public const int workshopPolicy = 113;
-	public const int ackWorkshopPolicy = 114;
-
-	public const int recentProject = 115;
-	public const int noProject = 116;
-	public const int createProject = 117;
-	public const int newProject = 118;
-
-	public const int step1 = 119;
-	public const int step2 = 120;
-	public const int submitting = 121;
-	public const int createFailed = 122;
-	public const int error = 123;
-	public const int complete = 124;
-	public const int submitDone = 125;
-	public const int submitFailed = 126;
-	public const int titleEmpty = 127;
-	public const int descEmpty = 128;
-	public const int contentEmpty = 129;
-	public const int contentMissing = 130;
-	public const int contentInvalid = 131;
-	public const int previewMissing = 132;
-	public const int PreparingConfig = 133;
-	public const int PreparingContent = 134;
-	public const int UploadingContent = 135;
-	public const int ploadingPreviewFile = 136;
-	public const int CommittingChanges = 137;
-	public const int titleToLong = 138;
-	public const int descToLong = 139;
-}
-
-public static class Language
-{
-	public static LangType langType = LangType.Chinese;
-
-	private static LangData[] datas = new LangData[]
+	public class LangData
 	{
+		public int id;
+		public string en;
+		public string zh;
+		public string jp;
+		public string kr;
+
+		public LangData(int id, string en, string zh, string jp = "", string kr = "")
+		{
+			this.id = id;
+			this.en = en;
+			this.zh = zh;
+			this.jp = jp;
+			this.kr = kr;
+		}
+	}
+
+	public static class TextID
+	{
+		public const int Title = 1;
+		public const int Desc = 2;
+		public const int Preview = 3;
+		public const int Tag = 4;
+		public const int visibility = 5;
+		public const int category = 6;
+		public const int content = 7;
+		public const int genre = 8;
+		public const int rating = 9;
+		public const int required = 19;
+
+		public const int Output = 50;
+		public const int model = 51;
+		public const int prefab = 52;
+		public const int select = 53;
+		public const int build = 54;
+		public const int refresh = 55;
+		public const int selectModelFolder = 56;
+		public const int selectPreview = 57;
+
+		public const int wndTitle = 100;
+		public const int mainHelpBox = 101;
+		public const int language = 102;
+		public const int export = 103;
+		public const int submit = 104;
+		public const int errorTitle = 105;
+		public const int steamInitError = 106;
+		public const int ok = 107;
+		public const int cancel = 108;
+		public const int legal = 109;
+		public const int accept = 110;
+		public const int createItem = 111;
+		public const int submitToWorkshop = 112;
+		public const int workshopPolicy = 113;
+		public const int ackWorkshopPolicy = 114;
+
+		public const int recentProject = 115;
+		public const int noProject = 116;
+		public const int createProject = 117;
+		public const int newProject = 118;
+
+		public const int step1 = 119;
+		public const int step2 = 120;
+		public const int submitting = 121;
+		public const int createFailed = 122;
+		public const int error = 123;
+		public const int complete = 124;
+		public const int submitDone = 125;
+		public const int submitFailed = 126;
+		public const int titleEmpty = 127;
+		public const int descEmpty = 128;
+		public const int contentEmpty = 129;
+		public const int contentMissing = 130;
+		public const int contentInvalid = 131;
+		public const int previewMissing = 132;
+		public const int PreparingConfig = 133;
+		public const int PreparingContent = 134;
+		public const int UploadingContent = 135;
+		public const int ploadingPreviewFile = 136;
+		public const int CommittingChanges = 137;
+		public const int titleToLong = 138;
+		public const int descToLong = 139;
+	}
+
+	public static class Language
+	{
+		public static LangType langType = LangType.Chinese;
+
+		private static LangData[] datas = new LangData[]
+		{
 		new LangData(TextID.Title, "Title", "标题"),
 		new LangData(TextID.Desc, "Description", "简介"),
 		new LangData(TextID.Preview, "Preview", "预览图"),
@@ -150,7 +152,7 @@ public static class Language
 		new LangData(TextID.createFailed, "Create workshop item failed. Error code : ", "创建新物品失败。错误码："),
 		new LangData(TextID.error, "Error", "出错"),
 		new LangData(TextID.complete, "Complete", "完成"),
-		new LangData(TextID.submitDone, "Submit successfully", "上传完毕"),
+		new LangData(TextID.submitDone, "Submit done! Open a browser window to the Steam Workshop page?", "上传完毕！在浏览器窗口打开Steam创意工坊该物品页面？"),
 		new LangData(TextID.submitFailed, "Submit workshop item failed. Error code : ", "上传物品失败。错误码："),
 
 		new LangData(TextID.titleEmpty, "The title cannot be empty.", "标题不能空"),
@@ -168,37 +170,39 @@ public static class Language
 		new LangData(TextID.ploadingPreviewFile, "Uploading new preview file image", "上传预览图"),
 		new LangData(TextID.CommittingChanges, "Committing all changes", "提交修改日志"),
 
-	};
+		};
 
-	private static Dictionary<int, LangData> dataDic = new Dictionary<int, LangData>();
+		private static Dictionary<int, LangData> dataDic = new Dictionary<int, LangData>();
 
-	private static void LazyInit()
-	{
-		if (dataDic.Count == 0)
+		private static void LazyInit()
 		{
-			for (int i = 0; i < datas.Length; ++i)
-				dataDic.Add(datas[i].id, datas[i]);
-		}
-	}
-
-	public static string Get(int id)
-	{
-		LazyInit();
-		LangData data = null;
-		if (dataDic.TryGetValue(id, out data))
-		{
-			switch (langType)
+			if (dataDic.Count == 0)
 			{
-				case LangType.Chinese:
-					return data.zh;
-				case LangType.English:
-					return data.en;
-				case LangType.Japanese:
-					return string.IsNullOrEmpty(data.jp) ? data.en : data.jp;
-				case LangType.Korean:
-					return string.IsNullOrEmpty(data.kr) ? data.en : data.kr;
+				for (int i = 0; i < datas.Length; ++i)
+					dataDic.Add(datas[i].id, datas[i]);
 			}
 		}
-		return "**";
+
+		public static string Get(int id)
+		{
+			LazyInit();
+			LangData data = null;
+			if (dataDic.TryGetValue(id, out data))
+			{
+				switch (langType)
+				{
+					case LangType.Chinese:
+						return data.zh;
+					case LangType.English:
+						return data.en;
+					case LangType.Japanese:
+						return string.IsNullOrEmpty(data.jp) ? data.en : data.jp;
+					case LangType.Korean:
+						return string.IsNullOrEmpty(data.kr) ? data.en : data.kr;
+				}
+			}
+			return "**";
+		}
 	}
+
 }
