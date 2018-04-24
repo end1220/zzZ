@@ -113,6 +113,8 @@
     <Compile Include="Assets\Scripts\Control\UI\DebugPanel.cs" />
     <Compile Include="Assets\Scripts\Data\AssetBundleLoadOperation.cs" />
     <Compile Include="Assets\Scripts\Data\DataManager.cs" />
+    <Compile Include="Assets\Scripts\Data\EnumLabelAttribute.cs" />
+    <Compile Include="Assets\Scripts\Data\Language.cs" />
     <Compile Include="Assets\Scripts\Data\MyAssetBundleManifest.cs" />
     <Compile Include="Assets\Scripts\Data\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\Data\SubAssetBundleManifest.cs" />

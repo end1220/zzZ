@@ -1,25 +1,70 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 
 namespace Float
 {
+	public enum CategoryType
+	{
+		[EnumLanguage(TextID.accept)]
+		Unspecified,
+		[EnumLanguage(TextID.ackWorkshopPolicy)]
+		Scene,
+		[EnumLanguage(TextID.build)]
+		Video,
+		[EnumLanguage(TextID.cancel)]
+		Web,
+		[EnumLanguage(TextID.category)]
+		App
+	}
+
+	public enum Genre
+	{
+		Unspecified,
+		Abstract,
+		Animal,
+		Cartoon,
+		Games,
+		Girls,
+		Guys,
+		Fantacy,
+		Nature,
+		Music
+	}
+
+	public enum Rating
+	{
+		Unspecified,
+		Everybody,
+		Suspicious,
+		Mature
+	}
+
+	public enum PublishedVisibility
+	{
+		Unspecified,
+		Public,
+		FriendsOnly,
+		Private,
+	}
 
 	[Serializable]
 	public class ModelData
 	{
+		public int version;
 		public string workshopId;
 		public string title;
 		public string description;
 		public string preview;
 		public string[] tags;
-		public int visibility;
+		public PublishedVisibility visibility;
+		public CategoryType category = CategoryType.Unspecified;
+		public Genre genre = Genre.Unspecified;
+		public Rating rating = Rating.Unspecified;
 		public string bundle;
 		public string asset;
-		public int version;
 	}
 
 	[Serializable]

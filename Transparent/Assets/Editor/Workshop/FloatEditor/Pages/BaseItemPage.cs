@@ -7,50 +7,6 @@ using Steamworks;
 
 namespace Float
 {
-	public enum CategoryType
-	{
-		[EnumLanguage(TextID.accept)]
-		Unspecified,
-		[EnumLanguage(TextID.ackWorkshopPolicy)]
-		Scene,
-		[EnumLanguage(TextID.build)]
-		Video,
-		[EnumLanguage(TextID.cancel)]
-		Web,
-		[EnumLanguage(TextID.category)]
-		App
-	}
-
-	public enum Genre
-	{
-		Unspecified,
-		Abstract,
-		Animal,
-		Cartoon,
-		Games,
-		Girls,
-		Guys,
-		Fantacy,
-		Nature,
-		Music
-	}
-
-	public enum Rating
-	{
-		Unspecified,
-		Everybody,
-		Suspicious,
-		Mature
-	}
-
-	public enum PublishedVisibility
-	{
-		Unspecified,
-		Public,
-		FriendsOnly,
-		Private,
-	}
-
 	public abstract class BaseItemPage : BasePage
 	{
 		protected ModelAssetBuilder modelBuilder = new ModelAssetBuilder();
@@ -357,6 +313,10 @@ namespace Float
 				context.itemDesc = data.description;
 				context.previewPath = Path.Combine(project.directory, data.preview).Replace("\\", "/");
 				context.contentPath = Path.Combine(project.directory, AppConst.contentFolderName).Replace("\\", "/");
+				context.category = data.category;
+				context.genre = data.genre;
+				context.rating = data.rating;
+				context.visibility = data.visibility;
 				CopyPreviewFile(context.PreviewPath);
 			}
 
@@ -493,7 +453,7 @@ namespace Float
 				case LangType.Korean:lang = "korean";break;
 			}
 			SteamUGC.SetItemUpdateLanguage(mUGCUpdateHandle, lang);
-			//SteamUGC.SetItemMetadata(mUGCUpdateHandle, "null");
+			SteamUGC.SetItemMetadata(mUGCUpdateHandle, Path.Combine(context.ContentPath, AppConst.subModelDataName));
 			ERemoteStoragePublishedFileVisibility visb = ERemoteStoragePublishedFileVisibility.k_ERemoteStoragePublishedFileVisibilityPublic;
 			switch (context.Visibility)
 			{
