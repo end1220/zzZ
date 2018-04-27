@@ -64,7 +64,11 @@ namespace Float
 					context.ItemDesc,
 					FormatPreviewFileName(context.PreviewPath),
 					data.bundle,
-					data.asset
+					data.asset,
+					context.Visibility,
+					context.Category,
+					context.Genre,
+					context.Rating
 					);
 
 			ModelAssetBuilder.SaveModelDataToFile(
@@ -74,7 +78,11 @@ namespace Float
 					context.ItemDesc,
 					FormatPreviewFileName(context.PreviewPath),
 					data.bundle,
-					data.asset
+					data.asset,
+					context.Visibility,
+					context.Category,
+					context.Genre,
+					context.Rating
 					);
 		}
 	}

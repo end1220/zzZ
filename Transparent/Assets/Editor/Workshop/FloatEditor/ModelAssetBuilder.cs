@@ -220,7 +220,15 @@ namespace Float
 			return "";
 		}
 
-		public static void SaveModelDataToFile(string path, string id, string title, string desc, string preview, string bundle, string asset)
+		/*public PublishedVisibility visibility;
+		public CategoryType category = CategoryType.Unspecified;
+		public Genre genre = Genre.Unspecified;
+		public Rating rating = Rating.Unspecified;*/
+		public static void SaveModelDataToFile(string path, string id, string title, string desc, string preview, string bundle, string asset,
+			PublishedVisibility visibility = PublishedVisibility.Unspecified, 
+			CategoryType category = CategoryType.Unspecified,
+			Genre genre = Genre.Unspecified, 
+			Rating rating = Rating.Unspecified)
 		{
 			ModelData modelData = new ModelData();
 			modelData.workshopId = id;
@@ -229,6 +237,10 @@ namespace Float
 			modelData.preview = preview;
 			modelData.bundle = bundle;
 			modelData.asset = asset;
+			modelData.visibility = visibility;
+			modelData.category = category;
+			modelData.genre = genre;
+			modelData.rating = rating;
 			string jsonStr = JsonConvert.SerializeObject(modelData, Formatting.Indented);
 			File.WriteAllText(path, jsonStr, Encoding.UTF8);
 		}

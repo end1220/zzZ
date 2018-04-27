@@ -97,6 +97,27 @@ namespace Float
 		public const int CommittingChanges = 137;
 		public const int titleToLong = 138;
 		public const int descToLong = 139;
+
+		public const int Unspecified = 140;
+		public const int Scene = 141;
+		public const int Video = 142;
+		public const int Web = 143;
+		public const int App = 144;
+		public const int Abstract = 145;
+		public const int Animal = 146;
+		public const int Cartoon = 147;
+		public const int Games = 148;
+		public const int Girls = 149;
+		public const int Guys = 150;
+		public const int Fantacy = 151;
+		public const int Nature = 152;
+		public const int Music = 153;
+		public const int Everybody = 154;
+		public const int Suspicious = 155;
+		public const int Mature = 156;
+		public const int Public = 157;
+		public const int FriendsOnly = 158;
+		public const int Private = 159;
 	}
 
 	public static class Language
@@ -170,6 +191,27 @@ namespace Float
 		new LangData(TextID.ploadingPreviewFile, "Uploading new preview file image", "上传预览图"),
 		new LangData(TextID.CommittingChanges, "Committing all changes", "提交修改日志"),
 
+		new LangData(TextID.Unspecified, "Unspecified", "未指定"),
+		new LangData(TextID.Scene, "Scene", "场景"),
+		new LangData(TextID.Video, "Video", "视频"),
+		new LangData(TextID.Web, "Web", "网页"),
+		new LangData(TextID.App, "App", "应用"),
+		new LangData(TextID.Abstract, "Abstract", "抽象"),
+		new LangData(TextID.Animal, "Animal", "动物"),
+		new LangData(TextID.Cartoon, "Cartoon", "卡通"),
+		new LangData(TextID.Games, "Games", "游戏"),
+		new LangData(TextID.Girls, "Girls", "女人"),
+		new LangData(TextID.Guys, "Guys", "男人"),
+		new LangData(TextID.Fantacy, "Fantacy", "幻想"),
+		new LangData(TextID.Nature, "Nature", "自然"),
+		new LangData(TextID.Music, "Music", "音乐"),
+		new LangData(TextID.Everybody, "Everybody", "适合所有人"),
+		new LangData(TextID.Suspicious, "Suspicious", "敏感"),
+		new LangData(TextID.Mature, "Mature", "成熟"),
+		new LangData(TextID.Public, "Public", "完全公开"),
+		new LangData(TextID.FriendsOnly, "FriendsOnly", "仅好友可见"),
+		new LangData(TextID.Private, "Private", "仅自己可见"),
+		
 		};
 
 		private static Dictionary<int, LangData> dataDic = new Dictionary<int, LangData>();

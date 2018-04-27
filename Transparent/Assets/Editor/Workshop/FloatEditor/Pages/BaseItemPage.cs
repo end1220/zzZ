@@ -382,21 +382,21 @@ namespace Float
 			GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Language.Get(TextID.genre), FloatGUIStyle.boldLabel, GUILayout.Width(60));
-			context.Genre = (Genre)EditorGUILayout.EnumPopup(context.Genre, GUILayout.Width(150));
+			context.Genre = (Genre)FloatGUIStyle.EnumPopup2(context.Genre, GUILayout.Width(150));
 			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
 			GUILayout.EndHorizontal();
 
 			GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Language.Get(TextID.rating), FloatGUIStyle.boldLabel, GUILayout.Width(60));
-			context.Rating = (Rating)EditorGUILayout.EnumPopup(context.Rating, GUILayout.Width(150));
+			context.Rating = (Rating)FloatGUIStyle.EnumPopup2(context.Rating, GUILayout.Width(150));
 			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
 			GUILayout.EndHorizontal();
 
 			GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Language.Get(TextID.visibility), FloatGUIStyle.boldLabel, GUILayout.Width(60));
-			context.Visibility = (PublishedVisibility)EditorGUILayout.EnumPopup(context.Visibility, GUILayout.Width(150));
+			context.Visibility = (PublishedVisibility)FloatGUIStyle.EnumPopup2(context.Visibility, GUILayout.Width(150));
 			GUILayout.Label(Language.Get(TextID.required), FloatGUIStyle.red);
 			GUILayout.EndHorizontal();
 
@@ -625,7 +625,11 @@ namespace Float
 					context.ItemDesc,
 					FormatPreviewFileName(context.PreviewPath),
 					data.bundle,
-					data.asset
+					data.asset,
+					context.Visibility,
+					context.Category,
+					context.Genre,
+					context.Rating
 					);
 
 			// content model data
@@ -636,7 +640,11 @@ namespace Float
 					context.ItemDesc,
 					FormatPreviewFileName(context.PreviewPath),
 					data.bundle,
-					data.asset
+					data.asset,
+					context.Visibility,
+					context.Category,
+					context.Genre,
+					context.Rating
 					);
 
 			// sbm

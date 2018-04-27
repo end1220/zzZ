@@ -8,45 +8,63 @@ namespace Float
 {
 	public enum CategoryType
 	{
-		[EnumLanguage(TextID.accept)]
+		[EnumLanguage(TextID.Unspecified)]
 		Unspecified,
-		[EnumLanguage(TextID.ackWorkshopPolicy)]
+		[EnumLanguage(TextID.Scene)]
 		Scene,
-		[EnumLanguage(TextID.build)]
+		[EnumLanguage(TextID.Video)]
 		Video,
-		[EnumLanguage(TextID.cancel)]
+		[EnumLanguage(TextID.Web)]
 		Web,
-		[EnumLanguage(TextID.category)]
+		[EnumLanguage(TextID.App)]
 		App
 	}
 
 	public enum Genre
 	{
+		[EnumLanguage(TextID.Unspecified)]
 		Unspecified,
+		[EnumLanguage(TextID.Abstract)]
 		Abstract,
+		[EnumLanguage(TextID.Animal)]
 		Animal,
+		[EnumLanguage(TextID.Cartoon)]
 		Cartoon,
+		[EnumLanguage(TextID.Games)]
 		Games,
+		[EnumLanguage(TextID.Girls)]
 		Girls,
+		[EnumLanguage(TextID.Guys)]
 		Guys,
+		[EnumLanguage(TextID.Fantacy)]
 		Fantacy,
+		[EnumLanguage(TextID.Nature)]
 		Nature,
+		[EnumLanguage(TextID.Music)]
 		Music
 	}
 
 	public enum Rating
 	{
+		[EnumLanguage(TextID.Unspecified)]
 		Unspecified,
+		[EnumLanguage(TextID.Everybody)]
 		Everybody,
+		[EnumLanguage(TextID.Suspicious)]
 		Suspicious,
+		[EnumLanguage(TextID.Mature)]
 		Mature
 	}
 
 	public enum PublishedVisibility
 	{
+		[EnumLanguage(TextID.Unspecified)]
 		Unspecified,
+		[EnumLanguage(TextID.Public)]
 		Public,
+		[EnumLanguage(TextID.FriendsOnly)]
 		FriendsOnly,
+		[EnumLanguage(TextID.Private)]
 		Private,
 	}
 
