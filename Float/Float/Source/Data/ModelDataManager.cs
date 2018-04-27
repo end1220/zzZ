@@ -9,30 +9,83 @@ using System.Threading.Tasks;
 
 namespace Float
 {
+	public enum CategoryType
+	{
+		[EnumLanguage(TextID.Unspecified)]
+		Unspecified,
+		[EnumLanguage(TextID.Scene)]
+		Scene,
+		[EnumLanguage(TextID.Video)]
+		Video,
+		[EnumLanguage(TextID.Web)]
+		Web,
+		[EnumLanguage(TextID.App)]
+		App
+	}
+
+	public enum Genre
+	{
+		[EnumLanguage(TextID.Unspecified)]
+		Unspecified,
+		[EnumLanguage(TextID.Abstract)]
+		Abstract,
+		[EnumLanguage(TextID.Animal)]
+		Animal,
+		[EnumLanguage(TextID.Cartoon)]
+		Cartoon,
+		[EnumLanguage(TextID.Games)]
+		Games,
+		[EnumLanguage(TextID.Girls)]
+		Girls,
+		[EnumLanguage(TextID.Guys)]
+		Guys,
+		[EnumLanguage(TextID.Fantacy)]
+		Fantacy,
+		[EnumLanguage(TextID.Nature)]
+		Nature,
+		[EnumLanguage(TextID.Music)]
+		Music
+	}
+
+	public enum Rating
+	{
+		[EnumLanguage(TextID.Unspecified)]
+		Unspecified,
+		[EnumLanguage(TextID.Everybody)]
+		Everybody,
+		[EnumLanguage(TextID.Suspicious)]
+		Suspicious,
+		[EnumLanguage(TextID.Mature)]
+		Mature
+	}
+
+	public enum PublishedVisibility
+	{
+		[EnumLanguage(TextID.Unspecified)]
+		Unspecified,
+		[EnumLanguage(TextID.Public)]
+		Public,
+		[EnumLanguage(TextID.FriendsOnly)]
+		FriendsOnly,
+		[EnumLanguage(TextID.Private)]
+		Private,
+	}
+
 	public partial class ModelData
 	{
+		public int version;
 		public long workshopId;
 		public string title;
 		public string description;
 		public string author;
 		public string preview;
 		public string[] tags;
-		public int visibility;
+		public PublishedVisibility visibility;
+		public CategoryType category = CategoryType.Unspecified;
+		public Genre genre = Genre.Unspecified;
+		public Rating rating = Rating.Unspecified;
 		public string bundle;
 		public string asset;
-		public int version;
-		/*{y
-		"contentrating" : "Mature",
-		"description" : "",
-		"file" : "scene.json",
-		"monetization" : false,
-		"preview" : "preview.png",
-		"tags" : [ "Girls" ],
-		"title" : "sugar",
-		"type" : "scene",
-		"visibility" : "public",
-		"workshopid" : 1334958012
-		}*/
 	}
 
 	public class ModelDataArray

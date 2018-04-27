@@ -65,6 +65,8 @@
   <ItemGroup>
     <Compile Include="Source\AppConst.cs" />
     <Compile Include="Source\CustomSettings.cs" />
+    <Compile Include="Source\Data\EnumLabelAttribute.cs" />
+    <Compile Include="Source\Data\Language.cs" />
     <Compile Include="Source\Data\ModelDataManager.cs" />
     <Compile Include="Source\Data\MyAssetBundleManifest.cs" />
     <Compile Include="Source\Data\SubAssetBundleManifest.cs" />
