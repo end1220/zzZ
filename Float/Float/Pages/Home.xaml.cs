@@ -67,7 +67,8 @@ namespace Float.Pages
 			currentModelData = data;
 			Title2.Content = data.Title;
 			Author2.Content = data.Author;
-			thumb.Source = new BitmapImage(new Uri(data.PreviewImage, UriKind.Absolute));;
+			thumb.Source = new BitmapImage(new Uri(data.PreviewImage, UriKind.Absolute));
+			RenderOptions.SetBitmapScalingMode(thumb.Source, BitmapScalingMode.NearestNeighbor);
 		}
 
 		private void LBMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -91,8 +92,34 @@ namespace Float.Pages
 			ModelData data = (ModelData)listBoxModels.SelectedItem;
 			if (data == null)
 				return;
-			//MessageBox.Show(o.ToString());
+
 			SetCurrentModelData(data);
 		}
+
+		private void Play_Click(object sender, RoutedEventArgs e)
+		{
+			Log.Error("ViewMenuItem_Click");
+		}
+
+		private void Unsubscribe_Click(object sender, RoutedEventArgs e)
+		{
+			Log.Error("ViewMenuItem_Click");
+		}
+
+		private void Report_Click(object sender, RoutedEventArgs e)
+		{
+			Log.Error("ViewMenuItem_Click");
+		}
+
+		private void OpenInWorkshop_Click(object sender, RoutedEventArgs e)
+		{
+			Log.Error("ViewMenuItem_Click");
+		}
+
+		private void OpenInExplorer_Click(object sender, RoutedEventArgs e)
+		{
+			Log.Error("ViewMenuItem_Click");
+		}
+			
 	}
 }

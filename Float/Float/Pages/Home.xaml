@@ -4,36 +4,54 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="677" Background="#FFFFFFFF">
-	<Grid x:Name="LayoutRoot"  Margin="0,0,0,0" Style="{StaticResource ContentRoot}" Background="#FF252526">
-		<ListBox x:Name="listBoxModels" Width="690" Height="600" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
-				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible"  BorderBrush="White" Background="#FF999999" 
-				 MouseDoubleClick="LBMouseDoubleClick" MouseLeftButtonUp="LBMouseLeftButtonUp" MouseRightButtonUp="LBMouseRightButtonUp" SelectionChanged="LBSelectionChanged" Margin="5,5,0,0">
+	<Grid x:Name="LayoutRoot" Margin="0,0,0,0" Style="{StaticResource ContentRoot}" Background="#FF252526" SnapsToDevicePixels="True">
+		<ListBox x:Name="listBoxModels" Margin="5,5,0,0" Width="690" Height="600" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" ScrollViewer.CanContentScroll="True"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="White" Background="#00999999" 
+				 MouseDoubleClick="LBMouseDoubleClick" MouseLeftButtonUp="LBMouseLeftButtonUp" MouseRightButtonUp="LBMouseRightButtonUp" SelectionChanged="LBSelectionChanged">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<WrapPanel ItemWidth="165" ItemHeight="165"/>
+					<WrapPanel ItemWidth="143" ItemHeight="143"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFFFFFFF">
 						<Grid.RowDefinitions>
-							<RowDefinition Height="160"/>
+							<RowDefinition Height="128"/>
 						</Grid.RowDefinitions>
-						<Image Source="{Binding PreviewImage}" Grid.Row="0" Width="160" Height="160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-						<TextBlock Text="{Binding Name}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="8pt" TextWrapping="Wrap" />
+						<Image Source="{Binding PreviewImage}" Grid.Row="0" Width="128" Height="128" 
+							   UseLayoutRounding="True" 
+							   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding Name}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" TextWrapping="Wrap" Width="128" Height="20" FontFamily="Microsoft YaHei" FontSize="12" />
+						<Grid.ContextMenu>
+							<ContextMenu Name="cm" StaysOpen="true">
+								<MenuItem Header="播放" Click="Play_Click" Height="28"/>
+								<MenuItem Header="取消订阅" Click="Unsubscribe_Click" Height="28"/>
+								<MenuItem Header="举报" Click="Report_Click" Height="28"/>
+								<MenuItem Header="在创意工坊中打开" Click="OpenInWorkshop_Click" Height="28"/>
+								<MenuItem Header="在资源管理器中打开" Click="OpenInExplorer_Click" Height="28"/>
+								<MenuItem Header="查看">
+									<MenuItem Header="Big preview" Height="28"/>
+									<MenuItem Header="Small preview" Height="28"/>
+								</MenuItem>
+							</ContextMenu>
+						</Grid.ContextMenu>
 					</Grid>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
-		<Image x:Name="thumb" HorizontalAlignment="Left" Height="256" Margin="705.5,10,0,0" VerticalAlignment="Top" Width="256" OpacityMask="#FFFD8B8B" Source="thumb23.png"/>
-		<Label x:Name="Title" Content="标题：" HorizontalAlignment="Left" Margin="705.5,299,0,0" VerticalAlignment="Top" FontSize="18" Background="{x:Null}"/>
-		<Label x:Name="Title2" Content="哈哈嘿嘿擦擦擦1" HorizontalAlignment="Left" Margin="764.5,299,0,0" VerticalAlignment="Top" FontSize="18" Width="197.5" HorizontalContentAlignment="Center"/>
-		<Label x:Name="Author" Content="作者：" HorizontalAlignment="Left" Margin="705.5,337.5,0,0" VerticalAlignment="Top" FontSize="18" Background="{x:Null}"/>
-		<Label x:Name="Author2" Content="呵呵哒" HorizontalAlignment="Left" Margin="764,337.5,0,0" VerticalAlignment="Top" FontSize="18" Width="197.5" HorizontalContentAlignment="Center"/>
-		<Label x:Name="Label" Content="标签：" HorizontalAlignment="Left" Margin="706,375.5,0,0" VerticalAlignment="Top" FontSize="18" Background="{x:Null}"/>
-		<Label x:Name="Label2" Content="少儿不宜" HorizontalAlignment="Left" Margin="764.5,375.5,0,0" VerticalAlignment="Top" FontSize="18" Width="197.5" HorizontalContentAlignment="Center"/>
-		<Button x:Name="okbutton" Content="确  定" HorizontalAlignment="Left" Margin="737.5,618.76,0,0" VerticalAlignment="Top" Width="100" Background="#FF818181" Foreground="White" Height="30" FontSize="16"/>
-		<Button x:Name="cancelbutton" Content="取  消" HorizontalAlignment="Left" Margin="850,618.76,0,0" VerticalAlignment="Top" Width="100" Background="#FF818181" Foreground="White" FontSize="16" Height="30"/>
-		<Button x:Name="deletebutton" Content="删 除" HorizontalAlignment="Left" Margin="705.5,431.76,0,0" VerticalAlignment="Top" Width="100.5" Background="#FFFF6565" Foreground="White" Height="24"/>
+		<Grid x:Name="listBoxInfo" Margin="695,0,0,0" Width="305" Height="657" HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True"
+				ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="#00999999">
+			<Image x:Name="thumb" HorizontalAlignment="Left" Height="256" Margin="10,-40,0,0" VerticalAlignment="Top" Width="256" OpacityMask="#FFFD8B8B" Source="thumb23.png"/>
+			<Label x:Name="Title" Content="标题：" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" FontSize="14" Background="{x:Null}" FontFamily="Microsoft YaHei" Foreground="#FF7A7A7A"/>
+			<Label x:Name="Title2" Content="哈哈嘿嘿擦擦擦1" HorizontalAlignment="Left" Margin="8.9,281,0,0" VerticalAlignment="Top" FontSize="14" Width="197.5" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei"/>
+			<Label x:Name="Author" Content="作者：" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top" FontSize="14" Background="{x:Null}" FontFamily="Microsoft YaHei" Foreground="#FF7A7A7A"/>
+			<Label x:Name="Author2" Content="呵呵哒" HorizontalAlignment="Left" Margin="0,305,0,0" VerticalAlignment="Top" FontSize="14" Width="197.5" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei"/>
+			<Label x:Name="Label" Content="标签：" HorizontalAlignment="Left" Margin="10,330,0,0" VerticalAlignment="Top" FontSize="14" Background="{x:Null}" FontFamily="Microsoft YaHei" Foreground="#FF7A7A7A"/>
+			<Label x:Name="Label2" Content="少儿不宜" HorizontalAlignment="Left" Margin="0,330,0,0" VerticalAlignment="Top" FontSize="14" Width="197.5" HorizontalContentAlignment="Center" FontFamily="Microsoft YaHei"/>
+			<Button x:Name="deletebutton" Content="删 除" HorizontalAlignment="Left" Margin="0,431.76,0,0" VerticalAlignment="Top" Width="100.5" Background="#FFFF6565" Foreground="White" Height="28" FontFamily="Microsoft YaHei" FontSize="14"/>
+		</Grid>
+		<Button x:Name="okbutton" Content="确  定" HorizontalAlignment="Left" Margin="700,618,0,0" VerticalAlignment="Top" Width="100" Background="#FF818181" Foreground="White" Height="30" FontSize="16"/>
+		<Button x:Name="cancelbutton" Content="取  消" HorizontalAlignment="Left" Margin="850,618,0,0" VerticalAlignment="Top" Width="100" Background="#FF818181" Foreground="White" FontSize="16" Height="30"/>
 	</Grid>
 </UserControl>
