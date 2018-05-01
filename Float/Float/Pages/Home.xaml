@@ -10,16 +10,16 @@
 				 MouseDoubleClick="LBMouseDoubleClick" MouseLeftButtonUp="LBMouseLeftButtonUp" MouseRightButtonUp="LBMouseRightButtonUp" SelectionChanged="LBSelectionChanged" Margin="5,5,0,0">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<WrapPanel ItemWidth="133" ItemHeight="133"/>
+					<WrapPanel ItemWidth="165" ItemHeight="165"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFFFFFFF">
 						<Grid.RowDefinitions>
-							<RowDefinition Height="128"/>
+							<RowDefinition Height="160"/>
 						</Grid.RowDefinitions>
-						<Image Source="{Binding PreviewImage}" Grid.Row="0" Width="128" Height="128" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+						<Image Source="{Binding PreviewImage}" Grid.Row="0" Width="160" Height="160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 						<TextBlock Text="{Binding Name}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="8pt" TextWrapping="Wrap" />
 					</Grid>
 				</DataTemplate>

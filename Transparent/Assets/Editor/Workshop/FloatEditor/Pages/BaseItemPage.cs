@@ -592,18 +592,21 @@ namespace Float
 
 			modelAssetbundlePath = modelAssetbundlePath.Replace("\\", "/");
 			int endIdx = modelAssetbundlePath.LastIndexOf("/");
-			//string subContentPath = modelAssetbundlePath.Substring(0, endIdx);
 			string oldFolderName = modelAssetbundlePath.Substring(endIdx + 1);
-			string newContentPath = Path.Combine(AppConst.projectsPath, workshopID.ToString());//subContentPath + "/temporary";
-			if (Directory.Exists(newContentPath))
-				FileUtil.DeleteFileOrDirectory(newContentPath);
-			//Directory.CreateDirectory(newContentPath);
+			string projectPath = Path.Combine(AppConst.projectsPath, workshopID.ToString());
+			
+			if (Directory.Exists(projectPath))
+				FileUtil.DeleteFileOrDirectory(projectPath);
+			Directory.CreateDirectory(projectPath);
 
+			string newContentPath = Path.Combine(projectPath, AppConst.contentFolderName).Replace("\\", "/");
 			FileUtil.CopyFileOrDirectory(modelAssetbundlePath, newContentPath);
 
 			context.ContentPath = newContentPath;
 
 			ReplaceContentWithWorkshopID(workshopID, oldFolderName);
+
+			CopyPreviewFile(context.PreviewPath);
 		}
 
 		protected void ReplaceContentWithWorkshopID(ulong workshopID, string oldFolderName)
@@ -660,12 +663,15 @@ namespace Float
 		{
 			if (!string.IsNullOrEmpty(previewPath) && File.Exists(previewPath))
 			{
-				int endIdx = context.ContentPath.LastIndexOf("/");
-				string rootPath = context.ContentPath.Substring(0, endIdx);
-				string targetRoot = rootPath + "/" + FormatPreviewFileName(previewPath);
-				if (previewPath != targetRoot)
-					File.Copy(previewPath, rootPath + "/" + FormatPreviewFileName(previewPath), true);
-				File.Copy(previewPath, context.ContentPath + "/" + FormatPreviewFileName(previewPath), true);
+				if (!string.IsNullOrEmpty(context.ContentPath) && Directory.Exists(context.ContentPath))
+				{
+					int endIdx = context.ContentPath.LastIndexOf("/");
+					string rootPath = context.ContentPath.Substring(0, endIdx);
+					string targetRoot = rootPath + "/" + FormatPreviewFileName(previewPath);
+					if (previewPath != targetRoot)
+						File.Copy(previewPath, rootPath + "/" + FormatPreviewFileName(previewPath), true);
+					File.Copy(previewPath, context.ContentPath + "/" + FormatPreviewFileName(previewPath), true);
+				}
 				File.Copy(previewPath, Application.dataPath + "/Editor/Resources/" + FormatPreviewFileName(previewPath), true);
 				AssetDatabase.Refresh();
 			}

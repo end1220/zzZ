@@ -48,6 +48,8 @@ namespace Float
 		private void Update()
 		{
 			Ensure();
+			if (SteamManager.Instance.Initialized)
+				SteamManager.Instance.Update();
 			currentPage.Update();
 		}
 

@@ -29,7 +29,7 @@ namespace Float
 			private string prefabPath = "";
 
 			[JsonProperty]
-			private string assetbundlePath = "E:/Locke/GitHub/zzZ/Transparent/Output/Floating/1894426371";
+			private string assetbundlePath = Environment.CurrentDirectory.Replace("\\", "/") + "/projects/ModelOutput/2063520985";
 
 			[JsonIgnore]
 			public bool dirty;
@@ -130,22 +130,16 @@ namespace Float
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.Output), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-			GUILayout.TextField(context.OutputPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
+			GUILayout.Label(context.OutputPath, FloatGUIStyle.label, GUILayout.Width(FloatGUIStyle.textLen));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(FloatGUIStyle.leftSpace);
 			GUILayout.Label(Language.Get(TextID.model), FloatGUIStyle.boldLabel, GUILayout.Width(FloatGUIStyle.titleLen));
-			//string savedModelPath = EditorPrefs.GetString("BMW_ModelPath");
-			//context.modelPath = string.IsNullOrEmpty(savedModelPath) ? Application.dataPath : savedModelPath;
 			context.ModelPath = GUILayout.TextField(context.ModelPath, FloatGUIStyle.textFieldPath, GUILayout.Width(FloatGUIStyle.textLen));
 			if (GUILayout.Button(Language.Get(TextID.select), GUILayout.Width(FloatGUIStyle.buttonLen2)))
-			{
 				context.ModelPath = EditorUtility.OpenFolderPanel(Language.Get(TextID.selectModelFolder), string.Empty, "");
-				//if (!string.IsNullOrEmpty(context.modelPath))
-				//	EditorPrefs.SetString("BMW_ModelPath", context.modelPath);
-			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize);
 
@@ -176,6 +170,8 @@ namespace Float
 			}
 			GUILayout.EndHorizontal();
 			GUILayout.Space(FloatGUIStyle.spaceSize);
+
+			GUILayout.Label(context.AssetbundlePath, FloatGUIStyle.label, GUILayout.Width(FloatGUIStyle.textLen));
 		}
 
 		private string BuildSingleAB(string sourcePath, string outputPath, string assetName)
